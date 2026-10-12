@@ -38,6 +38,11 @@ SLAB_DIR=path/to/slab uv run --no-project --with numpy songs/sdsp_spike.py --ren
 
 This renders a 4-bar intro and the 16-bar overworld loop to `songs/sdsp_spike/`.
 
+`tools/budget.py songs/sdsp_spike.slab` checks a song against the console:
+8 voices across all sdsp tracks, and 64 KiB of audio RAM for the samples,
+the echo buffer, and the driver. Slab allows more of both, so the check is how a
+cue stays one the hardware could have played.
+
 ## Credits
 
 The Gaussian table, the envelope rates, and the BRR decoder follow blargg's

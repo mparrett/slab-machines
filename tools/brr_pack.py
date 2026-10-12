@@ -262,8 +262,10 @@ def drums():
 
     out = {}
     tt = t(.35)
-    f = 45 + 110 * np.exp(-tt / .03)
-    out["kick"] = np.sin(2 * np.pi * np.cumsum(f) / sr) * env(tt, .12) + .3 * rng.standard_normal(len(tt)) * env(tt, .004)
+    # a short kick settling at 60 Hz: the console's were small samples,
+    # punch more than sub
+    f = 60 + 120 * np.exp(-tt / .025)
+    out["kick"] = np.sin(2 * np.pi * np.cumsum(f) / sr) * env(tt, .09) + .3 * rng.standard_normal(len(tt)) * env(tt, .004)
     tt = t(.25)
     noise = onepole(rng.standard_normal(len(tt)), 900, high=True)
     out["snare"] = .7 * noise * env(tt, .07) + .6 * np.sin(2 * np.pi * 185 * tt) * env(tt, .05)
@@ -323,7 +325,9 @@ def main():
         y = brr_roundtrip(x)
         key = DRUM_KEYS[name]
         write_wav(OUT / "drums" / f"{name}.wav", y, DRUM_RATE)
-        lines.append(f"<region> lokey={key} hikey={key} pitch_keycenter={key} loop_mode=one_shot sample=drums/{name}.wav")
+        # not one-shot: a note's end keys the hit off, as a driver's note
+        # length did, so the kit holds only the voices it needs
+        lines.append(f"<region> lokey={key} hikey={key} pitch_keycenter={key} sample=drums/{name}.wav")
         report.append((f"drums/{name}", DRUM_RATE, len(y), key, None, x, y))
     (OUT / "drums.sfz").write_text("\n".join(lines) + "\n")
     total = 0
@@ -333,7 +337,8 @@ def main():
         total += brr
         print(f"{name:16s} {rate:8.1f} Hz  {n:6d} smp  {brr:6d} B BRR  root {root:6.2f}  "
               f"loop {loop}  BRR SNR {snr:4.1f} dB")
-    print(f"total {total} bytes of BRR (the console had 64 KB, shared with the music and the echo)")
+    print(f"total {total} bytes of BRR (the console had 64 KiB, shared with the driver and the echo;"
+          " tools/budget.py checks a song)")
 
 
 if __name__ == "__main__":

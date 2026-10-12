@@ -4,6 +4,9 @@ The listening test for the sdsp voice and echo. Scored for the console's
 eight voices: a trumpet lead (strings take the tune in B), cello chords,
 a spiccato ostinato, pizzicato bass and the synth kit. One echo on a
 send, as the console had one echo buffer that voices switched into.
+It fits the console's 8 voices (tools/budget.py): lead 1, cello triads
+3, ostinato 1, bass 1, kit 2, with the crash standing in for the hat for
+its half bar.
 
 The intro sits on Bb-C (IV-V) and adds a layer a bar: ostinato, cello,
 bass and hats, then a snare roll that the crash on A's downbeat answers.
@@ -56,12 +59,14 @@ def build_song():
     intro, a, b = song.section("INTRO", 4), song.section("A", 8), song.section("B", 8)
     song.loop_from = a.start
 
-    echo = song.bus("ECHO", fx=[fx("sdspecho", "overworld", dry=0)])
-    lead = song.track("TRUMPET - lead", "sdsp", "trumpet", volume=.80, pan=-.10)
-    tune = song.track("STRINGS - lead", "sdsp", "strings", volume=.78, pan=.10)
-    pad = song.track("CELLO - chords", "sdsp", "cello", volume=.30, pan=-.20)
-    ost = song.track("SPICCATO - ostinato", "sdsp", "spiccato", volume=.95, pan=.30)
-    bass = song.track("PIZZ - bass", "sdsp", "pizz-bass", volume=1.0)
+    # SURR inverts the right echo, the width trick games used
+    echo = song.bus("ECHO", fx=[fx("sdspecho", "overworld", dry=0, surr=1)])
+    lead = song.track("TRUMPET - lead", "sdsp", "trumpet", volume=.80, pan=-.30)
+    tune = song.track("STRINGS - lead", "sdsp", "strings", volume=.78, pan=.30)
+    pad = song.track("CELLO - chords", "sdsp", "cello", volume=.30, pan=-.45)
+    ost = song.track("SPICCATO - ostinato", "sdsp", "spiccato", volume=.95, pan=.50)
+    bass = song.track("PIZZ - bass", "sdsp", "pizz-bass", volume=1.0,
+                      fx=[fx("eq2", hpf_on=1, hpf_hz=55)])
     kit = song.track("KIT", "sdsp", "drum-kit", volume=.80)
     for t, db in ((lead, -8), (tune, -8), (ost, -10)):
         t.send(echo, db)
@@ -69,11 +74,12 @@ def build_song():
 
     # intro: one layer a bar, each riding up from below its fader
     ost.clip(intro).arp(PROG_I, "up", rate=.5, octave=4)
-    pad.clip(intro, at_bar=1, bars=3).chords("C Bb C", near=60)
+    pad.clip(intro, at_bar=1, bars=3).chords("C Bb C", near=60, voices=3)
     bass.clip(intro, at_bar=2, bars=2).bass("Bb C", "x.....x.x...x...", octave=2)
     k = kit.clip(intro, at_bar=2, bars=2)
     k.drums({42: "x.x.x.x.x.x.x.x."}, bars=1, length=.2)
-    k.drums({36: "x.......x.......", 42: "x.x.x.x........."}, at=4, bars=1, length=.2)
+    k.drums({36: "x.......x......."}, at=4, bars=1, length=.5)
+    k.drums({42: "x.x.x.x........."}, at=4, bars=1, length=.2)
     for i in range(8):  # a sixteenth snare roll over the last two beats, swelling
         k.note(38, 6 + i * .25, .2, 50 + i * 9)
     ost.ride({intro: (-14, 0)})
@@ -82,13 +88,17 @@ def build_song():
     lead.clip(a).melody(LEAD_A)
     tune.clip(b).melody(LEAD_B)
     for sec, prog in ((a, PROG_A), (b, PROG_B)):
-        pad.clip(sec).chords(prog, near=60)
+        pad.clip(sec).chords(prog, near=60, voices=3)
         ost.clip(sec).arp(prog, "up", rate=.5, octave=4)
         bass.clip(sec).bass(prog, "x.....x.x...x...", octave=2)
+        # a note's length is how long its hit holds a voice (the kit keys off)
         k = kit.clip(sec)
-        k.drums({36: "x.....x.x.......", 38: "....x.......x...", 42: "x.x.x.x.x.x.x.x."}, bars=7, length=.2)
-        k.drums({36: "x.....x.x.......", 38: "....x.....x.xxxx", 42: "x.x.x.x.x.x....."}, at=28, bars=1, length=.2)
-        k.note(49, 0, .5, 100)
+        k.drums({36: "x.....x.x.......", 38: "....x.......x..."}, bars=7, length=.5)
+        k.drums({42: "........x.x.x.x."}, bars=1, length=.2)
+        k.drums({42: "x.x.x.x.x.x.x.x."}, at=4, bars=6, length=.2)
+        k.drums({36: "x.....x.x.......", 38: "....x.....x.xxxx"}, at=28, bars=1, length=.25)
+        k.drums({42: "x.x.x.x.x.x....."}, at=28, bars=1, length=.2)
+        k.note(49, 0, 2, 100)
     song.save(str(PACKAGE))
     return song
 
