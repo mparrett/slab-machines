@@ -1,0 +1,1 @@
+{"slab": "preset", "schema": 1, "machine": "sdspecho", "note": "Long, dark, wide echo", "params": {"secho-edl": 10, "secho-efb": 90, "secho-evol": 48, "secho-surr": 1, "secho-dry": 1.0, "secho-preset": 1, "secho-c0": 12, "secho-c1": 33, "secho-c2": 43, "secho-c3": 43, "secho-c4": 19, "secho-c5": -2, "secho-c6": -13, "secho-c7": -7}}

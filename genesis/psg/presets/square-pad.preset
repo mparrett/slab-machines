@@ -1,0 +1,1 @@
+{"slab": "preset", "schema": 1, "machine": "psg", "note": "Square swell for harmony: slow up, held", "params": {"psg-mode": 0, "psg-rate": 0, "psg-tune": 0, "psg-ar": 3, "psg-dr": 0, "psg-sl": 0, "psg-rr": 4, "psg-vol": 0, "psg-vel": 0.5, "psg-gain": 0.5}}

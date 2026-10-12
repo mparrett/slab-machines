@@ -1,0 +1,1 @@
+{"slab": "preset", "schema": 1, "machine": "psg", "note": "White noise at the high rate, gone in a few frames: a closed hat", "params": {"psg-mode": 2, "psg-rate": 0, "psg-tune": 0, "psg-ar": 0, "psg-dr": 0, "psg-sl": 15, "psg-rr": 0, "psg-vol": 0, "psg-vel": 0.5, "psg-gain": 0.5}}

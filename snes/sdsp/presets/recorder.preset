@@ -1,0 +1,1 @@
+{"slab": "preset", "schema": 1, "machine": "sdsp", "note": "Alto recorder with vibrato from VCSL, a breathy lead", "params": {"sdsp-tune": 0, "sdsp-root": 60, "sdsp-loop": 0, "sdsp-ar": 10, "sdsp-dr": 7, "sdsp-sl": 7, "sdsp-sr": 0, "sdsp-rel": 22, "sdsp-noise": 0, "sdsp-nck": 28, "sdsp-vel": 0.4, "sdsp-level": 0.7}, "assets": {"brr": "user:Machines/sdsp/assets/recorder.wav"}}

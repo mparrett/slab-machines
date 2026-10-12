@@ -1,0 +1,1 @@
+{"slab": "preset", "schema": 1, "machine": "sdsp", "note": "The DSP's noise source as a closed hat", "params": {"sdsp-tune": 0, "sdsp-root": 60, "sdsp-loop": 0, "sdsp-ar": 15, "sdsp-dr": 7, "sdsp-sl": 0, "sdsp-sr": 28, "sdsp-rel": 0, "sdsp-noise": 1, "sdsp-nck": 30, "sdsp-vel": 0.5, "sdsp-level": 0.7}, "assets": {"brr": "user:Machines/sdsp/assets/saw.wav"}}

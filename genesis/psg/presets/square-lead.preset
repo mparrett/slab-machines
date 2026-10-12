@@ -1,0 +1,1 @@
+{"slab": "preset", "schema": 1, "machine": "psg", "note": "Square lead: a quick drop to a held level", "params": {"psg-mode": 0, "psg-rate": 0, "psg-tune": 0, "psg-ar": 0, "psg-dr": 3, "psg-sl": 2, "psg-rr": 2, "psg-vol": 0, "psg-vel": 0.5, "psg-gain": 0.5}}

@@ -1,0 +1,8 @@
+// sdsp drum kit: synthesized, BRR round-tripped at 16 kHz (tools/brr_pack.py)
+<region> lokey=36 hikey=36 pitch_keycenter=36 sample=drums/kick.wav
+<region> lokey=38 hikey=38 pitch_keycenter=38 sample=drums/snare.wav
+<region> lokey=42 hikey=42 pitch_keycenter=42 sample=drums/hat.wav
+<region> lokey=46 hikey=46 pitch_keycenter=46 sample=drums/open-hat.wav
+<region> lokey=49 hikey=49 pitch_keycenter=49 sample=drums/crash.wav
+<region> lokey=41 hikey=41 pitch_keycenter=41 sample=drums/tom-lo.wav
+<region> lokey=45 hikey=45 pitch_keycenter=45 sample=drums/tom-hi.wav

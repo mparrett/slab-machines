@@ -1,0 +1,1 @@
+{"slab": "preset", "schema": 1, "machine": "sdspecho", "note": "One 64 ms repeat, unfiltered", "params": {"secho-edl": 4, "secho-efb": 0, "secho-evol": 50, "secho-surr": 0, "secho-dry": 1.0, "secho-preset": 0, "secho-c0": 127, "secho-c1": 0, "secho-c2": 0, "secho-c3": 0, "secho-c4": 0, "secho-c5": 0, "secho-c6": 0, "secho-c7": 0}}

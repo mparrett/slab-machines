@@ -1,0 +1,1 @@
+{"slab": "preset", "schema": 1, "machine": "sdsp", "note": "Karoryfer fingered bass at 8 kHz, round, fading slowly", "params": {"sdsp-tune": 0, "sdsp-root": 60, "sdsp-loop": 0, "sdsp-ar": 15, "sdsp-dr": 6, "sdsp-sl": 5, "sdsp-sr": 13, "sdsp-rel": 23, "sdsp-noise": 0, "sdsp-nck": 28, "sdsp-vel": 0.5, "sdsp-level": 1.0}, "assets": {"brr": "user:Machines/sdsp/assets/fretbass.wav"}}

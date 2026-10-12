@@ -1,0 +1,11 @@
+// sdsp jungle-kit: VCSL one-shots (CC0), BRR round-tripped (tools/brr_pack.py)
+// 36 kick, 38 snare, 42 shaker; congas 60 open, 61 quinto, 62 tumba, 63 muted; bongos 64 high, 65 low
+<region> lokey=36 hikey=36 pitch_keycenter=36 sample=drums/kick.wav
+<region> lokey=38 hikey=38 pitch_keycenter=38 sample=drums/jungle-38.wav
+<region> lokey=42 hikey=42 pitch_keycenter=42 sample=drums/aqua-42.wav
+<region> lokey=60 hikey=60 pitch_keycenter=60 sample=drums/jungle-60.wav
+<region> lokey=61 hikey=61 pitch_keycenter=61 sample=drums/jungle-61.wav
+<region> lokey=62 hikey=62 pitch_keycenter=62 sample=drums/jungle-62.wav
+<region> lokey=63 hikey=63 pitch_keycenter=63 sample=drums/jungle-63.wav
+<region> lokey=64 hikey=64 pitch_keycenter=64 sample=drums/jungle-64.wav
+<region> lokey=65 hikey=65 pitch_keycenter=65 sample=drums/jungle-65.wav

@@ -1,0 +1,5 @@
+// sdsp aqua-perc: VCSL one-shots (CC0), BRR round-tripped (tools/brr_pack.py)
+// 36 soft bass drum, 42 shaker, 46 finger cymbals
+<region> lokey=36 hikey=36 pitch_keycenter=36 sample=drums/aqua-36.wav
+<region> lokey=42 hikey=42 pitch_keycenter=42 sample=drums/aqua-42.wav
+<region> lokey=46 hikey=46 pitch_keycenter=46 sample=drums/aqua-46.wav

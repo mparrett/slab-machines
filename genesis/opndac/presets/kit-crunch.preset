@@ -1,0 +1,1 @@
+{"slab": "preset", "schema": 1, "machine": "opndac", "note": "The kit at 8 kHz and a third of full scale: what a busy driver gave", "params": {"dac-rate": 8000, "dac-jitter": 0.25, "dac-level": 0.35, "dac-tune": 0, "dac-root": 60, "dac-pan": 1, "dac-chip": 0, "dac-gain": 1.0}, "assets": {"pcm": "user:Machines/opndac/assets/kit.sfz"}}
