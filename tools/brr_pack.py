@@ -31,7 +31,7 @@ import sys
 import numpy as np
 
 HERE = Path(__file__).resolve().parents[1]
-OUT = HERE / "sdsp/assets"
+OUT = HERE / "snes/sdsp/assets"
 
 # Pitched instruments from the factory VSCO 2 CE keymaps. key: the note to
 # take the sample nearest; rate: the stored rate before loop fitting;

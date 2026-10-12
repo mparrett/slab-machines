@@ -27,7 +27,7 @@ This reads a saved project and reports, for the machines it uses:
           a tail on its channel, so a track counts at most as many voices as
           it ever sounds notes at once (its channels).
 
-    python3 tools/budget.py songs/sdsp_spike.slab
+    python3 tools/budget.py snes/songs/sdsp_spike.slab
 
 Exits 1 when any budget is over. Standard library only.
 """
@@ -91,15 +91,18 @@ def opn_rel_seconds(rr):
 
 def resolve(ref, project_dir):
     """A machine asset ref to a file: user: refs under ~/Music/Slab (or
-    this repo, for its own machines before install), others beside the
-    project."""
+    this repo's <console>/<machine>, for its own machines before install),
+    others beside the project."""
     if ref.startswith("user:"):
         rel = ref[len("user:"):]
         home = Path.home() / "Music/Slab" / rel
         if home.exists():
             return home
         if rel.startswith("Machines/"):
-            return HERE / rel[len("Machines/"):]
+            machine, _, rest = rel[len("Machines/"):].partition("/")
+            found = next(HERE.glob(f"*/{machine}"), None)
+            if found is not None:
+                return found / rest
         return home
     return project_dir / ref
 

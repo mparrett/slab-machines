@@ -19,7 +19,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 from brr_pack import decode_audio, drums, normalize, pick_region, source, trim_onset, write_wav  # noqa: E402
 
 HERE = Path(__file__).resolve().parents[1]
-OUT = HERE / "opndac/assets"
+OUT = HERE / "genesis/opndac/assets"
 RATE = 13000
 
 # kit key: (source, the source's key, seconds); None takes brr_pack's synth kick
