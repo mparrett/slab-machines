@@ -18,7 +18,11 @@ git clone -b user-machines https://github.com/mparrett/slab slab-user-machines
 ./install.sh                           # links ./chip into ~/Music/Slab/Machines/chip
 ```
 
-Point `SLAB_DIR` at that checkout to render the songs here.
+Point `SLAB_DIR` at that checkout to render the songs here. Launch Slab
+from that directory too: a dev build finds its own machines from there.
+
+With Homebrew's raylib 6, merge the fork's `raylib6-hidpi` branch as well,
+or the interface draws at half size on a Retina display.
 
 The machine then shows up in Slab's instrument list, in `slab --describe`
 and in slabkit as `chip`. Because it is a link, edits here take effect the
