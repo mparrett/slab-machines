@@ -79,7 +79,7 @@ def build_song():
     bass = song.track("BASS", "sdsp", "round-bass", volume=.36,
                       fx=[fx("eq2", hpf_on=1, hpf_hz=50)])
     marimba = song.track("MARIMBA - riff", "sdsp", "marimba", volume=.70, pan=-.40)
-    lead = song.track("OCARINA - lead", "sdsp", "ocarina", volume=.48, pan=.10)
+    lead = song.track("OCARINA - lead", "sdsp", "ocarina", volume=.40, pan=.10)
     stabs = song.track("TROMBONE - stabs", "sdsp", "trombone", volume=.70, pan=-.15)
     for t, db in ((lead, -8), (marimba, -10), (stabs, -12)):
         t.send(echo, db)
