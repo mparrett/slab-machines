@@ -61,7 +61,7 @@ def build_song():
 
     # SURR inverts the right echo, the width trick games used
     echo = song.bus("ECHO", fx=[fx("sdspecho", "overworld", dry=0, surr=1)])
-    lead = song.track("TRUMPET - lead", "sdsp", "trumpet", volume=.80, pan=-.30)
+    lead = song.track("TRUMPET - lead", "sdsp", "trumpet", volume=.75, pan=-.30)
     tune = song.track("STRINGS - lead", "sdsp", "strings", volume=.78, pan=.30)
     pad = song.track("CELLO - chords", "sdsp", "cello", volume=.30, pan=-.45)
     ost = song.track("SPICCATO - ostinato", "sdsp", "spiccato", volume=.95, pan=.50)

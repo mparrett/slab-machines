@@ -38,9 +38,9 @@ OUT = HERE / "sdsp/assets"
 # attack: seconds before the loop; loop: seconds of loop, as whole periods.
 # A loop of 0 is a one-shot of `attack` seconds.
 SAMPLED = {
-    "strings":  dict(src="vsco/violin-section-susvib.sfz", key=69, rate=16000, attack=.25, loop=.20),
+    "strings":  dict(src="vsco/violin-section-susvib.sfz", key=69, rate=16000, attack=.25, loop=.20, flatten=True),
     "cello":    dict(src="vsco/cello-section-susvib.sfz", key=48, rate=12000, attack=.25, loop=.20),
-    "trumpet":  dict(src="vsco/trumpet-sus.sfz", key=67, rate=16000, attack=.12, loop=.12),
+    "trumpet":  dict(src="vsco/trumpet-sus.sfz", key=67, rate=16000, attack=.12, loop=.12, flatten=True),
     "trombone": dict(src="vsco/tenor-trombone-sus.sfz", key=55, rate=12000, attack=.15, loop=.12),
     "spic":     dict(src="vsco/violin-section-spic.sfz", key=72, rate=16000, attack=.30, loop=0),
     "pizz":     dict(src="vsco/solo-contrabass-pizz.sfz", key=43, rate=8000, attack=.70, loop=0),
@@ -48,7 +48,7 @@ SAMPLED = {
     # sustain rate do the fading, as the console's instruments did
     "epiano":   dict(src="lib:vcsl/vcsl-keys/fm-piano.sfz", key=72, rate=16000, attack=.20, loop=.05),
     "recorder": dict(src="lib:vcsl/vcsl-winds/baroque-alto-recorder-susvib.sfz", key=72, rate=16000,
-                     attack=.15, loop=.10),
+                     attack=.15, loop=.10, flatten=True),
     "vibes":    dict(src="lib:vcsl/vcsl-mallets/vibraphone-soft-mallets.sfz", key=72, rate=16000,
                      attack=.25, loop=.05),
     # drive: tanh soft clip after normalizing, for a pluck whose transient

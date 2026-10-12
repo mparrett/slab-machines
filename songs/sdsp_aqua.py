@@ -64,7 +64,7 @@ def build_song():
     keys = song.track("EPIANO - arp", "sdsp", "epiano", volume=.60, pan=.35)
     bass = song.track("BASS", "sdsp", "fret-bass", volume=.85,
                       fx=[fx("eq2", hpf_on=1, hpf_hz=50)])
-    lead = song.track("RECORDER - lead", "sdsp", "recorder", volume=.60, pan=-.20)
+    lead = song.track("RECORDER - lead", "sdsp", "recorder", volume=.56, pan=-.20)
     vibes = song.track("VIBES - lead", "sdsp", "vibes", volume=1.05, pan=-.20)
     perc = song.track("PERC", "sdsp", "aqua-perc", volume=.55, pan=.15)
     for t, db in ((keys, -5), (lead, -6), (vibes, -6), (pad, -10)):
