@@ -37,15 +37,17 @@ PROG_A = "Am7 D7 Am7 D7 Am7 D7 Am7 D7"
 PROG_B = "Fmaj7 G Em7 Am7 Fmaj7 G E7 E7"
 RIFF = ("A4:.75 C5:.25 r:.25 E5:.25 G5:.5 E5:.5 D5:.25 C5:.25 A4:1  "
         "F#4:.75 A4:.25 r:.25 C5:.25 D5:.5 C5:.5 A4:.25 F#4:.25 D4:1")
-LEAD_A = ("E5:1.5 G5:.5 A5:1 r:1  F#5:.5 E5:.5 D5:1 E5:2  r:.5 A5:.5 C6:1 B5:.5 A5:.5 G5:1  A5:3 r:1  "
-          "E5:1.5 G5:.5 A5:1 C6:1  D6:.5 C6:.5 A5:1 F#5:1 E5:1  G5:1 A5:.5 G5:.5 E5:1 D5:1  E5:3 r:1")
-LEAD_B = ("C6:1.5 A5:.5 E5:2  D6:1.5 B5:.5 G5:2  B5:1 G5:1 E5:1 G5:1  A5:3 r:1  "
-          "A5:.5 C6:.5 E6:1 D6:1 C6:1  B5:.5 D6:.5 G6:1 D6:1 B5:1  G#5:2 B5:2  E6:3 r:1")
+# call and response: the lead sings in the odd bars and leaves the even
+# ones to the marimba (A) or the stabs (B)
+LEAD_A = ("E5:1.5 G5:.5 A5:2  r:4  r:.5 A5:.5 C6:1 B5:.5 A5:.5 G5:1  A5:2 r:2  "
+          "E5:1.5 G5:.5 A5:1 C6:1  r:4  G5:1 A5:.5 G5:.5 E5:2  r:4")
+LEAD_B = ("C6:2 A5:1 r:1  B5:2 r:2  B5:1 G5:1 E5:2  r:4  "
+          "A5:.5 C6:.5 E6:2 r:1  D6:1 B5:1 G5:1 r:1  G#5:2 B5:2  E6:2 r:2")
 # under the lead the marimba keeps the riff's opening motif and leaves the
-# bar to the tune; the whole riff answers in the bars where the lead holds
+# bar to the tune; the riff's D7 half answers in the lead's empty bars
 MOTIF = {"Am7": "A4:.75 C5:.25 r:.25 E5:.25 r:2.5", "D7": "F#4:.75 A4:.25 r:.25 C5:.25 r:2.5"}
 RIFF_D7 = RIFF.split("  ")[1]
-ANSWER_A = "  ".join([MOTIF["Am7"], MOTIF["D7"], MOTIF["Am7"], RIFF_D7] * 2)
+ANSWER_A = "  ".join([MOTIF["Am7"], RIFF_D7] * 4)
 # the bass locks to the kick and holds through to the next hit, with a
 # passing note into each bar
 BASS = "x--x--x---x--x-b"
