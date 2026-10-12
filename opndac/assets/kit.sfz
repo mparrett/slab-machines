@@ -1,0 +1,12 @@
+// opndac kit: one-shots at 13 kHz for the DAC channel (tools/dac_pack.py)
+// 35 synth kick, 36 kick, 38 snare, 39 clap, 40 rimshot, 41 low tom, 43 low-mid tom, 45 mid tom, 48 high tom, 49 crash
+<region> lokey=35 hikey=35 pitch_keycenter=35 loop_mode=one_shot sample=dac-35.wav
+<region> lokey=36 hikey=36 pitch_keycenter=36 loop_mode=one_shot sample=dac-36.wav
+<region> lokey=38 hikey=38 pitch_keycenter=38 loop_mode=one_shot sample=dac-38.wav
+<region> lokey=39 hikey=39 pitch_keycenter=39 loop_mode=one_shot sample=dac-39.wav
+<region> lokey=40 hikey=40 pitch_keycenter=40 loop_mode=one_shot sample=dac-40.wav
+<region> lokey=41 hikey=41 pitch_keycenter=41 loop_mode=one_shot sample=dac-41.wav
+<region> lokey=43 hikey=43 pitch_keycenter=43 loop_mode=one_shot sample=dac-43.wav
+<region> lokey=45 hikey=45 pitch_keycenter=45 loop_mode=one_shot sample=dac-45.wav
+<region> lokey=48 hikey=48 pitch_keycenter=48 loop_mode=one_shot sample=dac-48.wav
+<region> lokey=49 hikey=49 pitch_keycenter=49 loop_mode=one_shot sample=dac-49.wav
