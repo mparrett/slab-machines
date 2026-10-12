@@ -1,9 +1,10 @@
 """S-DSP Jungle: 4-bar intro into a 16-bar jungle groove, 104 BPM, A dorian.
 
 An original cue in the style of the 1994 platformer's jungle stages: a
-conga tumbao under a funk kit, a plucked bass with octave pops, a marimba
-riff over an Am7-D7 vamp, an ocarina lead, and trombone stabs. B lifts
-to Fmaj7-G and turns on E7. The echo is the overworld's 96 ms.
+conga tumbao under a funk kit, a plucked bass locked to the kick, a
+marimba riff over an Am7-D7 vamp that answers an ocarina lead, and
+trombone stabs. B lifts to Fmaj7-G and turns on E7. The echo is set to
+a sixteenth, so its repeats fall in the groove.
 
 The intro is congas alone, then the shaker, then marimba and bass, then
 the kit with a bongo pickup. It plays once; the loop runs over A and B.
@@ -39,7 +40,13 @@ LEAD_A = ("E5:1.5 G5:.5 A5:1 r:1  F#5:.5 E5:.5 D5:1 E5:2  r:.5 A5:.5 C6:1 B5:.5 
           "E5:1.5 G5:.5 A5:1 C6:1  D6:.5 C6:.5 A5:1 F#5:1 E5:1  G5:1 A5:.5 G5:.5 E5:1 D5:1  E5:3 r:1")
 LEAD_B = ("C6:1.5 A5:.5 E5:2  D6:1.5 B5:.5 G5:2  B5:1 G5:1 E5:1 G5:1  A5:3 r:1  "
           "A5:.5 C6:.5 E6:1 D6:1 C6:1  B5:.5 D6:.5 G6:1 D6:1 B5:1  G#5:2 B5:2  E6:3 r:1")
-BASS = "x..xo..x.x.5o.b."
+# under the lead the marimba keeps the riff's opening motif and leaves the
+# bar to the tune; the whole riff answers in the bars where the lead holds
+MOTIF = {"Am7": "A4:.75 C5:.25 r:.25 E5:.25 r:2.5", "D7": "F#4:.75 A4:.25 r:.25 C5:.25 r:2.5"}
+RIFF_D7 = RIFF.split("  ")[1]
+ANSWER_A = "  ".join([MOTIF["Am7"], MOTIF["D7"], MOTIF["Am7"], RIFF_D7] * 2)
+# the bass locks to the kick, with one octave pop on beat 3
+BASS = "x..x..x.o.x..x.."
 # conga tumbao, one drum at a time: muted heel-toe, open tones, tumba answers
 TUMBAO = {63: "x...x...x...x...", 61: "..x.......x.....", 62: "...x.......x.x..", 60: "......x.......x."}
 KIT = {36: "x..x..x...x..x..", 38: "....x..o....x..."}
@@ -61,7 +68,8 @@ def build_song():
     intro, a, b = song.section("INTRO", 4), song.section("A", 8), song.section("B", 8)
     song.loop_from = a.start
 
-    echo = song.bus("ECHO", fx=[fx("sdspecho", "overworld", dry=0, surr=1)])
+    # EDL 9 is 144 ms, a sixteenth at 104 BPM, so the repeats land on the grid
+    echo = song.bus("ECHO", fx=[fx("sdspecho", "overworld", dry=0, surr=1, edl=9, efb=48)])
     kit = song.track("KIT", "sdsp", "jungle-kit", volume=.95)
     congas = song.track("CONGAS", "sdsp", "jungle-kit", volume=.85, pan=.40)
     bass = song.track("BASS", "sdsp", "funk-bass", volume=.80,
@@ -99,8 +107,12 @@ def build_song():
         # run keeps the kit at two voices
         k.drums({36: "x..x..x...x.....", 38: "....x.....x.xxxx"}, at=28, bars=1, length=.25)
         k.drums({42: "xoxoXoxo........"}, at=28, bars=1, length=.2)
-    marimba.clip(a).melody(" ".join([RIFF] * 4), gate=.5)
-    marimba.clip(b).arp(PROG_B, "updown", rate=.5, octave=5, gate=.5)
+    marimba.clip(a).melody(ANSWER_A, gate=.5)
+    # B: the marimba doubles the stabs' off-beats on each chord's third
+    m = marimba.clip(b)
+    for i, (ch, _) in enumerate(song.key.timed(PROG_B)):
+        for beat in (1.5, 3.5):
+            m.note(ch.tone(1, 4), i * 4 + beat, .25, 90)
     song.save(str(PACKAGE))
     return song
 
