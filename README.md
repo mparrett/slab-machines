@@ -43,6 +43,8 @@ synth waves, trombone, and noise hats, with the slapback echo.
 (the `lagoon` preset), with the aqua instruments: a beating saw pad, and VCSL's
 FM piano, recorder, vibes and percussion. Building them takes the full VCSL in
 Slab's library (`~/Music/Slab/Library/vcsl`, or `SLAB_LIBRARY`).
+`songs/sdsp_jungle.py` is an original jungle groove: congas and a funk kit,
+a plucked bass, a marimba riff, and an ocarina lead, from the jungle instruments.
 
 `tools/budget.py songs/sdsp_spike.slab` checks a song against the console:
 8 voices across all sdsp tracks, and 64 KiB of audio RAM for the samples,
@@ -54,7 +56,7 @@ cue stays one the hardware could have played.
 The Gaussian table, the envelope rates, and the BRR decoder follow blargg's
 SPC_DSP (snes_spc 0.9.0). Instrument samples are derived from
 [VSCO 2 CE](https://github.com/sgossner/VSCO-2-CE),
-[VCSL](https://github.com/sgossner/VCSL), and Karoryfer Samples' Fashionbass,
-all CC0.
+[VCSL](https://github.com/sgossner/VCSL), and Karoryfer Samples' Fashionbass and
+Growlybass, all CC0.
 
 GPL-3.0-or-later, like Slab.

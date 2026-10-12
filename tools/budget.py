@@ -153,7 +153,11 @@ def main():
                 z = next((z for z in zs if z.lo <= n["pitch"] <= z.hi), None)
                 if z is None:
                     continue
-                body, held = n["len"], n["len"] + tail
+                # notes past the clip's end don't play; the clip cuts the rest
+                if n["start"] >= c["len"]:
+                    continue
+                length = min(n["len"], c["len"] - n["start"])
+                body, held = length, length + tail
                 secs = z.seconds(n["pitch"])
                 if secs is not None:
                     end = secs * bpm / 60

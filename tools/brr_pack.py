@@ -54,14 +54,34 @@ SAMPLED = {
     # drive: tanh soft clip after normalizing, for a pluck whose transient
     # would otherwise leave the body far below full scale
     "fretbass": dict(src="karoryfer/fashionbass.sfz", key=40, rate=8000, attack=.20, loop=.10, drive=4),
+    # the jungle set
+    "marimba":  dict(src="lib:vcsl/vcsl-mallets/marimba.sfz", key=72, rate=16000, attack=.45, loop=0),
+    "ocarina":  dict(src="lib:vcsl/vcsl-winds/ocarina-typical-sus.sfz", key=76, rate=16000,
+                     attack=.12, loop=.08),
+    "funkbass": dict(src="karoryfer/growlybass.sfz", key=40, rate=8000, attack=.15, loop=.10, drive=4),
 }
 
-# The aqua percussion: sampled one-shots. kit key: (source, the source's
-# key, stored rate, seconds).
-AQUA_PERC = {
-    36: ("lib:vcsl/vcsl-perc/bass-drum-2.sfz", 38, 12000, .30),
-    42: ("lib:vcsl/vcsl-perc/shaker-small.sfz", 37, 16000, .12),
-    46: ("lib:vcsl/vcsl-perc/finger-cymbals.sfz", 60, 16000, .45),
+# Sampled kits. kit key: (source, the source's key, stored rate, seconds),
+# or a sample another kit already made, which costs no more audio RAM.
+# The comment line names the keys.
+KITS = {
+    "aqua-perc": ("36 soft bass drum, 42 shaker, 46 finger cymbals", {
+        36: ("lib:vcsl/vcsl-perc/bass-drum-2.sfz", 38, 12000, .30),
+        42: ("lib:vcsl/vcsl-perc/shaker-small.sfz", 37, 16000, .12),
+        46: ("lib:vcsl/vcsl-perc/finger-cymbals.sfz", 60, 16000, .45),
+    }),
+    "jungle-kit": ("36 kick, 38 snare, 42 shaker; congas 60 open, 61 quinto, 62 tumba, 63 muted; "
+                   "bongos 64 high, 65 low", {
+        36: "drums/kick.wav",
+        38: ("lib:vcsl/vcsl-perc/snare-drum-modern-1.sfz", 37, 16000, .22),
+        42: "drums/aqua-42.wav",
+        60: ("lib:vcsl/vcsl-perc/conga.sfz", 37, 12000, .25),
+        61: ("lib:vcsl/vcsl-perc/conga.sfz", 39, 12000, .22),
+        62: ("lib:vcsl/vcsl-perc/conga.sfz", 41, 12000, .30),
+        63: ("lib:vcsl/vcsl-perc/conga.sfz", 36, 12000, .12),
+        64: ("lib:vcsl/vcsl-perc/bongos.sfz", 36, 12000, .15),
+        65: ("lib:vcsl/vcsl-perc/bongos.sfz", 39, 12000, .18),
+    }),
 }
 
 # The aqua pad: three saws a cycle apart over a PAD_LOOP-sample loop, so
@@ -388,19 +408,23 @@ def main():
     y = brr_roundtrip(x, 0)
     write_wav(OUT / "pad.wav", y, PAD_RATE, root, (0, PAD_LOOP))
     report.append(("pad", PAD_RATE, PAD_LOOP, root, (0, PAD_LOOP), x, y))
-    lines = ["// sdsp aqua percussion: VCSL one-shots (CC0), BRR round-tripped (tools/brr_pack.py)",
-             "// 36 soft bass drum, 42 shaker, 46 finger cymbals"]
-    for key, (src, src_key, rate, secs) in AQUA_PERC.items():
-        r = pick_region(source(assets, src), src_key)
-        x = trim_onset(decode_audio(source(assets, src).parent / r["sample"], rate))[:int(secs * rate)]
-        n = len(x)
-        x = pad16(normalize(x * np.concatenate([np.ones(n - n // 4), np.linspace(1, 0, n // 4)])))
-        y = brr_roundtrip(x)
-        name = f"aqua-{key}"
-        write_wav(OUT / "drums" / f"{name}.wav", y, rate)
-        lines.append(f"<region> lokey={key} hikey={key} pitch_keycenter={key} sample=drums/{name}.wav")
-        report.append((f"drums/{name}", rate, len(y), key, None, x, y))
-    (OUT / "aqua-perc.sfz").write_text("\n".join(lines) + "\n")
+    for kit, (keys, entries) in KITS.items():
+        lines = [f"// sdsp {kit}: VCSL one-shots (CC0), BRR round-tripped (tools/brr_pack.py)", f"// {keys}"]
+        for key, entry in entries.items():
+            if isinstance(entry, str):
+                lines.append(f"<region> lokey={key} hikey={key} pitch_keycenter={key} sample={entry}")
+                continue
+            src, src_key, rate, secs = entry
+            r = pick_region(source(assets, src), src_key)
+            x = trim_onset(decode_audio(source(assets, src).parent / r["sample"], rate))[:int(secs * rate)]
+            n = len(x)
+            x = pad16(normalize(x * np.concatenate([np.ones(n - n // 4), np.linspace(1, 0, n // 4)])))
+            y = brr_roundtrip(x)
+            name = f"{kit.split('-')[0]}-{key}"
+            write_wav(OUT / "drums" / f"{name}.wav", y, rate)
+            lines.append(f"<region> lokey={key} hikey={key} pitch_keycenter={key} sample=drums/{name}.wav")
+            report.append((f"drums/{name}", rate, len(y), key, None, x, y))
+        (OUT / f"{kit}.sfz").write_text("\n".join(lines) + "\n")
     total = 0
     for name, rate, n, root, loop, x, y in report:
         snr = 10 * math.log10(np.sum(x * x) / (np.sum((x - y[:len(x)]) ** 2) + 1e-12))
