@@ -1,9 +1,10 @@
 """S-DSP Jungle: 4-bar intro into a 16-bar jungle groove, 104 BPM, A dorian.
 
 An original cue in the style of the 1994 platformer's jungle stages: a
-conga tumbao under a funk kit, a plucked bass locked to the kick, a
+conga tumbao under a funk kit, a round synth bass locked to the kick, a
 marimba riff over an Am7-D7 vamp that answers an ocarina lead, and
-trombone stabs. B lifts to Fmaj7-G and turns on E7. The echo is set to
+trombone stabs. B lifts to Fmaj7-G, with
+bongos for congas, and turns on E7. The echo is set to
 a sixteenth, so its repeats fall in the groove.
 
 The intro is congas alone, then the shaker, then marimba and bass, then
@@ -45,10 +46,13 @@ LEAD_B = ("C6:1.5 A5:.5 E5:2  D6:1.5 B5:.5 G5:2  B5:1 G5:1 E5:1 G5:1  A5:3 r:1  
 MOTIF = {"Am7": "A4:.75 C5:.25 r:.25 E5:.25 r:2.5", "D7": "F#4:.75 A4:.25 r:.25 C5:.25 r:2.5"}
 RIFF_D7 = RIFF.split("  ")[1]
 ANSWER_A = "  ".join([MOTIF["Am7"], MOTIF["D7"], MOTIF["Am7"], RIFF_D7] * 2)
-# the bass locks to the kick, with one octave pop on beat 3
-BASS = "x..x..x.o.x..x.."
+# the bass locks to the kick and holds through to the next hit, with a
+# passing note into each bar
+BASS = "x--x--x---x--x-b"
 # conga tumbao, one drum at a time: muted heel-toe, open tones, tumba answers
 TUMBAO = {63: "x...x...x...x...", 61: "..x.......x.....", 62: "...x.......x.x..", 60: "......x.......x."}
+# B's hand drums: bongos, high strokes with the low one on 2 and 4
+BONGOS = {64: "x.xx..x.x.xx..x.", 65: "....x.......x..."}
 KIT = {36: "x..x..x...x..x..", 38: "....x..o....x..."}
 SHAKER = "xoxoXoxoxoxoXoxo"
 
@@ -72,7 +76,7 @@ def build_song():
     echo = song.bus("ECHO", fx=[fx("sdspecho", "overworld", dry=0, surr=1, edl=9, efb=48)])
     kit = song.track("KIT", "sdsp", "jungle-kit", volume=.95)
     congas = song.track("CONGAS", "sdsp", "jungle-kit", volume=.85, pan=.40)
-    bass = song.track("BASS", "sdsp", "funk-bass", volume=.80,
+    bass = song.track("BASS", "sdsp", "round-bass", volume=.36,
                       fx=[fx("eq2", hpf_on=1, hpf_hz=50)])
     marimba = song.track("MARIMBA - riff", "sdsp", "marimba", volume=.70, pan=-.40)
     lead = song.track("OCARINA - lead", "sdsp", "ocarina", volume=.48, pan=.10)
@@ -97,7 +101,7 @@ def build_song():
     lead.clip(a).melody(LEAD_A, gate=.9)
     lead.clip(b).melody(LEAD_B, gate=.9)
     for sec, prog in ((a, PROG_A), (b, PROG_B)):
-        congas.clip(sec).drums(TUMBAO, length=.25)
+        congas.clip(sec).drums(TUMBAO if sec is a else BONGOS, length=.25)
         bass.clip(sec).bass(prog, BASS, octave=2)
         stabs.clip(sec).chords(prog, "......x.......x.", near=55, voices=2)
         k = kit.clip(sec)

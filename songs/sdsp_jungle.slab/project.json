@@ -3564,529 +3564,481 @@
      "len": 32.0,
      "notes": [
       {
-       "pitch": 63,
+       "pitch": 64,
        "start": 0.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 61,
+       "pitch": 64,
        "start": 0.5,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 62,
+       "pitch": 64,
        "start": 0.75,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 63,
+       "pitch": 65,
        "start": 1.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 60,
+       "pitch": 64,
        "start": 1.5,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 63,
+       "pitch": 64,
        "start": 2.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 61,
+       "pitch": 64,
        "start": 2.5,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 62,
+       "pitch": 64,
        "start": 2.75,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 63,
+       "pitch": 65,
        "start": 3.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 62,
-       "start": 3.25,
-       "len": 0.25,
-       "vel": 100
-      },
-      {
-       "pitch": 60,
+       "pitch": 64,
        "start": 3.5,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 63,
+       "pitch": 64,
        "start": 4.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 61,
+       "pitch": 64,
        "start": 4.5,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 62,
+       "pitch": 64,
        "start": 4.75,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 63,
+       "pitch": 65,
        "start": 5.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 60,
+       "pitch": 64,
        "start": 5.5,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 63,
+       "pitch": 64,
        "start": 6.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 61,
+       "pitch": 64,
        "start": 6.5,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 62,
+       "pitch": 64,
        "start": 6.75,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 63,
+       "pitch": 65,
        "start": 7.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 62,
-       "start": 7.25,
-       "len": 0.25,
-       "vel": 100
-      },
-      {
-       "pitch": 60,
+       "pitch": 64,
        "start": 7.5,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 63,
+       "pitch": 64,
        "start": 8.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 61,
+       "pitch": 64,
        "start": 8.5,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 62,
+       "pitch": 64,
        "start": 8.75,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 63,
+       "pitch": 65,
        "start": 9.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 60,
+       "pitch": 64,
        "start": 9.5,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 63,
+       "pitch": 64,
        "start": 10.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 61,
+       "pitch": 64,
        "start": 10.5,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 62,
+       "pitch": 64,
        "start": 10.75,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 63,
+       "pitch": 65,
        "start": 11.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 62,
-       "start": 11.25,
-       "len": 0.25,
-       "vel": 100
-      },
-      {
-       "pitch": 60,
+       "pitch": 64,
        "start": 11.5,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 63,
+       "pitch": 64,
        "start": 12.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 61,
+       "pitch": 64,
        "start": 12.5,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 62,
+       "pitch": 64,
        "start": 12.75,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 63,
+       "pitch": 65,
        "start": 13.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 60,
+       "pitch": 64,
        "start": 13.5,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 63,
+       "pitch": 64,
        "start": 14.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 61,
+       "pitch": 64,
        "start": 14.5,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 62,
+       "pitch": 64,
        "start": 14.75,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 63,
+       "pitch": 65,
        "start": 15.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 62,
-       "start": 15.25,
-       "len": 0.25,
-       "vel": 100
-      },
-      {
-       "pitch": 60,
+       "pitch": 64,
        "start": 15.5,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 63,
+       "pitch": 64,
        "start": 16.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 61,
+       "pitch": 64,
        "start": 16.5,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 62,
+       "pitch": 64,
        "start": 16.75,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 63,
+       "pitch": 65,
        "start": 17.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 60,
+       "pitch": 64,
        "start": 17.5,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 63,
+       "pitch": 64,
        "start": 18.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 61,
+       "pitch": 64,
        "start": 18.5,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 62,
+       "pitch": 64,
        "start": 18.75,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 63,
+       "pitch": 65,
        "start": 19.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 62,
-       "start": 19.25,
-       "len": 0.25,
-       "vel": 100
-      },
-      {
-       "pitch": 60,
+       "pitch": 64,
        "start": 19.5,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 63,
+       "pitch": 64,
        "start": 20.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 61,
+       "pitch": 64,
        "start": 20.5,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 62,
+       "pitch": 64,
        "start": 20.75,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 63,
+       "pitch": 65,
        "start": 21.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 60,
+       "pitch": 64,
        "start": 21.5,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 63,
+       "pitch": 64,
        "start": 22.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 61,
+       "pitch": 64,
        "start": 22.5,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 62,
+       "pitch": 64,
        "start": 22.75,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 63,
+       "pitch": 65,
        "start": 23.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 62,
-       "start": 23.25,
-       "len": 0.25,
-       "vel": 100
-      },
-      {
-       "pitch": 60,
+       "pitch": 64,
        "start": 23.5,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 63,
+       "pitch": 64,
        "start": 24.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 61,
+       "pitch": 64,
        "start": 24.5,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 62,
+       "pitch": 64,
        "start": 24.75,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 63,
+       "pitch": 65,
        "start": 25.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 60,
+       "pitch": 64,
        "start": 25.5,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 63,
+       "pitch": 64,
        "start": 26.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 61,
+       "pitch": 64,
        "start": 26.5,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 62,
+       "pitch": 64,
        "start": 26.75,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 63,
+       "pitch": 65,
        "start": 27.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 62,
-       "start": 27.25,
-       "len": 0.25,
-       "vel": 100
-      },
-      {
-       "pitch": 60,
+       "pitch": 64,
        "start": 27.5,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 63,
+       "pitch": 64,
        "start": 28.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 61,
+       "pitch": 64,
        "start": 28.5,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 62,
+       "pitch": 64,
        "start": 28.75,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 63,
+       "pitch": 65,
        "start": 29.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 60,
+       "pitch": 64,
        "start": 29.5,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 63,
+       "pitch": 64,
        "start": 30.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 61,
+       "pitch": 64,
        "start": 30.5,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 62,
+       "pitch": 64,
        "start": 30.75,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 63,
+       "pitch": 65,
        "start": 31.0,
        "len": 0.25,
        "vel": 100
       },
       {
-       "pitch": 62,
-       "start": 31.25,
-       "len": 0.25,
-       "vel": 100
-      },
-      {
-       "pitch": 60,
+       "pitch": 64,
        "start": 31.5,
        "len": 0.25,
        "vel": 100
@@ -4121,7 +4073,7 @@
     190,
     80
    ],
-   "volume": 0.8,
+   "volume": 0.36,
    "pan": 0.0,
    "mute": false,
    "solo": false,
@@ -4132,18 +4084,18 @@
      "sdsp-root": 60,
      "sdsp-loop": 0,
      "sdsp-ar": 15,
-     "sdsp-dr": 5,
+     "sdsp-dr": 4,
      "sdsp-sl": 5,
-     "sdsp-sr": 14,
-     "sdsp-rel": 26,
+     "sdsp-sr": 10,
+     "sdsp-rel": 25,
      "sdsp-noise": 0,
      "sdsp-nck": 28,
-     "sdsp-vel": 0.6,
+     "sdsp-vel": 0.4,
      "sdsp-level": 1.0
     },
-    "preset": "funk-bass",
+    "preset": "round-bass",
     "assets": {
-     "brr": "user:Machines/sdsp/assets/funkbass.wav"
+     "brr": "user:Machines/sdsp/assets/round.wav"
     }
    },
    "effects": [
@@ -4166,72 +4118,72 @@
       {
        "pitch": 45,
        "start": 0.0,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 45,
        "start": 0.75,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 45,
        "start": 1.5,
-       "len": 0.2125,
-       "vel": 108
-      },
-      {
-       "pitch": 57,
-       "start": 2.0,
-       "len": 0.2125,
+       "len": 0.85,
        "vel": 108
       },
       {
        "pitch": 45,
        "start": 2.5,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 45,
        "start": 3.25,
+       "len": 0.425,
+       "vel": 108
+      },
+      {
+       "pitch": 43,
+       "start": 3.75,
        "len": 0.2125,
        "vel": 108
       },
       {
        "pitch": 38,
        "start": 4.0,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 38,
        "start": 4.75,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 38,
        "start": 5.5,
-       "len": 0.2125,
-       "vel": 108
-      },
-      {
-       "pitch": 50,
-       "start": 6.0,
-       "len": 0.2125,
+       "len": 0.85,
        "vel": 108
       },
       {
        "pitch": 38,
        "start": 6.5,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 38,
        "start": 7.25,
+       "len": 0.425,
+       "vel": 108
+      },
+      {
+       "pitch": 36,
+       "start": 7.75,
        "len": 0.2125,
        "vel": 108
       }
@@ -4246,288 +4198,288 @@
       {
        "pitch": 45,
        "start": 0.0,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 45,
        "start": 0.75,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 45,
        "start": 1.5,
-       "len": 0.2125,
-       "vel": 108
-      },
-      {
-       "pitch": 57,
-       "start": 2.0,
-       "len": 0.2125,
+       "len": 0.85,
        "vel": 108
       },
       {
        "pitch": 45,
        "start": 2.5,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 45,
        "start": 3.25,
+       "len": 0.425,
+       "vel": 108
+      },
+      {
+       "pitch": 43,
+       "start": 3.75,
        "len": 0.2125,
        "vel": 108
       },
       {
        "pitch": 38,
        "start": 4.0,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 38,
        "start": 4.75,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 38,
        "start": 5.5,
-       "len": 0.2125,
-       "vel": 108
-      },
-      {
-       "pitch": 50,
-       "start": 6.0,
-       "len": 0.2125,
+       "len": 0.85,
        "vel": 108
       },
       {
        "pitch": 38,
        "start": 6.5,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 38,
        "start": 7.25,
+       "len": 0.425,
+       "vel": 108
+      },
+      {
+       "pitch": 36,
+       "start": 7.75,
        "len": 0.2125,
        "vel": 108
       },
       {
        "pitch": 45,
        "start": 8.0,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 45,
        "start": 8.75,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 45,
        "start": 9.5,
-       "len": 0.2125,
-       "vel": 108
-      },
-      {
-       "pitch": 57,
-       "start": 10.0,
-       "len": 0.2125,
+       "len": 0.85,
        "vel": 108
       },
       {
        "pitch": 45,
        "start": 10.5,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 45,
        "start": 11.25,
+       "len": 0.425,
+       "vel": 108
+      },
+      {
+       "pitch": 43,
+       "start": 11.75,
        "len": 0.2125,
        "vel": 108
       },
       {
        "pitch": 38,
        "start": 12.0,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 38,
        "start": 12.75,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 38,
        "start": 13.5,
-       "len": 0.2125,
-       "vel": 108
-      },
-      {
-       "pitch": 50,
-       "start": 14.0,
-       "len": 0.2125,
+       "len": 0.85,
        "vel": 108
       },
       {
        "pitch": 38,
        "start": 14.5,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 38,
        "start": 15.25,
+       "len": 0.425,
+       "vel": 108
+      },
+      {
+       "pitch": 36,
+       "start": 15.75,
        "len": 0.2125,
        "vel": 108
       },
       {
        "pitch": 45,
        "start": 16.0,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 45,
        "start": 16.75,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 45,
        "start": 17.5,
-       "len": 0.2125,
-       "vel": 108
-      },
-      {
-       "pitch": 57,
-       "start": 18.0,
-       "len": 0.2125,
+       "len": 0.85,
        "vel": 108
       },
       {
        "pitch": 45,
        "start": 18.5,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 45,
        "start": 19.25,
+       "len": 0.425,
+       "vel": 108
+      },
+      {
+       "pitch": 43,
+       "start": 19.75,
        "len": 0.2125,
        "vel": 108
       },
       {
        "pitch": 38,
        "start": 20.0,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 38,
        "start": 20.75,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 38,
        "start": 21.5,
-       "len": 0.2125,
-       "vel": 108
-      },
-      {
-       "pitch": 50,
-       "start": 22.0,
-       "len": 0.2125,
+       "len": 0.85,
        "vel": 108
       },
       {
        "pitch": 38,
        "start": 22.5,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 38,
        "start": 23.25,
+       "len": 0.425,
+       "vel": 108
+      },
+      {
+       "pitch": 36,
+       "start": 23.75,
        "len": 0.2125,
        "vel": 108
       },
       {
        "pitch": 45,
        "start": 24.0,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 45,
        "start": 24.75,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 45,
        "start": 25.5,
-       "len": 0.2125,
-       "vel": 108
-      },
-      {
-       "pitch": 57,
-       "start": 26.0,
-       "len": 0.2125,
+       "len": 0.85,
        "vel": 108
       },
       {
        "pitch": 45,
        "start": 26.5,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 45,
        "start": 27.25,
+       "len": 0.425,
+       "vel": 108
+      },
+      {
+       "pitch": 43,
+       "start": 27.75,
        "len": 0.2125,
        "vel": 108
       },
       {
        "pitch": 38,
        "start": 28.0,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 38,
        "start": 28.75,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 38,
        "start": 29.5,
-       "len": 0.2125,
-       "vel": 108
-      },
-      {
-       "pitch": 50,
-       "start": 30.0,
-       "len": 0.2125,
+       "len": 0.85,
        "vel": 108
       },
       {
        "pitch": 38,
        "start": 30.5,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 38,
        "start": 31.25,
+       "len": 0.425,
+       "vel": 108
+      },
+      {
+       "pitch": 36,
+       "start": 31.75,
        "len": 0.2125,
        "vel": 108
       }
@@ -4542,288 +4494,288 @@
       {
        "pitch": 41,
        "start": 0.0,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 41,
        "start": 0.75,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 41,
        "start": 1.5,
-       "len": 0.2125,
-       "vel": 108
-      },
-      {
-       "pitch": 53,
-       "start": 2.0,
-       "len": 0.2125,
+       "len": 0.85,
        "vel": 108
       },
       {
        "pitch": 41,
        "start": 2.5,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 41,
        "start": 3.25,
+       "len": 0.425,
+       "vel": 108
+      },
+      {
+       "pitch": 38,
+       "start": 3.75,
        "len": 0.2125,
        "vel": 108
       },
       {
        "pitch": 43,
        "start": 4.0,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 43,
        "start": 4.75,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 43,
        "start": 5.5,
-       "len": 0.2125,
-       "vel": 108
-      },
-      {
-       "pitch": 55,
-       "start": 6.0,
-       "len": 0.2125,
+       "len": 0.85,
        "vel": 108
       },
       {
        "pitch": 43,
        "start": 6.5,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 43,
        "start": 7.25,
+       "len": 0.425,
+       "vel": 108
+      },
+      {
+       "pitch": 41,
+       "start": 7.75,
        "len": 0.2125,
        "vel": 108
       },
       {
        "pitch": 40,
        "start": 8.0,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 40,
        "start": 8.75,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 40,
        "start": 9.5,
-       "len": 0.2125,
-       "vel": 108
-      },
-      {
-       "pitch": 52,
-       "start": 10.0,
-       "len": 0.2125,
+       "len": 0.85,
        "vel": 108
       },
       {
        "pitch": 40,
        "start": 10.5,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 40,
        "start": 11.25,
+       "len": 0.425,
+       "vel": 108
+      },
+      {
+       "pitch": 38,
+       "start": 11.75,
        "len": 0.2125,
        "vel": 108
       },
       {
        "pitch": 45,
        "start": 12.0,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 45,
        "start": 12.75,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 45,
        "start": 13.5,
-       "len": 0.2125,
-       "vel": 108
-      },
-      {
-       "pitch": 57,
-       "start": 14.0,
-       "len": 0.2125,
+       "len": 0.85,
        "vel": 108
       },
       {
        "pitch": 45,
        "start": 14.5,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 45,
        "start": 15.25,
+       "len": 0.425,
+       "vel": 108
+      },
+      {
+       "pitch": 43,
+       "start": 15.75,
        "len": 0.2125,
        "vel": 108
       },
       {
        "pitch": 41,
        "start": 16.0,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 41,
        "start": 16.75,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 41,
        "start": 17.5,
-       "len": 0.2125,
-       "vel": 108
-      },
-      {
-       "pitch": 53,
-       "start": 18.0,
-       "len": 0.2125,
+       "len": 0.85,
        "vel": 108
       },
       {
        "pitch": 41,
        "start": 18.5,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 41,
        "start": 19.25,
+       "len": 0.425,
+       "vel": 108
+      },
+      {
+       "pitch": 38,
+       "start": 19.75,
        "len": 0.2125,
        "vel": 108
       },
       {
        "pitch": 43,
        "start": 20.0,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 43,
        "start": 20.75,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 43,
        "start": 21.5,
-       "len": 0.2125,
-       "vel": 108
-      },
-      {
-       "pitch": 55,
-       "start": 22.0,
-       "len": 0.2125,
+       "len": 0.85,
        "vel": 108
       },
       {
        "pitch": 43,
        "start": 22.5,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 43,
        "start": 23.25,
+       "len": 0.425,
+       "vel": 108
+      },
+      {
+       "pitch": 41,
+       "start": 23.75,
        "len": 0.2125,
        "vel": 108
       },
       {
        "pitch": 40,
        "start": 24.0,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 40,
        "start": 24.75,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 40,
        "start": 25.5,
-       "len": 0.2125,
-       "vel": 108
-      },
-      {
-       "pitch": 52,
-       "start": 26.0,
-       "len": 0.2125,
+       "len": 0.85,
        "vel": 108
       },
       {
        "pitch": 40,
        "start": 26.5,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 40,
        "start": 27.25,
+       "len": 0.425,
+       "vel": 108
+      },
+      {
+       "pitch": 38,
+       "start": 27.75,
        "len": 0.2125,
        "vel": 108
       },
       {
        "pitch": 40,
        "start": 28.0,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 40,
        "start": 28.75,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 40,
        "start": 29.5,
-       "len": 0.2125,
-       "vel": 108
-      },
-      {
-       "pitch": 52,
-       "start": 30.0,
-       "len": 0.2125,
+       "len": 0.85,
        "vel": 108
       },
       {
        "pitch": 40,
        "start": 30.5,
-       "len": 0.2125,
+       "len": 0.6375,
        "vel": 108
       },
       {
        "pitch": 40,
        "start": 31.25,
+       "len": 0.425,
+       "vel": 108
+      },
+      {
+       "pitch": 38,
+       "start": 31.75,
        "len": 0.2125,
        "vel": 108
       }

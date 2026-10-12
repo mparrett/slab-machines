@@ -1,0 +1,1 @@
+{"slab": "preset", "schema": 1, "machine": "sdsp", "note": "Round single-cycle synth bass, a soft knock fading slowly", "params": {"sdsp-tune": 0, "sdsp-root": 60, "sdsp-loop": 0, "sdsp-ar": 15, "sdsp-dr": 4, "sdsp-sl": 5, "sdsp-sr": 10, "sdsp-rel": 25, "sdsp-noise": 0, "sdsp-nck": 28, "sdsp-vel": 0.4, "sdsp-level": 1.0}, "assets": {"brr": "user:Machines/sdsp/assets/round.wav"}}

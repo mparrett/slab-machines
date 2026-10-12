@@ -300,7 +300,10 @@ def waves():
         spec = np.fft.rfft(w)
         spec[keep:] = 0
         return np.fft.irfft(spec, CYCLE)
-    return {"saw": soften(saw, 12), "square": soften(square, 12), "organ": organ}
+    # a round bass: the fundamental with a little 2nd and 3rd, a synth bass
+    # with its filter mostly closed
+    round_ = sum(a * np.sin(2 * np.pi * h * ph) for h, a in ((1, 1), (2, .3), (3, .12)))
+    return {"saw": soften(saw, 12), "square": soften(square, 12), "organ": organ, "round": round_}
 
 
 def pad():
