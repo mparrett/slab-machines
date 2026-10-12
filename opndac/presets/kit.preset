@@ -1,0 +1,1 @@
+{"slab": "preset", "schema": 1, "machine": "opndac", "note": "The 13 kHz kit (keys in kit.sfz)", "params": {"dac-rate": 13000, "dac-jitter": 0.1, "dac-level": 1.0, "dac-tune": 0, "dac-root": 60, "dac-pan": 1, "dac-chip": 0, "dac-gain": 0.5}, "assets": {"pcm": "user:Machines/opndac/assets/kit.sfz"}}

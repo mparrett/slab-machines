@@ -1,0 +1,1 @@
+{"slab": "preset", "schema": 1, "machine": "psg", "note": "Periodic noise following the note [TONE 3]: a buzzy bass or effect", "params": {"psg-mode": 1, "psg-rate": 3, "psg-tune": 0, "psg-ar": 0, "psg-dr": 0, "psg-sl": 0, "psg-rr": 2, "psg-vol": 0, "psg-vel": 0.5, "psg-gain": 0.5}}

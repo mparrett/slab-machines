@@ -1,28 +1,35 @@
-"""Check a Slab project against the console's audio budget.
+"""Check a Slab project against its console's audio budget.
 
-The console had one sound system for the whole game: 8 voices, sound
-effects included, and 64 KiB of audio RAM holding the driver, the samples
-(as BRR) and the echo buffer. Slab gives each sdsp track its own 8 voices
-and as much memory as it likes, so a cue can quietly need more than the
-hardware had. This reads a saved project and reports:
+A console had one sound system for the whole game, sound effects
+included. Slab gives each track its own voices, and the SNES side as much
+memory as it likes, so a cue can quietly need more than the hardware had.
+This reads a saved project and reports, for the machines it uses:
+
+  SNES (sdsp): 8 voices, and 64 KiB of audio RAM holding the driver, the
+  samples (as BRR) and the echo buffer.
+  Genesis: FM 6 channels (opn), 5 when the DAC (opndac, 1) takes channel
+  6; PSG 3 tone channels and 1 noise (psg), where a noise track at RATE
+  TONE 3 also takes tone channel 3.
 
   ARAM    BRR bytes of every distinct sample the sdsp tracks load, the echo
           buffer (2 KiB per EDL step of the largest sdspecho), and a driver
           estimate (--driver, the driver's code plus the song's sequence
           data; a guess, as drivers varied), against 64 KiB.
-  VOICES  notes sounding at once across all sdsp tracks. A note holds its
+  VOICES  notes sounding at once across each group's tracks. A note holds its
           voice for its length, or for the sample's length when that is
           shorter and the sample doesn't loop; one-shot SFZ regions hold it
           for the whole sample, as key-off doesn't stop them. A release
           tail holds the voice too: about 8 ms at REL 0, up to seconds at
-          the slow RELs (rel_seconds), unless the sample ends first. A
+          the slow RELs (rel_seconds), unless the sample ends first; opn's
+          for its slowest carrier RR (opn_rel_seconds), psg's for its RR
+          frames per step. A
           driver gave each part fixed channels, and a part's next note cuts
           a tail on its channel, so a track counts at most as many voices as
           it ever sounds notes at once (its channels).
 
     python3 tools/budget.py songs/sdsp_spike.slab
 
-Exits 1 when either budget is over. Standard library only.
+Exits 1 when any budget is over. Standard library only.
 """
 from pathlib import Path
 import argparse
@@ -52,6 +59,33 @@ def rel_seconds(rel):
         env -= (env - 1) // 256 + 1
         steps += 1
     return steps * PERIOD[min(rel, 31)] / 32000
+
+
+# opn: carriers per ALG [OP1..OP4]
+OPN_CARRIERS = [(4,), (4,), (4,), (4,), (2, 4), (2, 3, 4), (2, 3, 4), (1, 2, 3, 4)]
+OPN_STEPHI = [[0, 0, 0, 0], [1, 0, 0, 0], [1, 0, 1, 0], [1, 1, 1, 0]]
+
+
+def opn_rel_seconds(rr, sl=0):
+    """How long an opn operator's release holds the channel: from its
+    sustain level to -94 dB at RR, stepping the envelope as opn/kernel.fy
+    does (key scaling left out, so the longest case)."""
+    rate = min(63, 2 * (2 * int(rr) + 1))
+    level = 32 * int(sl) if sl < 15 else 992
+    timer, ticks = 0, 0
+    while level < 1008 and ticks < 2_000_000:
+        timer = (timer + 1) % 4096
+        ticks += 1
+        tz = next((j for j in range(12) if timer >> j & 1), 12)
+        shl = 0 if timer == 0 else tz + 1
+        if rate < 48:
+            s = (rate // 4 + shl) % 16
+            inc = 1 if s == 12 else (rate >> 1 & 1 if s == 13 else (rate & 1 if s == 14 else 0))
+        else:
+            inc = min(4, OPN_STEPHI[rate % 4][timer % 4] + rate // 4 - 11)
+        if inc > 0:
+            level += 1 << (inc - 1)
+    return ticks * 3 / 53267.04
 
 
 def resolve(ref, project_dir):
@@ -136,75 +170,118 @@ def main():
     bpm = p["transport"]["bpm"]
     over = False
 
-    samples, edls, bodies, events = {}, [], [], []
+    samples, edls, notes, groups = {}, [], {}, {}
+    dac_used = False
     for t in p["tracks"] + [p.get("master") or {}]:
         for fx in t.get("effects") or []:
             if fx["machine"] == "sdspecho" and not fx.get("bypass"):
                 edls.append(int(fx["params"].get("secho-edl", 0)))
         inst = t.get("instrument") or {}
-        if inst.get("machine") != "sdsp" or t.get("mute"):
+        machine = inst.get("machine")
+        if machine not in ("sdsp", "opn", "psg", "opndac") or t.get("mute"):
             continue
-        zs = zones(resolve(inst["assets"]["brr"], pj.parent))
-        tail = rel_seconds(inst.get("params", {}).get("sdsp-rel", 0)) * bpm / 60
-        for z in zs:
-            samples[z.path.resolve()] = z.frames
+        prm = inst.get("params", {})
+        zs, tail = None, 0.0
+        if machine == "sdsp":
+            zs = zones(resolve(inst["assets"]["brr"], pj.parent))
+            tail = rel_seconds(prm.get("sdsp-rel", 0))
+            for z in zs:
+                samples[z.path.resolve()] = z.frames
+            groups[t["name"]] = ["S-DSP"]
+        elif machine == "opndac":
+            ref = (inst.get("assets") or {}).get("pcm", "user:Machines/opndac/assets/kit.sfz")
+            zs = zones(resolve(ref, pj.parent))
+            # one-shots: key-off doesn't stop the DAC
+            for z in zs:
+                z.oneshot = True
+            groups[t["name"]] = ["DAC"]
+        elif machine == "opn":
+            alg = int(prm.get("opn-alg", 7))
+            tail = max(opn_rel_seconds(prm.get(f"opn-op{i}-rr", 15), prm.get(f"opn-op{i}-sl", 0))
+                       for i in OPN_CARRIERS[alg])
+            groups[t["name"]] = ["FM"]
+        else:
+            mode, rate = int(prm.get("psg-mode", 0)), int(prm.get("psg-rate", 0))
+            tail = (15 - min(15, int(prm.get("psg-sl", 3)))) * max(1, int(prm.get("psg-rr", 1))) / 60
+            groups[t["name"]] = ["PSG tone"] if mode == 0 else (
+                ["PSG noise", "PSG tone"] if rate == 3 else ["PSG noise"])
+        tail *= bpm / 60
         for c in t.get("clips") or []:
             for n in c.get("notes") or []:
-                z = next((z for z in zs if z.lo <= n["pitch"] <= z.hi), None)
-                if z is None:
-                    continue
                 # notes past the clip's end don't play; the clip cuts the rest
                 if n["start"] >= c["len"]:
                     continue
                 length = min(n["len"], c["len"] - n["start"])
                 body, held = length, length + tail
-                secs = z.seconds(n["pitch"])
-                if secs is not None:
-                    end = secs * bpm / 60
-                    body, held = (end, end) if z.oneshot else (min(body, end), min(held, end))
-                start = c["start"] + n["start"]
-                bodies += [(start, 1, t["name"]), (start + body, -1, t["name"])]
-                events += [(start, 1, t["name"]), (start + held, -1, t["name"])]
+                if zs is not None:
+                    z = next((z for z in zs if z.lo <= n["pitch"] <= z.hi), None)
+                    if z is None:
+                        continue
+                    secs = z.seconds(n["pitch"])
+                    if secs is not None:
+                        end = secs * bpm / 60
+                        body, held = (end, end) if z.oneshot else (min(body, end), min(held, end))
+                if machine == "opndac":
+                    dac_used = True
+                notes.setdefault(t["name"], []).append((c["start"] + n["start"], body, held))
 
-    sample_b = sum(brr_bytes(f) for f in samples.values())
-    echo_b = max(edls, default=0) * ECHO_STEP
-    total = sample_b + echo_b + args.driver
-    print(f"ARAM    {total / 1024:5.1f} of {ARAM // 1024} KiB: samples {sample_b / 1024:.1f} "
-          f"({len(samples)} files), echo {echo_b / 1024:.1f} (EDL {max(edls, default=0)}), "
-          f"driver {args.driver / 1024:.1f} (estimate)")
-    if len(set(edls)) > 1:
-        print(f"        the console had one echo; these sdspecho instances differ in EDL: {sorted(set(edls))}")
-    if total > ARAM:
-        print(f"        over by {(total - ARAM) / 1024:.1f} KiB")
-        over = True
+    # the DAC is one channel: a sample stops when the next starts
+    for name, gs in groups.items():
+        if "DAC" in gs and name in notes:
+            ns = sorted(notes[name])
+            notes[name] = [(a, min(b, nxt - a), min(h, nxt - a))
+                           for (a, b, h), nxt in zip(ns, [x[0] for x in ns[1:]] + [float("inf")])]
 
-    # ends sort before starts at the same beat, as a voice frees on key-off
-    bodies.sort(key=lambda e: (e[0], e[1]))
-    events.sort(key=lambda e: (e[0], e[1]))
-    channels, sounding = {}, {}
-    for _, d, name in bodies:
-        sounding[name] = sounding.get(name, 0) + d
-        channels[name] = max(channels.get(name, 0), sounding[name])
+    if samples or edls:
+        sample_b = sum(brr_bytes(f) for f in samples.values())
+        echo_b = max(edls, default=0) * ECHO_STEP
+        total = sample_b + echo_b + args.driver
+        print(f"ARAM    {total / 1024:5.1f} of {ARAM // 1024} KiB: samples {sample_b / 1024:.1f} "
+              f"({len(samples)} files), echo {echo_b / 1024:.1f} (EDL {max(edls, default=0)}), "
+              f"driver {args.driver / 1024:.1f} (estimate)")
+        if len(set(edls)) > 1:
+            print(f"        the console had one echo; these sdspecho instances differ in EDL: {sorted(set(edls))}")
+        if total > ARAM:
+            print(f"        over by {(total - ARAM) / 1024:.1f} KiB")
+            over = True
+
+    # a track's channels: the most notes it ever sounds at once
+    channels = {}
+    for name, ns in notes.items():
+        ev = sorted([(a, 1) for a, _, _ in ns] + [(a + b, -1) for a, b, _ in ns], key=lambda e: (e[0], e[1]))
+        now = 0
+        for _, d in ev:
+            now += d
+            channels[name] = max(channels.get(name, 0), now)
+    limits = {"S-DSP": VOICES, "FM": 5 if dac_used else 6, "DAC": 1, "PSG tone": 3, "PSG noise": 1}
     bar = p["meter"][0]["num"] * 4 / p["meter"][0]["den"]
-    now, peak, spans, open_at, active, held, at_peak = 0, 0, [], None, {}, {}, ({}, 0.0)
-    for beat, d, name in events:
-        active[name] = active.get(name, 0) + d
-        held[name] = min(active[name], channels[name])
-        now = sum(held.values())
-        if now > peak:
-            peak, at_peak = now, (dict(held), beat)
-        if now > VOICES and open_at is None:
-            open_at = beat
-        elif now <= VOICES and open_at is not None:
-            spans.append((open_at, beat))
-            open_at = None
-    mix = ", ".join(f"{k} {v}" for k, v in at_peak[0].items() if v > 0)
-    print(f"VOICES  peak {peak} of {VOICES}, first at bar {int(at_peak[1] // bar) + 1}: {mix}")
-    if spans:
-        over = True
-        secs = sum(b - a for a, b in spans) * 60 / bpm
-        bars = sorted({int(a // bar) + 1 for a, _ in spans})
-        print(f"        over {VOICES} for {secs:.2f} s, in bars {', '.join(map(str, bars))}")
+    for group, limit in limits.items():
+        members = [n for n, gs in groups.items() if group in gs and n in notes]
+        if not members:
+            continue
+        # ends sort before starts at the same beat, as a voice frees on key-off
+        events = sorted([(a, 1, n) for n in members for a, _, _ in notes[n]] +
+                        [(a + h, -1, n) for n in members for a, _, h in notes[n]], key=lambda e: (e[0], e[1]))
+        peak, spans, open_at, active, held, at_peak = 0, [], None, {}, {}, ({}, 0.0)
+        for beat, d, name in events:
+            active[name] = active.get(name, 0) + d
+            held[name] = min(active[name], channels[name])
+            now = sum(held.values())
+            if now > peak:
+                peak, at_peak = now, (dict(held), beat)
+            if now > limit and open_at is None:
+                open_at = beat
+            elif now <= limit and open_at is not None:
+                spans.append((open_at, beat))
+                open_at = None
+        mix = ", ".join(f"{k} {v}" for k, v in at_peak[0].items() if v > 0)
+        label = "VOICES " if group == "S-DSP" else f"{group:8s}"
+        print(f"{label} peak {peak} of {limit}, first at bar {int(at_peak[1] // bar) + 1}: {mix}")
+        if spans:
+            over = True
+            secs = sum(b - a for a, b in spans) * 60 / bpm
+            bars = sorted({int(a // bar) + 1 for a, _ in spans})
+            print(f"        over {limit} for {secs:.2f} s, in bars {', '.join(map(str, bars))}")
     sys.exit(1 if over else 0)
 
 

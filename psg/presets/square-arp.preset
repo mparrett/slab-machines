@@ -1,0 +1,1 @@
+{"slab": "preset", "schema": 1, "machine": "psg", "note": "Square for arpeggios: short and plucked", "params": {"psg-mode": 0, "psg-rate": 0, "psg-tune": 0, "psg-ar": 0, "psg-dr": 1, "psg-sl": 8, "psg-rr": 1, "psg-vol": 0, "psg-vel": 0.5, "psg-gain": 0.5}}
