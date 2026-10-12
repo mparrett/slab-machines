@@ -21,7 +21,7 @@ include "machines/lib/manifest.fy"
   8 voices!
   SdspState.size  state-size!
   SdspParams.size params-size!
-  640.0 panel-w!
+  760.0 panel-w!
 
   "brr" SdspParams.pool SdspParams.zones SdspParams.zone-count SdspParams.edits "assets/strings.wav" keymap
 
@@ -41,6 +41,11 @@ include "machines/lib/manifest.fy"
     "SAMPLE" 0.0 opt  "NOISE" 1.0 opt
   "NOISE" "CLOCK" "sdsp-nck" SdspParams.nck 0.0 31.0 28.0 int-step
 
+  ( the sound driver's vibrato; DEPTH 0 is off )
+  "VIB" "DEPTH" "sdsp-vib-depth" SdspParams.vib-depth 0.0 100.0 0.0 curve-lin knob
+  "VIB" "RATE"  "sdsp-vib-rate"  SdspParams.vib-rate 1.0 12.0 5.5 curve-lin knob
+  "VIB" "DELAY" "sdsp-vib-delay" SdspParams.vib-delay 0.0 2.0 0.3 curve-lin knob
+
   "AMP" "VEL"   "sdsp-vel"   SdspParams.vel-amt 0.0 1.0 0.5 curve-lin knob
   "AMP" "LEVEL" "sdsp-level" SdspParams.level 0.0 1.0 0.7 curve-pow knob as-fader
 
@@ -49,6 +54,7 @@ include "machines/lib/manifest.fy"
   "PITCH" 3 strip
   "ADSR" 5 strip
   "NOISE" 2 strip
+  "VIB" 3 strip
   "AMP" 2 strip
 
   1.0 row
@@ -58,6 +64,7 @@ include "machines/lib/manifest.fy"
     3.0 cell  "PITCH" 1.0 item
     5.0 cell  "ADSR" 1.0 item
     2.0 cell  "NOISE" 1.0 item
+    3.0 cell  "VIB" 1.0 item
     2.0 cell  "AMP" 1.0 item
   machine-desc
 ;

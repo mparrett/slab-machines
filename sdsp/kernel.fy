@@ -13,6 +13,8 @@
               It is the muffled edge of the console's sound.
     noise     a 15-bit LFSR clocked at one of the 32 envelope rates;
               NOISE plays it in place of the sample.
+    vibrato   the sound driver's, not the DSP's: a triangle on the pitch
+              register, DEPTH cents at RATE Hz, after DELAY.
     envelope  11 bits, stepped at the 32 envelope rates [sdsp-period]:
               attack +32 a step [+1024 at AR 15], decay and sustain
               exponential [-1, then -1/256 of what's left].  Key-off is
@@ -105,6 +107,9 @@ ustruct: SdspState
   f64 ectr
   f64 nctr
   f64 lfsr
+  ( driver vibrato: seconds since key-on, and the LFO's phase 0..1 )
+  f64 vt
+  f64 vph
 ;
 
 ustruct: SdspParams
@@ -126,6 +131,9 @@ ustruct: SdspParams
   f64 nck        ( noise clock rate 0..31 )
   f64 vel-amt
   f64 level
+  f64 vib-depth  ( cents, peak )
+  f64 vib-rate   ( Hz )
+  f64 vib-delay  ( seconds from key-on )
   ( derived - block-prepare )
   f64 tick-inc   ( ticks per host sample, 32000 / sr )
   f64 ar-p
@@ -134,6 +142,8 @@ ustruct: SdspParams
   f64 sr-p
   f64 rel-p
   f64 nck-p
+  f64 vib-inc    ( LFO phase per host sample )
+  f64 vib-dt     ( seconds per host sample )
 ;
 
 ( ctx state params -- )
@@ -146,6 +156,8 @@ dsp: sdsp-block-prepare | ctx:Ctx state params:SdspParams |
   sdsp-period  params.sr 0.0 31.0 fclamp floor  f@i -> params.sr-p
   params.rel 0.5 f<  1.0  sdsp-period params.rel 0.0 31.0 fclamp floor f@i  select -> params.rel-p
   sdsp-period  params.nck 0.0 31.0 fclamp floor  f@i -> params.nck-p
+  params.vib-rate ctx.sr f/ -> params.vib-inc
+  1.0 ctx.sr f/ -> params.vib-dt
 ;
 
 ( state -- : the pitch register for the current bend. )
@@ -189,6 +201,8 @@ dsp: sdsp-note-on | ctx:Ctx state:SdspState params:SdspParams |
   zsr 32000.0 f/ ratio f* -> state.rate0
   0.0 -> state.bend
   state sdsp-pitch
+  0.0 -> state.vt
+  0.0 -> state.vph
   start -> state.ph
   0.0 -> state.oc
   0.0 -> state.y0
@@ -282,10 +296,21 @@ dsp: k-sdsp-voice | out:Io ctx state:SdspState params:SdspParams -- |
   state buf sdsp-gauss-read | g |
   params.noise 0.5 f>  nz  g  select | s |
   s state.env f* 2048.0 f/ | y |
+  ( driver vibrato: a triangle LFO, as the drivers stepped the pitch
+    register up and down, after DELAY with a 0.25 s fade-in; through the
+    register like any pitch, so it stays 14-bit )
+  state.vt params.vib-dt f+ | vt |
+  vt -> state.vt
+  state.vph params.vib-inc f+ ffrac | vph |
+  vph -> state.vph
+  vph 0.5 f- fabs 4.0 f* 1.0 f- | tri |
+  vt params.vib-delay f- 4.0 f* 0.0 1.0 fclamp | fade |
+  params.vib-depth 0.01 f* tri f* fade f* | vb |
+  state.bend vb f+ 0.08333333333333333 f* exp2  state.rate0 f*  4096.0 f*  floor 0.0 16383.0 fclamp  4096.0 f/ | step |
   ( advance one tick: wrap inside the loop; past the end of an unlooped
     sample the voice goes silent, as the BRR end flag does )
   state.ph | ph |
-  ph state.step f+ | p2 |
+  ph step f+ | p2 |
   state.loop-on 0.5 f>  p2 state.le f>= and | wrap |
   wrap  p2 state.le state.ls f- f-  p2  select  state.end fmin | p3 |
   tk p3 ph select -> state.ph
