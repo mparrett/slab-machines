@@ -66,12 +66,13 @@ OPN_CARRIERS = [(4,), (4,), (4,), (4,), (2, 4), (2, 3, 4), (2, 3, 4), (1, 2, 3, 
 OPN_STEPHI = [[0, 0, 0, 0], [1, 0, 0, 0], [1, 0, 1, 0], [1, 1, 1, 0]]
 
 
-def opn_rel_seconds(rr, sl=0):
-    """How long an opn operator's release holds the channel: from its
-    sustain level to -94 dB at RR, stepping the envelope as opn/kernel.fy
-    does (key scaling left out, so the longest case)."""
+def opn_rel_seconds(rr):
+    """How long an opn operator's release holds the channel: from full
+    level to -94 dB at RR, stepping the envelope as opn/kernel.fy does.
+    Full level and no key scaling make it the longest case: a note cut
+    before its decay starts from there."""
     rate = min(63, 2 * (2 * int(rr) + 1))
-    level = 32 * int(sl) if sl < 15 else 992
+    level = 0
     timer, ticks = 0, 0
     while level < 1008 and ticks < 2_000_000:
         timer = (timer + 1) % 4096
@@ -197,12 +198,12 @@ def main():
             groups[t["name"]] = ["DAC"]
         elif machine == "opn":
             alg = int(prm.get("opn-alg", 7))
-            tail = max(opn_rel_seconds(prm.get(f"opn-op{i}-rr", 15), prm.get(f"opn-op{i}-sl", 0))
-                       for i in OPN_CARRIERS[alg])
+            tail = max(opn_rel_seconds(prm.get(f"opn-op{i}-rr", 15)) for i in OPN_CARRIERS[alg])
             groups[t["name"]] = ["FM"]
         else:
             mode, rate = int(prm.get("psg-mode", 0)), int(prm.get("psg-rate", 0))
-            tail = (15 - min(15, int(prm.get("psg-sl", 3)))) * max(1, int(prm.get("psg-rr", 1))) / 60
+            # from the top: a note cut before its decay releases from there
+            tail = 15 * max(1, int(prm.get("psg-rr", 1))) / 60
             groups[t["name"]] = ["PSG tone"] if mode == 0 else (
                 ["PSG noise", "PSG tone"] if rate == 3 else ["PSG noise"])
         tail *= bpm / 60

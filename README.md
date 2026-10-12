@@ -73,7 +73,8 @@ cue stays one the hardware could have played.
 ## Credits
 
 The Gaussian table, the envelope rates, and the BRR decoder follow blargg's
-SPC_DSP (snes_spc 0.9.0). The FM chip follows Nuked-OPN2 by Nuke.YKT (LGPL-2.1+),
+SPC_DSP (snes_spc 0.9.0). The FM chip follows Nuked-OPN2, Copyright (C) 2017-2022 Alexey Khokholov
+(Nuke.YKT), LGPL-2.1+,
 whose log-sine and exponent tables `opn/tables.fy` carries; the PSG follows
 MAME's sn76496. Instrument samples are derived from
 [VSCO 2 CE](https://github.com/sgossner/VSCO-2-CE),

@@ -31,9 +31,12 @@
               channel is 0.0.
     PAN       left, both or right: the chip had no in-between.
 
-  Not modelled: SSG-EG, channel 3's per-operator frequencies, and the
-  chip's one-sample pipeline delays other than OP2 -> OP3.
-  Reference: Nuked-OPN2 [ym3438.c], Nuke.YKT, LGPL-2.1+. )
+  Not modelled: SSG-EG, channel 3's per-operator frequencies, the
+  chip's one-sample pipeline delays other than OP2 -> OP3, and the
+  sharing of one LFO and one envelope timer by all six channels: here
+  each voice runs its own, so held notes drift apart in LFO phase.
+  Reference: Nuked-OPN2 [ym3438.c], Copyright 2017-2022 Alexey
+  Khokholov [Nuke.YKT], LGPL-2.1+. )
 
 include "kernels/00-primitives/ctx.fy"
 include "kernels/00-primitives/math.fy"
@@ -198,7 +201,8 @@ dsp: opn-eg-op | state:OpnState params:OpnParams op tk shl tlow |
   inc 0.5 f> | stepping |
   ( attack: toward 0 by a share of the distance; done at 0 )
   l  l fneg 1.0 f-  inc fexp2i f*  32.0 f/ floor  f+ | la |
-  stepping rmax not and  la  l  select | l-att |
+  ( at 0 the attack is over, as the chip checks before stepping )
+  stepping rmax not and  l 0.5 f> and  la  l  select | l-att |
   l 0.5 f<  1.0  0.0  select | s-att |
   ( decay to SL, then sustain; release; linear steps of 2^[inc - 1] )
   l  inc 1.0 f- fexp2i  f+ | lstep |

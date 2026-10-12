@@ -1,6 +1,7 @@
 ( tables.fy - the YM2612's ROM tables and wiring, for kernel.fy.  The
   log-sine and exponent ROMs and the step tables are Nuked-OPN2's
-  [ym3438.c, LGPL-2.1+, by Nuke.YKT], decoded from the die. )
+  [ym3438.c], decoded from the die.  Copyright (C) 2017-2022 Alexey
+  Khokholov (Nuke.YKT), under the GNU LGPL 2.1 or later. )
 
 ( log2 of a quarter sine, 256 entries [Nuked-OPN2 logsinrom] )
 table: opn-logsin 255
