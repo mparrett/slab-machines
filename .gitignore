@@ -1,0 +1,3 @@
+# renders: rebuild with songs/<name>.py --render
+songs/*/
+!songs/*.slab/
