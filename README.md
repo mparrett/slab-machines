@@ -37,6 +37,8 @@ SLAB_DIR=path/to/slab uv run --no-project --with numpy songs/sdsp_spike.py --ren
 ```
 
 This renders a 4-bar intro and the 16-bar overworld loop to `songs/sdsp_spike/`.
+`songs/sdsp_battle.py` is a second cue, a fast E-minor battle loop on the
+synth waves, trombone, and noise hats, with the slapback echo.
 
 `tools/budget.py songs/sdsp_spike.slab` checks a song against the console:
 8 voices across all sdsp tracks, and 64 KiB of audio RAM for the samples,
