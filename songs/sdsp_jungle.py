@@ -79,7 +79,9 @@ def build_song():
     bass = song.track("BASS", "sdsp", "round-bass", volume=.36,
                       fx=[fx("eq2", hpf_on=1, hpf_hz=50)])
     marimba = song.track("MARIMBA - riff", "sdsp", "marimba", volume=.70, pan=-.40)
-    lead = song.track("OCARINA - lead", "sdsp", "ocarina", volume=.40, pan=.10)
+    # the driver's vibrato on held notes, which a player would add
+    lead = song.track("OCARINA - lead", "sdsp", "ocarina", volume=.40, pan=.10,
+                      params={"sdsp-vib-depth": 22, "sdsp-vib-rate": 5.5, "sdsp-vib-delay": .25})
     stabs = song.track("TROMBONE - stabs", "sdsp", "trombone", volume=.70, pan=-.15)
     for t, db in ((lead, -8), (marimba, -10), (stabs, -12)):
         t.send(echo, db)
@@ -98,8 +100,9 @@ def build_song():
     bass.clip(intro, at_bar=2, bars=2).bass(VAMP, BASS, octave=2)
     congas.ride({intro: (-8, 0)})
 
-    lead.clip(a).melody(LEAD_A, gate=.9)
-    lead.clip(b).melody(LEAD_B, gate=.9)
+    # a player's looseness: a few ms either way and uneven breath
+    lead.clip(a).melody(LEAD_A, gate=.9).humanize(time=.02, vel=10)
+    lead.clip(b).melody(LEAD_B, gate=.9).humanize(time=.02, vel=10)
     for sec, prog in ((a, PROG_A), (b, PROG_B)):
         congas.clip(sec).drums(TUMBAO if sec is a else BONGOS, length=.25)
         bass.clip(sec).bass(prog, BASS, octave=2)
