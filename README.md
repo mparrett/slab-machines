@@ -36,7 +36,7 @@ against the factory root, which is the current directory.
 SLAB_DIR=path/to/slab uv run --no-project --with numpy songs/sdsp_spike.py --render
 ```
 
-This renders a 16-bar overworld loop to `songs/sdsp_spike/`.
+This renders a 4-bar intro and the 16-bar overworld loop to `songs/sdsp_spike/`.
 
 ## Credits
 
