@@ -56,8 +56,11 @@ SAMPLED = {
     "fretbass": dict(src="karoryfer/fashionbass.sfz", key=40, rate=8000, attack=.20, loop=.10, drive=4),
     # the jungle set
     "marimba":  dict(src="lib:vcsl/vcsl-mallets/marimba.sfz", key=72, rate=16000, attack=.45, loop=0),
+    # flatten: hold the loop at its starting level, a period at a time. A
+    # player's vibrato shifts the phase the loop's crossfade relies on, and
+    # the dip it leaves repeats at the loop rate: 12.6 Hz here, a trill
     "ocarina":  dict(src="lib:vcsl/vcsl-winds/ocarina-typical-sus.sfz", key=76, rate=16000,
-                     attack=.12, loop=.08),
+                     attack=.12, loop=.08, flatten=True),
     "funkbass": dict(src="karoryfer/growlybass.sfz", key=40, rate=8000, attack=.15, loop=.10, drive=4),
 }
 
@@ -266,10 +269,21 @@ def sampled_instrument(slab_assets, name, spec):
     pad = (-ls) % 16
     seg = np.concatenate([np.zeros(pad), seg])
     ls += pad
+    if spec.get("flatten"):
+        seg[ls:] = flatten_loop(seg[ls:], int(round(rate / f0)))
     seg = normalize(seg)
     if spec.get("drive"):
         seg = normalize(np.tanh(spec["drive"] * seg))
     return rate, seg, hz_midi(f0 * round(rate) / rate), ls
+
+
+def flatten_loop(loop, period):
+    """The loop scaled, a period-long RMS window at a time, to the level it
+    starts at, so the jump back to its start doesn't change the level.
+    The window wraps, as the loop does."""
+    ext = np.concatenate([loop[-period:], loop, loop[:period]])
+    env = np.sqrt(np.convolve(ext * ext, np.ones(period) / period, "same"))[period:-period]
+    return loop * (env[0] / np.maximum(env, 1e-6))
 
 
 def trim_onset(x, thresh=0.01):
