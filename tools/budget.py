@@ -13,8 +13,12 @@ hardware had. This reads a saved project and reports:
   VOICES  notes sounding at once across all sdsp tracks. A note holds its
           voice for its length, or for the sample's length when that is
           shorter and the sample doesn't loop; one-shot SFZ regions hold it
-          for the whole sample, as key-off doesn't stop them. Release tails
-          are ignored: with REL 0 they last about 8 ms.
+          for the whole sample, as key-off doesn't stop them. A release
+          tail holds the voice too: about 8 ms at REL 0, up to seconds at
+          the slow RELs (rel_seconds), unless the sample ends first. A
+          driver gave each part fixed channels, and a part's next note cuts
+          a tail on its channel, so a track counts at most as many voices as
+          it ever sounds notes at once (its channels).
 
     python3 tools/budget.py songs/sdsp_spike.slab
 
@@ -32,6 +36,22 @@ HERE = Path(__file__).resolve().parents[1]
 ARAM = 64 * 1024
 VOICES = 8
 ECHO_STEP = 2048  # 512 stereo frames of 16-bit samples per EDL step
+# 32 kHz samples per envelope step at each rate, as sdsp/kernel.fy's sdsp-period
+PERIOD = [None, 2048, 1536, 1280, 1024, 768, 640, 512, 384, 320, 256, 192, 160, 128, 96,
+          80, 64, 48, 40, 32, 24, 20, 16, 12, 10, 8, 6, 5, 4, 3, 2, 1]
+
+
+def rel_seconds(rel):
+    """How long a release from full holds the voice: key-off's -8 a tick
+    at REL 0, else the exponential step at that rate, down to 0."""
+    rel = int(rel)
+    if rel < 1:
+        return 2048 / 8 / 32000
+    env, steps = 2047, 0
+    while env > 0:
+        env -= (env - 1) // 256 + 1
+        steps += 1
+    return steps * PERIOD[min(rel, 31)] / 32000
 
 
 def resolve(ref, project_dir):
@@ -90,7 +110,9 @@ def zones(path):
     for line in path.read_text().splitlines():
         if not line.startswith("<region>"):
             continue
-        kv = dict(re.findall(r"(\w+)=(\S+)", line))
+        # sample= runs to the end of the line: its path may hold spaces
+        head, _, sample = line.partition("sample=")
+        kv = dict(re.findall(r"(\w+)=(\S+)", head), sample=sample.strip())
         key = kv.get("key")
         lo, hi = int(kv.get("lokey", key or 0)), int(kv.get("hikey", key or 127))
         center = kv.get("pitch_keycenter", key)
@@ -114,7 +136,7 @@ def main():
     bpm = p["transport"]["bpm"]
     over = False
 
-    samples, edls, events = {}, [], []
+    samples, edls, bodies, events = {}, [], [], []
     for t in p["tracks"] + [p.get("master") or {}]:
         for fx in t.get("effects") or []:
             if fx["machine"] == "sdspecho" and not fx.get("bypass"):
@@ -123,6 +145,7 @@ def main():
         if inst.get("machine") != "sdsp" or t.get("mute"):
             continue
         zs = zones(resolve(inst["assets"]["brr"], pj.parent))
+        tail = rel_seconds(inst.get("params", {}).get("sdsp-rel", 0)) * bpm / 60
         for z in zs:
             samples[z.path.resolve()] = z.frames
         for c in t.get("clips") or []:
@@ -130,13 +153,14 @@ def main():
                 z = next((z for z in zs if z.lo <= n["pitch"] <= z.hi), None)
                 if z is None:
                     continue
-                beats = n["len"]
+                body, held = n["len"], n["len"] + tail
                 secs = z.seconds(n["pitch"])
                 if secs is not None:
-                    beats = secs * bpm / 60 if z.oneshot else min(beats, secs * bpm / 60)
+                    end = secs * bpm / 60
+                    body, held = (end, end) if z.oneshot else (min(body, end), min(held, end))
                 start = c["start"] + n["start"]
-                events.append((start, 1, t["name"]))
-                events.append((start + beats, -1, t["name"]))
+                bodies += [(start, 1, t["name"]), (start + body, -1, t["name"])]
+                events += [(start, 1, t["name"]), (start + held, -1, t["name"])]
 
     sample_b = sum(brr_bytes(f) for f in samples.values())
     echo_b = max(edls, default=0) * ECHO_STEP
@@ -151,12 +175,18 @@ def main():
         over = True
 
     # ends sort before starts at the same beat, as a voice frees on key-off
+    bodies.sort(key=lambda e: (e[0], e[1]))
     events.sort(key=lambda e: (e[0], e[1]))
+    channels, sounding = {}, {}
+    for _, d, name in bodies:
+        sounding[name] = sounding.get(name, 0) + d
+        channels[name] = max(channels.get(name, 0), sounding[name])
     bar = p["meter"][0]["num"] * 4 / p["meter"][0]["den"]
-    now, peak, spans, open_at, held, at_peak = 0, 0, [], None, {}, ({}, 0.0)
+    now, peak, spans, open_at, active, held, at_peak = 0, 0, [], None, {}, {}, ({}, 0.0)
     for beat, d, name in events:
-        now += d
-        held[name] = held.get(name, 0) + d
+        active[name] = active.get(name, 0) + d
+        held[name] = min(active[name], channels[name])
+        now = sum(held.values())
         if now > peak:
             peak, at_peak = now, (dict(held), beat)
         if now > VOICES and open_at is None:

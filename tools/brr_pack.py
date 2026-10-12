@@ -12,6 +12,9 @@ voice doesn't need to model it.
 
     SLAB_DIR=path/to/slab uv run --no-project --with numpy tools/brr_pack.py
 
+A source under lib: comes from Slab's sample library, ~/Music/Slab/Library
+(SLAB_LIBRARY overrides): VCSL (CC0) there feeds the aqua set.
+
 Loops must start and end on block boundaries, so each looped instrument
 is resampled to a rate where a whole number of periods fills a whole
 number of blocks, and the WAV's root carries the pitch that rate gives.
@@ -41,7 +44,31 @@ SAMPLED = {
     "trombone": dict(src="vsco/tenor-trombone-sus.sfz", key=55, rate=12000, attack=.15, loop=.12),
     "spic":     dict(src="vsco/violin-section-spic.sfz", key=72, rate=16000, attack=.30, loop=0),
     "pizz":     dict(src="vsco/solo-contrabass-pizz.sfz", key=43, rate=8000, attack=.70, loop=0),
+    # the aqua set: decaying sounds keep a short loop and let the ADSR's
+    # sustain rate do the fading, as the console's instruments did
+    "epiano":   dict(src="lib:vcsl/vcsl-keys/fm-piano.sfz", key=72, rate=16000, attack=.20, loop=.05),
+    "recorder": dict(src="lib:vcsl/vcsl-winds/baroque-alto-recorder-susvib.sfz", key=72, rate=16000,
+                     attack=.15, loop=.10),
+    "vibes":    dict(src="lib:vcsl/vcsl-mallets/vibraphone-soft-mallets.sfz", key=72, rate=16000,
+                     attack=.25, loop=.05),
+    # drive: tanh soft clip after normalizing, for a pluck whose transient
+    # would otherwise leave the body far below full scale
+    "fretbass": dict(src="karoryfer/fashionbass.sfz", key=40, rate=8000, attack=.20, loop=.10, drive=4),
 }
+
+# The aqua percussion: sampled one-shots. kit key: (source, the source's
+# key, stored rate, seconds).
+AQUA_PERC = {
+    36: ("lib:vcsl/vcsl-perc/bass-drum-2.sfz", 38, 12000, .30),
+    42: ("lib:vcsl/vcsl-perc/shaker-small.sfz", 37, 16000, .12),
+    46: ("lib:vcsl/vcsl-perc/finger-cymbals.sfz", 60, 16000, .45),
+}
+
+# The aqua pad: three saws a cycle apart over a PAD_LOOP-sample loop, so
+# they beat at PAD_RATE / PAD_LOOP Hz and the loop joins without a seam.
+PAD_RATE = 16000
+PAD_LOOP = 8000
+PAD_CYCLES = 131
 
 # Single-cycle waves, the console's synth sounds: one 64-sample cycle at
 # 32 kHz, looped from the start.
@@ -136,11 +163,23 @@ def decode_audio(path, rate):
 
 
 def sfz_regions(path):
+    """Regions as dicts. sample= runs to the end of the line, as its path
+    may hold spaces (VCSL's do)."""
     regions = []
     for line in path.read_text().splitlines():
         if line.startswith("<region>"):
-            regions.append(dict(re.findall(r"(\w+)=(\S+)", line)))
+            head, _, sample = line.partition("sample=")
+            r = dict(re.findall(r"(\w+)=(\S+)", head))
+            r["sample"] = sample.strip()
+            regions.append(r)
     return regions
+
+
+def source(slab_assets, src):
+    if src.startswith("lib:"):
+        lib = Path(os.environ.get("SLAB_LIBRARY", Path.home() / "Music/Slab/Library")).expanduser()
+        return lib / src[len("lib:"):]
+    return slab_assets / src
 
 
 def pick_region(sfz, key):
@@ -174,7 +213,7 @@ def find_loop(x, start, length, period):
 
 
 def sampled_instrument(slab_assets, name, spec):
-    sfz = slab_assets / spec["src"]
+    sfz = source(slab_assets, spec["src"])
     r = pick_region(sfz, spec["key"])
     root = int(r["pitch_keycenter"]) - float(r.get("tune", 0)) / 100
     f0 = midi_hz(root)
@@ -207,7 +246,10 @@ def sampled_instrument(slab_assets, name, spec):
     pad = (-ls) % 16
     seg = np.concatenate([np.zeros(pad), seg])
     ls += pad
-    return rate, normalize(seg), hz_midi(f0 * round(rate) / rate), ls
+    seg = normalize(seg)
+    if spec.get("drive"):
+        seg = normalize(np.tanh(spec["drive"] * seg))
+    return rate, seg, hz_midi(f0 * round(rate) / rate), ls
 
 
 def trim_onset(x, thresh=0.01):
@@ -239,6 +281,18 @@ def waves():
         spec[keep:] = 0
         return np.fft.irfft(spec, CYCLE)
     return {"saw": soften(saw, 12), "square": soften(square, 12), "organ": organ}
+
+
+def pad():
+    """The aqua pad's loop: three band-limited saws at PAD_CYCLES - 1, +0,
+    +1 cycles a loop, harmonics rolled off above 1.5 kHz for warmth."""
+    ph = np.arange(PAD_LOOP) / PAD_LOOP
+    x = np.zeros(PAD_LOOP)
+    for n in (PAD_CYCLES - 1, PAD_CYCLES, PAD_CYCLES + 1):
+        f0 = n * PAD_RATE / PAD_LOOP
+        for k in range(1, int(7000 / f0) + 1):
+            x += np.sin(2 * np.pi * k * n * ph + k * n) / k / (1 + (k * f0 / 1500) ** 2)
+    return normalize(x), hz_midi(PAD_CYCLES * PAD_RATE / PAD_LOOP)
 
 
 def drums():
@@ -330,6 +384,23 @@ def main():
         lines.append(f"<region> lokey={key} hikey={key} pitch_keycenter={key} sample=drums/{name}.wav")
         report.append((f"drums/{name}", DRUM_RATE, len(y), key, None, x, y))
     (OUT / "drums.sfz").write_text("\n".join(lines) + "\n")
+    x, root = pad()
+    y = brr_roundtrip(x, 0)
+    write_wav(OUT / "pad.wav", y, PAD_RATE, root, (0, PAD_LOOP))
+    report.append(("pad", PAD_RATE, PAD_LOOP, root, (0, PAD_LOOP), x, y))
+    lines = ["// sdsp aqua percussion: VCSL one-shots (CC0), BRR round-tripped (tools/brr_pack.py)",
+             "// 36 soft bass drum, 42 shaker, 46 finger cymbals"]
+    for key, (src, src_key, rate, secs) in AQUA_PERC.items():
+        r = pick_region(source(assets, src), src_key)
+        x = trim_onset(decode_audio(source(assets, src).parent / r["sample"], rate))[:int(secs * rate)]
+        n = len(x)
+        x = pad16(normalize(x * np.concatenate([np.ones(n - n // 4), np.linspace(1, 0, n // 4)])))
+        y = brr_roundtrip(x)
+        name = f"aqua-{key}"
+        write_wav(OUT / "drums" / f"{name}.wav", y, rate)
+        lines.append(f"<region> lokey={key} hikey={key} pitch_keycenter={key} sample=drums/{name}.wav")
+        report.append((f"drums/{name}", rate, len(y), key, None, x, y))
+    (OUT / "aqua-perc.sfz").write_text("\n".join(lines) + "\n")
     total = 0
     for name, rate, n, root, loop, x, y in report:
         snr = 10 * math.log10(np.sum(x * x) / (np.sum((x - y[:len(x)]) ** 2) + 1e-12))

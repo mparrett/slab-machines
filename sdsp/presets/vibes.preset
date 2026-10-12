@@ -1,0 +1,1 @@
+{"slab": "preset", "schema": 1, "machine": "sdsp", "note": "Soft-mallet vibraphone from VCSL, long ring", "params": {"sdsp-tune": 0, "sdsp-root": 60, "sdsp-loop": 0, "sdsp-ar": 15, "sdsp-dr": 3, "sdsp-sl": 3, "sdsp-sr": 16, "sdsp-rel": 20, "sdsp-noise": 0, "sdsp-nck": 28, "sdsp-vel": 0.6, "sdsp-level": 0.7}, "assets": {"brr": "user:Machines/sdsp/assets/vibes.wav"}}
