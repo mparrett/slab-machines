@@ -5,7 +5,7 @@ set -eu
 here=$(cd "$(dirname "$0")" && pwd)
 machines="${SLAB_HOME:-$HOME/Music/Slab}/Machines"
 mkdir -p "$machines"
-for m in sdsp sdspecho; do
+for m in sdsp sdspecho opn; do
     if [ -e "$machines/$m" ] && [ ! -L "$machines/$m" ]; then
         echo "$machines/$m exists and isn't a link; move it aside first" >&2
         exit 1
