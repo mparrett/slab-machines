@@ -1,0 +1,1 @@
+{"slab": "preset", "schema": 1, "machine": "sdsp", "note": "Saw bass: fast decay into a fading sustain", "params": {"sdsp-tune": -12, "sdsp-root": 60, "sdsp-loop": 0, "sdsp-ar": 15, "sdsp-dr": 3, "sdsp-sl": 3, "sdsp-sr": 20, "sdsp-rel": 0, "sdsp-noise": 0, "sdsp-nck": 28, "sdsp-vel": 0.5, "sdsp-level": 0.7}, "assets": {"brr": "user:Machines/sdsp/assets/saw.wav"}}
