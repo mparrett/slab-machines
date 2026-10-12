@@ -44,12 +44,11 @@ Genesis (`genesis/`):
 
 ## Install
 
-Slab loads machines from `~/Music/Slab/Machines/` starting with nooga/slab#7,
-which isn't in a release yet. Until it is, build the `user-machines` branch of
-[mparrett/slab](https://github.com/mparrett/slab) (Zig 0.16):
+Slab 0.0.12 and later load machines from `~/Music/Slab/Machines/`. Build
+[nooga/slab](https://github.com/nooga/slab) (Zig 0.16), then link the machines:
 
 ```sh
-git clone -b user-machines https://github.com/mparrett/slab && (cd slab && zig build)
+git clone https://github.com/nooga/slab && (cd slab && zig build)
 git clone https://github.com/mparrett/slab-machines && slab-machines/install.sh
 ```
 
@@ -57,8 +56,7 @@ git clone https://github.com/mparrett/slab-machines && slab-machines/install.sh
 you name (`install.sh opn psg`). Because they are links, edits here take effect
 the next time Slab loads the machine. Run Slab from its checkout
 (`zig-out/bin/slab`): the machines' includes resolve against the factory root,
-which is the current directory. With Homebrew's raylib 6, also merge the fork's
-`raylib6-hidpi` branch, or the interface draws at half size on a Retina display.
+which is the current directory.
 
 ## Songs
 
