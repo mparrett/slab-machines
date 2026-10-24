@@ -1,0 +1,1 @@
+{"slab": "preset", "schema": 1, "machine": "cloud", "note": "Short bright grains an octave up, scattered wide", "params": {"cloud-scan": 0.2, "cloud-spray": 0.4, "cloud-grain": 40, "cloud-density": 48, "cloud-pitch": 12, "cloud-jitter": 0.3, "cloud-reverse": 0.3, "cloud-width": 1.0, "cloud-atk": 0.5, "cloud-rel": 2.0}}

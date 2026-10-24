@@ -1,0 +1,1 @@
+{"slab": "preset", "schema": 1, "machine": "cloud", "note": "An octave down, half the grains backwards: a low rumble", "params": {"cloud-scan": -0.1, "cloud-spray": 0.3, "cloud-grain": 250, "cloud-density": 12, "cloud-pitch": -12, "cloud-jitter": 0.2, "cloud-reverse": 0.5, "cloud-atk": 2.5, "cloud-rel": 5.0}}

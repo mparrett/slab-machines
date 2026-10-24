@@ -1,0 +1,1 @@
+{"slab": "preset", "schema": 1, "machine": "cloud", "note": "A slow wander through the file: the default bed", "params": {"cloud-scan": 0.05, "cloud-spray": 0.15, "cloud-grain": 180, "cloud-density": 20, "cloud-jitter": 0.15, "cloud-atk": 2.0, "cloud-rel": 4.0}}

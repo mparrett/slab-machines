@@ -1,0 +1,480 @@
+{
+ "slab": "project",
+ "schema": 1,
+ "transport": {
+  "bpm": 72.0,
+  "loop": {
+   "on": false,
+   "start": 0.0,
+   "end": 120.0
+  }
+ },
+ "meter": [
+  {
+   "bar": 0,
+   "num": 3,
+   "den": 4
+  }
+ ],
+ "sections": [
+  {
+   "beat": 0.0,
+   "name": "pad",
+   "color": 4
+  },
+  {
+   "beat": 24.0,
+   "name": "drift",
+   "color": 5
+  },
+  {
+   "beat": 48.0,
+   "name": "glitter",
+   "color": 6
+  },
+  {
+   "beat": 72.0,
+   "name": "murmur",
+   "color": 7
+  },
+  {
+   "beat": 96.0,
+   "name": "kit",
+   "color": 8
+  }
+ ],
+ "end": 120.0,
+ "tracks": [
+  {
+   "name": "PAD",
+   "color": [
+    230,
+    90,
+    120
+   ],
+   "volume": 0.6,
+   "pan": 0.0,
+   "mute": false,
+   "solo": false,
+   "instrument": {
+    "machine": "sampler",
+    "params": {
+     "smp-tune": 0,
+     "smp-root": 60,
+     "smp-start": 0,
+     "smp-loop": 0,
+     "smp-loop-start": 0,
+     "smp-loop-end": 1,
+     "smp-model": 0,
+     "smp-engine": 0,
+     "smp-rate": 48000,
+     "smp-bits": 16,
+     "smp-quant": 0,
+     "smp-filter": 20000,
+     "smp-trk": 0,
+     "smp-res": 0,
+     "smp-atk": 1.5,
+     "smp-dec": 1.0,
+     "smp-sus": 1,
+     "smp-rel": 2.5,
+     "smp-vel": 0.4,
+     "smp-level": 0.8
+    },
+    "preset": "vsco-strings/violin-section-susvib",
+    "assets": {
+     "smp": "factory:machines/sampler/assets/vsco/violin-section-susvib.sfz"
+    }
+   },
+   "effects": [
+    {
+     "machine": "verb2",
+     "params": {
+      "verb-predelay": 0.045,
+      "verb-decay": 3.0,
+      "verb-damp": 2600,
+      "verb-tone": 6500,
+      "verb-mix": 0.25,
+      "verb-mod": 12,
+      "verb-algo": 2,
+      "verb-size": 1.25,
+      "verb-early": 0.35,
+      "verb-bass": 1.3,
+      "verb-xover": 350
+     },
+     "bypass": false,
+     "preset": "big-hall"
+    }
+   ],
+   "clips": [
+    {
+     "type": "note",
+     "name": "pad",
+     "start": 0.0,
+     "len": 24.0,
+     "notes": [
+      {
+       "pitch": 50,
+       "start": 0.0,
+       "len": 18.0,
+       "vel": 90
+      },
+      {
+       "pitch": 57,
+       "start": 0.0,
+       "len": 18.0,
+       "vel": 90
+      },
+      {
+       "pitch": 64,
+       "start": 0.0,
+       "len": 18.0,
+       "vel": 90
+      },
+      {
+       "pitch": 69,
+       "start": 0.0,
+       "len": 18.0,
+       "vel": 90
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "DRIFT",
+   "color": [
+    64,
+    206,
+    174
+   ],
+   "volume": 0.6,
+   "pan": 0.0,
+   "mute": false,
+   "solo": false,
+   "instrument": {
+    "machine": "cloud",
+    "params": {
+     "cloud-scan": 0.05,
+     "cloud-spray": 0.15,
+     "cloud-grain": 180,
+     "cloud-density": 20,
+     "cloud-jitter": 0.15,
+     "cloud-atk": 2.0,
+     "cloud-rel": 4.0
+    },
+    "preset": "drift"
+   },
+   "effects": [
+    {
+     "machine": "verb2",
+     "params": {
+      "verb-predelay": 0.045,
+      "verb-decay": 3.0,
+      "verb-damp": 2600,
+      "verb-tone": 6500,
+      "verb-mix": 0.25,
+      "verb-mod": 12,
+      "verb-algo": 2,
+      "verb-size": 1.25,
+      "verb-early": 0.35,
+      "verb-bass": 1.3,
+      "verb-xover": 350
+     },
+     "bypass": false,
+     "preset": "big-hall"
+    }
+   ],
+   "clips": [
+    {
+     "type": "note",
+     "name": "drift",
+     "start": 24.0,
+     "len": 24.0,
+     "notes": [
+      {
+       "pitch": 50,
+       "start": 0.0,
+       "len": 18.0,
+       "vel": 90
+      },
+      {
+       "pitch": 57,
+       "start": 0.0,
+       "len": 18.0,
+       "vel": 90
+      },
+      {
+       "pitch": 64,
+       "start": 0.0,
+       "len": 18.0,
+       "vel": 90
+      },
+      {
+       "pitch": 69,
+       "start": 0.0,
+       "len": 18.0,
+       "vel": 90
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "GLITTER",
+   "color": [
+    150,
+    110,
+    230
+   ],
+   "volume": 0.6,
+   "pan": 0.0,
+   "mute": false,
+   "solo": false,
+   "instrument": {
+    "machine": "cloud",
+    "params": {
+     "cloud-scan": 0.2,
+     "cloud-spray": 0.4,
+     "cloud-grain": 40,
+     "cloud-density": 48,
+     "cloud-pitch": 12,
+     "cloud-jitter": 0.3,
+     "cloud-reverse": 0.3,
+     "cloud-width": 1.0,
+     "cloud-atk": 0.5,
+     "cloud-rel": 2.0
+    },
+    "preset": "glitter"
+   },
+   "effects": [
+    {
+     "machine": "verb2",
+     "params": {
+      "verb-predelay": 0.045,
+      "verb-decay": 3.0,
+      "verb-damp": 2600,
+      "verb-tone": 6500,
+      "verb-mix": 0.25,
+      "verb-mod": 12,
+      "verb-algo": 2,
+      "verb-size": 1.25,
+      "verb-early": 0.35,
+      "verb-bass": 1.3,
+      "verb-xover": 350
+     },
+     "bypass": false,
+     "preset": "big-hall"
+    }
+   ],
+   "clips": [
+    {
+     "type": "note",
+     "name": "glitter",
+     "start": 48.0,
+     "len": 24.0,
+     "notes": [
+      {
+       "pitch": 50,
+       "start": 0.0,
+       "len": 18.0,
+       "vel": 90
+      },
+      {
+       "pitch": 57,
+       "start": 0.0,
+       "len": 18.0,
+       "vel": 90
+      },
+      {
+       "pitch": 64,
+       "start": 0.0,
+       "len": 18.0,
+       "vel": 90
+      },
+      {
+       "pitch": 69,
+       "start": 0.0,
+       "len": 18.0,
+       "vel": 90
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "MURMUR",
+   "color": [
+    250,
+    190,
+    80
+   ],
+   "volume": 0.75,
+   "pan": 0.0,
+   "mute": false,
+   "solo": false,
+   "instrument": {
+    "machine": "cloud",
+    "params": {
+     "cloud-scan": -0.1,
+     "cloud-spray": 0.3,
+     "cloud-grain": 250,
+     "cloud-density": 12,
+     "cloud-pitch": -12,
+     "cloud-jitter": 0.2,
+     "cloud-reverse": 0.5,
+     "cloud-atk": 2.5,
+     "cloud-rel": 5.0
+    },
+    "preset": "murmur"
+   },
+   "effects": [
+    {
+     "machine": "verb2",
+     "params": {
+      "verb-predelay": 0.045,
+      "verb-decay": 3.0,
+      "verb-damp": 2600,
+      "verb-tone": 6500,
+      "verb-mix": 0.25,
+      "verb-mod": 12,
+      "verb-algo": 2,
+      "verb-size": 1.25,
+      "verb-early": 0.35,
+      "verb-bass": 1.3,
+      "verb-xover": 350
+     },
+     "bypass": false,
+     "preset": "big-hall"
+    }
+   ],
+   "clips": [
+    {
+     "type": "note",
+     "name": "murmur",
+     "start": 72.0,
+     "len": 24.0,
+     "notes": [
+      {
+       "pitch": 50,
+       "start": 0.0,
+       "len": 18.0,
+       "vel": 90
+      },
+      {
+       "pitch": 57,
+       "start": 0.0,
+       "len": 18.0,
+       "vel": 90
+      },
+      {
+       "pitch": 64,
+       "start": 0.0,
+       "len": 18.0,
+       "vel": 90
+      },
+      {
+       "pitch": 69,
+       "start": 0.0,
+       "len": 18.0,
+       "vel": 90
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "KIT",
+   "color": [
+    90,
+    170,
+    250
+   ],
+   "volume": 0.75,
+   "pan": 0.0,
+   "mute": false,
+   "solo": false,
+   "instrument": {
+    "machine": "cloud",
+    "params": {
+     "cloud-scan": 0.05,
+     "cloud-spray": 0.15,
+     "cloud-grain": 180,
+     "cloud-density": 20,
+     "cloud-jitter": 0.15,
+     "cloud-atk": 2.0,
+     "cloud-rel": 4.0
+    },
+    "preset": "drift"
+   },
+   "effects": [
+    {
+     "machine": "shimmer",
+     "params": {
+      "shim-size": 2.0,
+      "shim-decay": 12.0,
+      "shim-damp": 5000,
+      "shim-amount": 0.75,
+      "shim-interval": 3,
+      "shim-tone": 5000,
+      "shim-window": 0.08,
+      "shim-mod": 14,
+      "shim-mod-rate": 0.12,
+      "shim-lowcut": 250,
+      "shim-mix": 0.6
+     },
+     "bypass": false,
+     "preset": "frost-choir"
+    }
+   ],
+   "clips": [
+    {
+     "type": "note",
+     "name": "kit",
+     "start": 96.0,
+     "len": 24.0,
+     "notes": [
+      {
+       "pitch": 50,
+       "start": 0.0,
+       "len": 18.0,
+       "vel": 90
+      },
+      {
+       "pitch": 57,
+       "start": 0.0,
+       "len": 18.0,
+       "vel": 90
+      },
+      {
+       "pitch": 64,
+       "start": 0.0,
+       "len": 18.0,
+       "vel": 90
+      },
+      {
+       "pitch": 69,
+       "start": 0.0,
+       "len": 18.0,
+       "vel": 90
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "master": {
+  "volume": 1.0,
+  "pan": 0.0,
+  "subsonic": false,
+  "effects": [
+   {
+    "machine": "limiter2",
+    "params": {
+     "lim-gain": 3,
+     "lim-ceil": -1
+    },
+    "bypass": false
+   }
+  ]
+ }
+}

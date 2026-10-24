@@ -54,7 +54,7 @@ Ambience (`ambience/`), synthesized beds to hold under a scene:
   `ambience/songs/fire_vs_storm.py` plays the two together: a fire catches,
   the storm recedes, and the fire gutters out.
 
-Texture (`texture/`), effects for long ambient beds:
+Texture (`texture/`), an effect and a voice for long ambient beds:
 
 - **`shimmer`**: a hall that pitch-shifts its own tail back into itself, an
   octave up by default (also -12, +5, +7, +19, +24), so a held chord blooms
@@ -63,6 +63,12 @@ Texture (`texture/`), effects for long ambient beds:
   semitones either way. The tank is the factory verb2's FDN hall.
   `ambience/songs/shimmer_study.py` compares it with verb2 on a string pad;
   `shimmer_bend.py` automates BEND.
+- **`cloud`**: a granular voice that turns any sample into a bed. Each held
+  note runs eight grains read around a play head that SCAN moves through the
+  file, transposed by the note from ROOT, with SPRAY, JITTER, REVERSE and
+  WIDTH scattering them. LOAD on its waveform swaps the source; the default
+  is a cut of VSCO 2 CE's violin section on A4. 6 voices.
+  `ambience/songs/cloud_study.py` plays it against the plain sampler.
 
 ## Install
 

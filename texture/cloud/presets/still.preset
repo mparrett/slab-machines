@@ -1,0 +1,1 @@
+{"slab": "preset", "schema": 1, "machine": "cloud", "note": "Time stopped: one moment of the file, held", "params": {"cloud-scan": 0.0, "cloud-spray": 0.02, "cloud-grain": 300, "cloud-density": 24, "cloud-jitter": 0.05, "cloud-atk": 1.5, "cloud-rel": 3.0}}
