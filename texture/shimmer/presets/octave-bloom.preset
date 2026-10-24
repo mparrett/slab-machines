@@ -1,0 +1,1 @@
+{"slab": "preset", "schema": 1, "machine": "shimmer", "note": "The classic: an octave climbing out of a medium hall", "params": {"shim-size": 1.2, "shim-decay": 8, "shim-amount": 0.5, "shim-interval": 3, "shim-tone": 7000, "shim-mix": 0.4}}

@@ -1,0 +1,1 @@
+{"slab": "preset", "schema": 1, "machine": "shimmer", "note": "An octave down: the tail sinks instead of rising", "params": {"shim-size": 1.4, "shim-decay": 15, "shim-damp": 3500, "shim-amount": 0.6, "shim-interval": 0, "shim-tone": 3000, "shim-lowcut": 60, "shim-mix": 0.4}}

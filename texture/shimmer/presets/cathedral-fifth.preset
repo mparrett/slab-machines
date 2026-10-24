@@ -1,0 +1,1 @@
+{"slab": "preset", "schema": 1, "machine": "shimmer", "note": "A fifth stacked over a long, dark nave", "params": {"shim-size": 1.7, "shim-decay": 25, "shim-damp": 4500, "shim-amount": 0.6, "shim-interval": 2, "shim-tone": 6000, "shim-mod": 10, "shim-mod-rate": 0.2, "shim-mix": 0.45}}

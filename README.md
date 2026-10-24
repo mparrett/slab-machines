@@ -54,6 +54,16 @@ Ambience (`ambience/`), synthesized beds to hold under a scene:
   `ambience/songs/fire_vs_storm.py` plays the two together: a fire catches,
   the storm recedes, and the fire gutters out.
 
+Texture (`texture/`), effects for long ambient beds:
+
+- **`shimmer`**: a hall that pitch-shifts its own tail back into itself, an
+  octave up by default (also -12, +5, +7, +19, +24), so a held chord blooms
+  into a choir above it. AMOUNT sets how much of each pass climbs again,
+  FREEZE holds the tank indefinitely, and BEND glides the interval up to 12
+  semitones either way. The tank is the factory verb2's FDN hall.
+  `ambience/songs/shimmer_study.py` compares it with verb2 on a string pad;
+  `shimmer_bend.py` automates BEND.
+
 ## Install
 
 Slab 0.0.12 and later load machines from `~/Music/Slab/Machines/`. Build

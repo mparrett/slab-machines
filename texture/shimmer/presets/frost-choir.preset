@@ -1,0 +1,1 @@
+{"slab": "preset", "schema": 1, "machine": "shimmer", "note": "Pad wash for cold beds: high, slow, almost endless", "params": {"shim-size": 2.0, "shim-decay": 40, "shim-damp": 5000, "shim-amount": 0.75, "shim-interval": 3, "shim-tone": 5000, "shim-window": 0.08, "shim-mod": 14, "shim-mod-rate": 0.12, "shim-lowcut": 250, "shim-mix": 0.6}}

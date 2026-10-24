@@ -1,0 +1,189 @@
+{
+ "slab": "project",
+ "schema": 1,
+ "transport": {
+  "bpm": 72.0,
+  "loop": {
+   "on": false,
+   "start": 0.0,
+   "end": 60.0
+  }
+ },
+ "meter": [
+  {
+   "bar": 0,
+   "num": 3,
+   "den": 4
+  }
+ ],
+ "sections": [
+  {
+   "beat": 0.0,
+   "name": "glide",
+   "color": 4
+  }
+ ],
+ "end": 60.0,
+ "tracks": [
+  {
+   "name": "PAD",
+   "color": [
+    230,
+    90,
+    120
+   ],
+   "volume": 0.6,
+   "pan": 0.0,
+   "mute": false,
+   "solo": false,
+   "instrument": {
+    "machine": "sampler",
+    "params": {
+     "smp-tune": 0,
+     "smp-root": 60,
+     "smp-start": 0,
+     "smp-loop": 0,
+     "smp-loop-start": 0,
+     "smp-loop-end": 1,
+     "smp-model": 0,
+     "smp-engine": 0,
+     "smp-rate": 48000,
+     "smp-bits": 16,
+     "smp-quant": 0,
+     "smp-filter": 20000,
+     "smp-trk": 0,
+     "smp-res": 0,
+     "smp-atk": 1.5,
+     "smp-dec": 1.0,
+     "smp-sus": 1,
+     "smp-rel": 2.5,
+     "smp-vel": 0.4,
+     "smp-level": 0.8
+    },
+    "preset": "vsco-strings/cello-section-susvib",
+    "assets": {
+     "smp": "factory:machines/sampler/assets/vsco/cello-section-susvib.sfz"
+    }
+   },
+   "effects": [
+    {
+     "machine": "shimmer",
+     "params": {
+      "shim-size": 1.2,
+      "shim-decay": 12.0,
+      "shim-amount": 0.8,
+      "shim-interval": 3,
+      "shim-tone": 7000,
+      "shim-mix": 0.4
+     },
+     "bypass": false,
+     "preset": "octave-bloom"
+    }
+   ],
+   "clips": [
+    {
+     "type": "note",
+     "name": "glide",
+     "start": 0.0,
+     "len": 60.0,
+     "notes": [
+      {
+       "pitch": 50,
+       "start": 0.0,
+       "len": 9.0,
+       "vel": 80
+      },
+      {
+       "pitch": 57,
+       "start": 0.0,
+       "len": 9.0,
+       "vel": 80
+      },
+      {
+       "pitch": 64,
+       "start": 0.0,
+       "len": 9.0,
+       "vel": 80
+      },
+      {
+       "pitch": 69,
+       "start": 0.0,
+       "len": 9.0,
+       "vel": 80
+      },
+      {
+       "pitch": 50,
+       "start": 30.0,
+       "len": 9.0,
+       "vel": 80
+      },
+      {
+       "pitch": 57,
+       "start": 30.0,
+       "len": 9.0,
+       "vel": 80
+      },
+      {
+       "pitch": 64,
+       "start": 30.0,
+       "len": 9.0,
+       "vel": 80
+      },
+      {
+       "pitch": 69,
+       "start": 30.0,
+       "len": 9.0,
+       "vel": 80
+      }
+     ]
+    }
+   ],
+   "automation": [
+    {
+     "target": "fx0:shim-bend",
+     "points": [
+      [
+       0.0,
+       0,
+       "hold",
+       0.0
+      ],
+      [
+       12.0,
+       0
+      ],
+      [
+       30.0,
+       7
+      ],
+      [
+       48.0,
+       -7
+      ],
+      [
+       51.0,
+       0,
+       "hold",
+       0.0
+      ]
+     ]
+    }
+   ]
+  }
+ ],
+ "master": {
+  "volume": 1.0,
+  "pan": 0.0,
+  "subsonic": false,
+  "effects": [
+   {
+    "machine": "limiter2",
+    "params": {
+     "lim-gain": 3,
+     "lim-ceil": -1
+    },
+    "bypass": false
+   }
+  ]
+ }
+}
