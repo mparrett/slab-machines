@@ -3,7 +3,8 @@
 Retro console sound chips as user machines for
 [Slab](https://github.com/nooga/slab). Each machine models a chip in its own
 units (registers, clocks, quantization) so a cue written with it sounds like the
-console and stays within what the console could play.
+console and stays within what the console could play. Alongside them are a
+few machines for long ambient beds.
 
 ## Machines
 
@@ -41,6 +42,17 @@ Genesis (`genesis/`):
   jittered rate with no interpolation. `tools/dac_pack.py` builds its drum kit.
 - **`psg`**: the SN76489-style square and noise channels, with Sega's 16-bit
   noise LFSR and a 60 Hz driver envelope. 3 voices.
+
+Ambience (`ambience/`), synthesized beds to hold under a scene:
+
+- **`wind`**: a wind scene after Andy Farnell's *Designing Sound*: one wind
+  speed, with its gusts, drives the rush of AIR, WHISTLE in wires, DOORS
+  buzzing in their frames and LEAVES. Hold a note for as long as the bed
+  plays; the note moves the whistles.
+- **`fire`**: a fireplace or campfire in stereo: random crackles and snaps
+  over a flickering roar and hiss. TONE sets the distance.
+  `ambience/songs/fire_vs_storm.py` plays the two together: a fire catches,
+  the storm recedes, and the fire gutters out.
 
 ## Install
 

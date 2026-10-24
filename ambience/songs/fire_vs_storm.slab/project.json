@@ -1,0 +1,382 @@
+{
+ "slab": "project",
+ "schema": 1,
+ "transport": {
+  "bpm": 60.0,
+  "loop": {
+   "on": false,
+   "start": 0.0,
+   "end": 80.0
+  }
+ },
+ "meter": [
+  {
+   "bar": 0,
+   "num": 4,
+   "den": 4
+  }
+ ],
+ "sections": [
+  {
+   "beat": 0.0,
+   "name": "storm",
+   "color": 4
+  },
+  {
+   "beat": 20.0,
+   "name": "shelter",
+   "color": 5
+  },
+  {
+   "beat": 48.0,
+   "name": "gutter",
+   "color": 6
+  },
+  {
+   "beat": 56.0,
+   "name": "return",
+   "color": 7
+  }
+ ],
+ "end": 80.0,
+ "tracks": [
+  {
+   "name": "STORM",
+   "kind": "bus",
+   "color": [
+    230,
+    90,
+    120
+   ],
+   "volume": 1.0,
+   "pan": 0.0,
+   "mute": false,
+   "solo": false,
+   "instrument": null,
+   "effects": [
+    {
+     "machine": "eq2",
+     "params": {
+      "eq-hs-hz": 1500,
+      "eq-p2-hz": 3000,
+      "eq-p2-q": 0.7
+     },
+     "bypass": false
+    },
+    {
+     "machine": "verb2",
+     "params": {
+      "verb-predelay": 0.045,
+      "verb-decay": 3.5,
+      "verb-damp": 2600,
+      "verb-tone": 6500,
+      "verb-mix": 0.0,
+      "verb-mod": 12,
+      "verb-algo": 2,
+      "verb-size": 1.25,
+      "verb-early": 0.35,
+      "verb-bass": 1.3,
+      "verb-xover": 350,
+      "verb-lowcut": 200
+     },
+     "bypass": false,
+     "preset": "big-hall"
+    }
+   ],
+   "clips": [],
+   "automation": [
+    {
+     "target": "fx0:eq-hs-db",
+     "points": [
+      [
+       20,
+       0.0
+      ],
+      [
+       28,
+       -16.0,
+       "curve",
+       -0.3
+      ],
+      [
+       50,
+       -16.0
+      ],
+      [
+       58,
+       0.0,
+       "curve",
+       0.3
+      ]
+     ]
+    },
+    {
+     "target": "fx0:eq-p2-db",
+     "points": [
+      [
+       20,
+       0.0
+      ],
+      [
+       28,
+       -9.0,
+       "curve",
+       -0.3
+      ],
+      [
+       50,
+       -9.0
+      ],
+      [
+       58,
+       0.0,
+       "curve",
+       0.3
+      ]
+     ]
+    },
+    {
+     "target": "fx1:verb-mix",
+     "points": [
+      [
+       20,
+       0.0
+      ],
+      [
+       28,
+       0.4,
+       "curve",
+       -0.3
+      ],
+      [
+       50,
+       0.4
+      ],
+      [
+       58,
+       0.0,
+       "curve",
+       0.3
+      ]
+     ]
+    },
+    {
+     "target": "volume",
+     "points": [
+      [
+       20,
+       1.0
+      ],
+      [
+       28,
+       0.45,
+       "curve",
+       -0.3
+      ],
+      [
+       50,
+       0.45
+      ],
+      [
+       58,
+       1.0,
+       "curve",
+       0.3
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "name": "STORM ROAR",
+   "color": [
+    64,
+    206,
+    174
+   ],
+   "volume": 0.8,
+   "pan": 0.0,
+   "mute": false,
+   "solo": false,
+   "instrument": {
+    "machine": "wind",
+    "params": {
+     "wind-speed": 0.45,
+     "wind-swing": 0.5,
+     "wind-rate": 0.03,
+     "wind-gust": 1.4,
+     "wind-air": 0.9,
+     "wind-whistle": 0.4,
+     "wind-doors": 0.4,
+     "wind-leaves": 0.3,
+     "wind-width": 0.9,
+     "wind-atk": 3,
+     "wind-rel": 4,
+     "wind-gain": 1.0
+    }
+   },
+   "effects": [],
+   "clips": [
+    {
+     "type": "note",
+     "name": "STORM ROAR",
+     "start": 0.0,
+     "len": 80.0,
+     "notes": [
+      {
+       "pitch": 60,
+       "start": 0.0,
+       "len": 76.0,
+       "vel": 100
+      }
+     ]
+    }
+   ],
+   "output": 0
+  },
+  {
+   "name": "STORM WHISTLE",
+   "color": [
+    150,
+    110,
+    230
+   ],
+   "volume": 0.5,
+   "pan": 0.0,
+   "mute": false,
+   "solo": false,
+   "instrument": {
+    "machine": "wind",
+    "params": {
+     "wind-speed": 0.4,
+     "wind-swing": 0.6,
+     "wind-rate": 0.05,
+     "wind-gust": 1.2,
+     "wind-air": 0.15,
+     "wind-whistle": 0.9,
+     "wind-doors": 0.0,
+     "wind-leaves": 0.0,
+     "wind-width": 0.7,
+     "wind-atk": 4,
+     "wind-rel": 4,
+     "wind-gain": 0.6
+    }
+   },
+   "effects": [],
+   "clips": [
+    {
+     "type": "note",
+     "name": "STORM WHISTLE",
+     "start": 0.0,
+     "len": 80.0,
+     "notes": [
+      {
+       "pitch": 60,
+       "start": 2.0,
+       "len": 74.0,
+       "vel": 100
+      },
+      {
+       "pitch": 67,
+       "start": 30.0,
+       "len": 40.0,
+       "vel": 100
+      }
+     ]
+    }
+   ],
+   "output": 0
+  },
+  {
+   "name": "FIRE",
+   "color": [
+    250,
+    190,
+    80
+   ],
+   "volume": 0.8,
+   "pan": 0.0,
+   "mute": false,
+   "solo": false,
+   "instrument": {
+    "machine": "fire",
+    "params": {
+     "fire-crackle": 30,
+     "fire-snap": 0.4,
+     "fire-roar": 0.4,
+     "fire-hiss": 0.4,
+     "fire-flicker": 0.5,
+     "fire-tone": 16000,
+     "fire-width": 0.6,
+     "fire-atk": 4,
+     "fire-rel": 5,
+     "fire-gain": 0.6
+    }
+   },
+   "effects": [],
+   "clips": [
+    {
+     "type": "note",
+     "name": "FIRE",
+     "start": 0.0,
+     "len": 80.0,
+     "notes": [
+      {
+       "pitch": 60,
+       "start": 20.0,
+       "len": 34.0,
+       "vel": 100
+      }
+     ]
+    }
+   ],
+   "automation": [
+    {
+     "target": "inst:fire-crackle",
+     "points": [
+      [
+       48,
+       30
+      ],
+      [
+       54,
+       3,
+       "curve",
+       0.3
+      ]
+     ]
+    },
+    {
+     "target": "inst:fire-tone",
+     "points": [
+      [
+       48,
+       16000
+      ],
+      [
+       56,
+       2500,
+       "curve",
+       0.3
+      ]
+     ]
+    }
+   ]
+  }
+ ],
+ "master": {
+  "volume": 1.0,
+  "pan": 0.0,
+  "subsonic": false,
+  "effects": [
+   {
+    "machine": "limiter2",
+    "params": {
+     "lim-gain": 6,
+     "lim-ceil": -1
+    },
+    "bypass": false
+   }
+  ]
+ }
+}
