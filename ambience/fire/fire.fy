@@ -16,12 +16,13 @@ include "machines/lib/manifest.fy"
   stereo
   FireState.size  state-size!
   FireParams.size params-size!
-  704.0 panel-w!
+  768.0 panel-w!
 
   "FLAME" "CRACKLE" "fire-crackle" FireParams.crackle 0.5 200.0 25.0 curve-exp knob
   "FLAME" "SNAP"    "fire-snap"    FireParams.snap    0.0 1.0 0.4 curve-lin knob
   "FLAME" "ROAR"    "fire-roar"    FireParams.roar    0.0 1.0 0.4 curve-pow knob
   "FLAME" "HISS"    "fire-hiss"    FireParams.hiss    0.0 1.0 0.4 curve-pow knob
+  "FLAME" "TICK"    "fire-tick"    FireParams.tick    1.0 30.0 30.0 curve-exp knob
 
   "SPACE" "FLICKER" "fire-flicker" FireParams.flicker 0.0 1.0 0.5 curve-lin knob
   "SPACE" "TONE"    "fire-tone"    FireParams.tone    500.0 20000.0 16000.0 curve-exp knob
@@ -32,11 +33,11 @@ include "machines/lib/manifest.fy"
   "FADE" "GAIN"    "fire-gain" FireParams.gain 0.0 1.0 0.5 curve-pow knob as-fader
   "FADE" "SEED"    "fire-seed" FireParams.seed 0.0 99.0 0.0 int-step
 
-  "FLAME" 4 strip
+  "FLAME" 5 strip
   "SPACE" 3 strip
   "FADE" 4 strip
   0.0 row
-    4.0 cell  "FLAME" 1.0 item
+    5.0 cell  "FLAME" 1.0 item
     3.0 cell  "SPACE" 1.0 item
     4.0 cell  "FADE" 1.0 item
   machine-desc

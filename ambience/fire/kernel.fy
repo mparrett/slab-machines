@@ -5,7 +5,8 @@
 
     crackle  short ticks at random, CRACKLE a second on average: noise
              through a band-pass of Q 1 at a random 1.5..16 kHz, under a
-             ramp of 0..30 ms, squared.  Broad and quiet: a ringing or
+             ramp of 0..TICK ms [30 by default], squared; a short TICK
+             makes sharper, drier pops.  Broad and quiet: a ringing or
              low pop reads as a stick breaking, not a fire.  SNAP is
              their level.
     hiss     noise above 1 kHz, gated by 1 Hz low-passed noise raised to
@@ -83,6 +84,7 @@ ustruct: FireParams
   f64 rel
   f64 gain
   f64 seed       ( 0..99: which noise this instance plays; 0 as before )
+  f64 tick       ( longest crackle ramp, ms )
   ( derived - block-prepare )
   f64 ka
   f64 kr
@@ -90,6 +92,7 @@ ustruct: FireParams
   f64 k25
   f64 k1k
   f64 ktone
+  f64 tick-s
   f64 g30        ( band-pass coefficients: 30, 1200, 2600, 600 Hz )
   f64 g1200
   f64 g2600
@@ -109,6 +112,7 @@ dsp: fire-block-prepare | ctx:Ctx state params:FireParams |
   25.0 ctx.sr fire-k -> params.k25
   1000.0 ctx.sr fire-k -> params.k1k
   params.tone ctx.sr fire-k -> params.ktone
+  params.tick 1000.0 f/ -> params.tick-s
   30.0 ctx.sr svf-g -> params.g30
   1200.0 ctx.sr svf-g -> params.g1200
   2600.0 ctx.sr svf-g -> params.g2600
@@ -179,9 +183,9 @@ dsp: k-fire-voice | io:Io ctx:Ctx state:FireState params:FireParams -- |
   state.re& rand-u | ub |
   ul pchance f< | popl |
   ur pchance f< | popr |
-  ( a 1.5..16 kHz centre and a 0..30 ms ramp, as Farnell's random 30 )
+  ( a 1.5..16 kHz centre and a 0..TICK ms ramp, as Farnell's random 30 )
   ua 14500.0 f* 1500.0 f+  ctx.sr 0.45 f* fmin | fa |
-  ub 0.03 f* ctx.sr f* 1.0 fmax | la |
+  ub params.tick-s f* ctx.sr f* 1.0 fmax | la |
   popl  la  state.cnl  select -> state.cnl
   popl  la  state.cel 1.0 f- 0.0 fmax  select -> state.cel
   popl  fa ctx.sr svf-g  state.cgl  select -> state.cgl
