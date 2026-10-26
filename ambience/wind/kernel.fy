@@ -21,6 +21,11 @@
     leaves   noise clipped from below at a threshold that drops as the
              wind rises: sparse ticks, a rustle of pine and turf.
 
+    rumble   RUMBLE: the storm's low body, which the model leaves out:
+             two noises, one a side so it is wide, low-passed twice at
+             200 Hz and high-passed at 25, following W through its 3 s
+             lag so it swells slowly and never gusts hard.
+
   Farnell taps W from a delay line, 0.1 to 3 s late per object, so a gust
   reaches each one in turn; here each object follows W through a lag of
   the same time instead.  His Pd noise levels are tiny at the sample rate,
@@ -73,6 +78,12 @@ ustruct: WindState
   f64 lv         ( leaves: the slow level, the 200 Hz and 4 kHz one-poles )
   f64 lh
   f64 ll
+  f64 ml1        ( rumble: 200 Hz low-passes and 25 Hz high-pass, a side )
+  f64 ml2
+  f64 mlh
+  f64 mr1
+  f64 mr2
+  f64 mrh
 ;
 
 ustruct: WindParams
@@ -109,6 +120,9 @@ ustruct: WindParams
   f64 g800       ( fixed band-passes: 800, 400, 200 Hz )
   f64 g400
   f64 g200
+  f64 rumble
+  f64 kr200      ( rumble one-poles: 200 Hz, 25 Hz )
+  f64 kr25
 ;
 
 ( hz sr -- k : a one-pole's coefficient for a corner )
@@ -143,6 +157,8 @@ dsp: wind-block-prepare | ctx:Ctx state params:WindParams |
   800.0 ctx.sr svf-g -> params.g800
   400.0 ctx.sr svf-g -> params.g400
   200.0 ctx.sr svf-g -> params.g200
+  200.0 ctx.sr wind-k -> params.kr200
+  25.0 ctx.sr wind-k -> params.kr25
 ;
 
 ( ctx state params -- )
@@ -282,7 +298,17 @@ dsp: k-wind-voice | io:Io ctx:Ctx state:WindState params:WindParams -- |
     x1g 0.32 sinpi f*  f+
     x2g 0.14 sinpi f*  f+
     lf 0.355 sinpi f*  f+ | yr |
+  ( rumble: independent noise a side, low, following the slow lag of W )
+  state.w30 0.6 f* 0.4 f+  params.rumble f* 30.0 f* | rg |
+  state.ml1& nl params.kr200 wind-lp | mla |
+  state.ml2& mla params.kr200 wind-lp | mlb |
+  mlb  state.mlh& mlb params.kr25 wind-lp  f-  rg f* | rml |
+  state.mr1& nr0 params.kr200 wind-lp | mra |
+  state.mr2& mra params.kr200 wind-lp | mrb |
+  mrb  state.mrh& mrb params.kr25 wind-lp  f-  rg f* | rmr |
+  yl rml f+ | ylm |
+  yr rmr f+ | yrm |
   env params.gain f* 3.6 f* | g |
-  io.out-l  yl g f*  f+ -> io.out-l
-  io.out-r  yr g f*  f+ -> io.out-r
+  io.out-l  ylm g f*  f+ -> io.out-l
+  io.out-r  yrm g f*  f+ -> io.out-r
 ;

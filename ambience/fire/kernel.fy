@@ -25,6 +25,13 @@
              1200 Hz Q 0.6 and high-passes 1 kHz, R band-passes 2600 Hz
              Q 0.4 and 600 Hz Q 0.2.  Each side runs its own noise, so
              the field is wide; WIDTH 0 gives R the L noise.
+    pops     each tick rises over 0.7 ms rather than jumping: a tick
+             that starts at full level in one sample is a digital click,
+             heard as the audio breaking.
+    bed      BED: the fire's low body, which the body filters remove: two
+             noises, one a side, low-passed twice at 150 Hz and high-passed
+             at 25, breathing by a 0.2 Hz noise [about 1.5 dB].  It skips
+             the body filters.
     tone     a final low-pass, the distance knob: far fires lose their
              top first.
     fades    ATTACK and RELEASE in seconds: a fire catching, a fire
@@ -76,6 +83,14 @@ ustruct: FireState
   f64 b3b
   f64 b4a
   f64 b4b
+  f64 rb         ( noise cell: the bed's breath )
+  f64 bb         ( breath low-pass )
+  f64 dl1        ( bed: 150 Hz low-passes and 25 Hz high-pass, a side )
+  f64 dl2
+  f64 dlh
+  f64 dr1
+  f64 dr2
+  f64 drh
   f64 tl         ( tone low-pass, a side )
   f64 tr
 ;
@@ -105,6 +120,11 @@ ustruct: FireParams
   f64 tick-s
   f64 kon        ( per-sample chances a burst ends, starts )
   f64 koff
+  f64 bed        ( the low body's level )
+  f64 patk       ( pop rise, samples )
+  f64 k150
+  f64 kbr        ( breath low-pass and its normaliser )
+  f64 nbr
   f64 g30        ( band-pass coefficients: 30, 1200, 2600, 600 Hz )
   f64 g1200
   f64 g2600
@@ -132,6 +152,11 @@ dsp: fire-block-prepare | ctx:Ctx state params:FireParams |
   1200.0 ctx.sr svf-g -> params.g1200
   2600.0 ctx.sr svf-g -> params.g2600
   600.0 ctx.sr svf-g -> params.g600
+  0.0007 ctx.sr f* -> params.patk
+  150.0 ctx.sr fire-k -> params.k150
+  0.2 ctx.sr fire-k -> params.kbr
+  ( a one-pole passes uniform noise with spread sqrt[k / 6] )
+  params.kbr 6.0 f/ fsqrt -> params.nbr
 ;
 
 ( ctx state params -- )
@@ -143,6 +168,7 @@ dsp: fire-note-on | ctx:Ctx state:FireState params:FireParams |
   state.rgr&  ctx.chan 5.0 f* 14.0 f+ params.seed 101.0 f* f+  rand-seed-once
   state.re&   ctx.chan 5.0 f* 15.0 f+ params.seed 101.0 f* f+  rand-seed-once
   state.rk&   ctx.chan 5.0 f* 16.0 f+ params.seed 101.0 f* f+  rand-seed-once
+  state.rb&   ctx.chan 5.0 f* 17.0 f+ params.seed 101.0 f* f+  rand-seed-once
 ;
 
 ( ctx state params -- )
@@ -228,8 +254,8 @@ dsp: k-fire-voice | io:Io ctx:Ctx state:FireState params:FireParams -- |
   popr  lar  state.cnr  select -> state.cnr
   popr  lar  state.cer 1.0 f- 0.0 fmax  select -> state.cer
   popr  far 0.8 f* ctx.sr svf-g  state.cgr  select -> state.cgr
-  state.cel state.cnl fire-env | el |
-  state.cer state.cnr fire-env | er |
+  state.cel state.cnl fire-env  state.cnl state.cel f- params.patk f/ 1.0 fmin f* | el |
+  state.cer state.cnr fire-env  state.cnr state.cer f- params.patk f/ 1.0 fmin f* | er |
   state.cl1& state.cl2& nl state.cgl 0.5 fire-bp  el f* state.cal f* | cl |
   state.cr1& state.cr2& nr state.cgr 0.5 fire-bp  er f* state.car f* | cr |
   ( hiss: a 1 kHz high-pass, gated by a 1 Hz low-pass of noise to the
@@ -242,8 +268,15 @@ dsp: k-fire-voice | io:Io ctx:Ctx state:FireState params:FireParams -- |
   state.hgr& gnr params.k1 fire-lp  gm f* | gr |
   gl gl f* | gl2 |
   gr gr f* | gr2 |
-  state.hpl& nl params.k1k fire-hp  gl2 gl2 f* f* | hl |
-  state.hpr& nr params.k1k fire-hp  gr2 gr2 f* f* | hr |
+  ( the gate to the fourth power can spike 20 dB in a rare burst; a soft
+    cap at 4 holds those near 12 dB over a typical one and takes under
+    0.3 dB off the usual ones )
+  gl2 gl2 f* | gl4 |
+  gr2 gr2 f* | gr4 |
+  gl4  gl4 0.25 f* dup f* 1.0 f+ fsqrt  f/ | gcl |
+  gr4  gr4 0.25 f* dup f* 1.0 f+ fsqrt  f/ | gcr |
+  state.hpl& nl params.k1k fire-hp  gcl f* | hl |
+  state.hpr& nr params.k1k fire-hp  gcr f* | hr |
   ( roar: 30 Hz Q 5, x100, high-pass, clip, high-pass, x0.6 )
   state.ll1& state.ll2& nl params.g30 0.1 fire-bp  100.0 f* | ral |
   state.lr1& state.lr2& nr params.g30 0.1 fire-bp  100.0 f* | rar |
@@ -260,8 +293,18 @@ dsp: k-fire-voice | io:Io ctx:Ctx state:FireState params:FireParams -- |
   state.b2h& xl params.k1k fire-hp | b2 |
   state.b3a& state.b3b& xr params.g2600 1.25 fire-bp | b3 |
   state.b4a& state.b4b& xr params.g600 2.5 fire-bp | b4 |
-  b1 b2 f+ 0.4 f* | yl0 |
-  b3 b4 f+ 0.4 f* | yr0 |
+  ( bed: low noise a side, breathing, outside the body filters )
+  state.rb& rand-b | nb |
+  state.bb& nb params.kbr fire-lp  params.nbr f/ | br |
+  1.0 br 0.18 f* f+ 0.0 fmax  params.bed f* 40.0 f* | bg |
+  state.dl1& nl params.k150 fire-lp | dla |
+  state.dl2& dla params.k150 fire-lp | dlb |
+  state.dlh& dlb params.k25 fire-hp  bg f* | bedl |
+  state.dr1& nr0 params.k150 fire-lp | dra |
+  state.dr2& dra params.k150 fire-lp | drb |
+  state.drh& drb params.k25 fire-hp  bg f* | bedr |
+  b1 b2 f+ 0.4 f*  bedl f+ | yl0 |
+  b3 b4 f+ 0.4 f*  bedr f+ | yr0 |
   state.tl& yl0 params.ktone fire-lp | yl |
   state.tr& yr0 params.ktone fire-lp | yr |
   env params.gain f* | g |
