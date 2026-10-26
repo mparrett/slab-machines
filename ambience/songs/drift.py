@@ -18,6 +18,10 @@ import random
 
 def drift_points(start, end, lo, hi, period, seed=0, log=False, jitter=0.4, steps=6):
     """The lane points for drift(): (beat, value) pairs from start to end."""
+    if end <= start:
+        raise ValueError("drift: end must be after start")
+    if period <= 0 or not 0 <= jitter < 1 or steps < 1:
+        raise ValueError("drift: needs period > 0, 0 <= jitter < 1 and steps >= 1")
     if log and lo <= 0:
         raise ValueError("drift: log needs lo > 0")
     rng = random.Random(seed)
