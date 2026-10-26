@@ -88,6 +88,7 @@ ustruct: WindParams
   f64 atk        ( seconds )
   f64 rel
   f64 gain
+  f64 seed       ( 0..99: which noise this instance plays; 0 as before )
   ( derived - block-prepare )
   f64 ka
   f64 kr
@@ -145,14 +146,14 @@ dsp: wind-block-prepare | ctx:Ctx state params:WindParams |
 ;
 
 ( ctx state params -- )
-dsp: wind-note-on | ctx:Ctx state:WindState params |
+dsp: wind-note-on | ctx:Ctx state:WindState params:WindParams |
   ctx.pitch -> state.key
   1.0 -> state.gate
-  state.rl&  ctx.chan 5.0 f* 1.0 f+  rand-seed-once
-  state.rr&  ctx.chan 5.0 f* 2.0 f+  rand-seed-once
-  state.ro&  ctx.chan 5.0 f* 3.0 f+  rand-seed-once
-  state.rg&  ctx.chan 5.0 f* 4.0 f+  rand-seed-once
-  state.rs&  ctx.chan 5.0 f* 5.0 f+  rand-seed-once
+  state.rl&  ctx.chan 5.0 f* 1.0 f+ params.seed 101.0 f* f+  rand-seed-once
+  state.rr&  ctx.chan 5.0 f* 2.0 f+ params.seed 101.0 f* f+  rand-seed-once
+  state.ro&  ctx.chan 5.0 f* 3.0 f+ params.seed 101.0 f* f+  rand-seed-once
+  state.rg&  ctx.chan 5.0 f* 4.0 f+ params.seed 101.0 f* f+  rand-seed-once
+  state.rs&  ctx.chan 5.0 f* 5.0 f+ params.seed 101.0 f* f+  rand-seed-once
 ;
 
 ( ctx state params -- )

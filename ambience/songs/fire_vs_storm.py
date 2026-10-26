@@ -45,7 +45,7 @@ def build_song():
         atk=3, rel=4, gain=1.0))
     high = song.track("STORM WHISTLE", "wind", output=storm, volume=0.5, params=dict(
         speed=0.4, swing=0.6, rate=0.05, gust=1.2, air=0.15, whistle=0.9, doors=0.0, leaves=0.0, width=0.7,
-        atk=4, rel=4, gain=0.6))
+        atk=4, rel=4, gain=0.6, seed=1))
     fire = song.track("FIRE", "fire", volume=0.8, params=dict(
         crackle=30, snap=0.4, roar=0.4, hiss=0.4, flicker=0.5, tone=16000, width=0.6,
         atk=4, rel=5, gain=0.6))

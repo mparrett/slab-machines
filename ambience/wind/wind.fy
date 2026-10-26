@@ -18,7 +18,7 @@ include "machines/lib/manifest.fy"
   stereo
   WindState.size  state-size!
   WindParams.size params-size!
-  720.0 panel-w!
+  780.0 panel-w!
 
   "SPEED" "SPEED" "wind-speed" WindParams.speed 0.0 1.0 0.25 curve-lin knob
   "SPEED" "SWING" "wind-swing" WindParams.swing 0.0 2.0 1.0 curve-lin knob
@@ -34,13 +34,14 @@ include "machines/lib/manifest.fy"
   "FADE" "ATTACK"  "wind-atk" WindParams.atk 0.01 20.0 2.0 curve-exp knob
   "FADE" "RELEASE" "wind-rel" WindParams.rel 0.01 20.0 3.0 curve-exp knob
   "FADE" "GAIN"    "wind-gain" WindParams.gain 0.0 1.0 0.5 curve-pow knob as-fader
+  "FADE" "SEED"    "wind-seed" WindParams.seed 0.0 99.0 0.0 int-step
 
   "SPEED" 4 strip
   "SCENE" 5 strip
-  "FADE" 3 strip
+  "FADE" 4 strip
   0.0 row
     4.0 cell  "SPEED" 1.0 item
     5.0 cell  "SCENE" 1.0 item
-    3.0 cell  "FADE" 1.0 item
+    4.0 cell  "FADE" 1.0 item
   machine-desc
 ;

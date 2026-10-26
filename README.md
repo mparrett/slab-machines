@@ -51,6 +51,8 @@ Ambience (`ambience/`), synthesized beds to hold under a scene:
   plays; the note moves the whistles.
 - **`fire`**: a fireplace or campfire in stereo: random crackles and snaps
   over a flickering roar and hiss. TONE sets the distance.
+  On both, SEED picks the noise, so two instances on one song don't repeat
+  each other.
   `ambience/songs/fire_vs_storm.py` plays the two together: a fire catches,
   the storm recedes, and the fire gutters out.
 

@@ -82,6 +82,7 @@ ustruct: FireParams
   f64 atk
   f64 rel
   f64 gain
+  f64 seed       ( 0..99: which noise this instance plays; 0 as before )
   ( derived - block-prepare )
   f64 ka
   f64 kr
@@ -115,13 +116,13 @@ dsp: fire-block-prepare | ctx:Ctx state params:FireParams |
 ;
 
 ( ctx state params -- )
-dsp: fire-note-on | ctx:Ctx state:FireState params |
+dsp: fire-note-on | ctx:Ctx state:FireState params:FireParams |
   1.0 -> state.gate
-  state.rl&   ctx.chan 5.0 f* 11.0 f+  rand-seed-once
-  state.rr&   ctx.chan 5.0 f* 12.0 f+  rand-seed-once
-  state.rgl&  ctx.chan 5.0 f* 13.0 f+  rand-seed-once
-  state.rgr&  ctx.chan 5.0 f* 14.0 f+  rand-seed-once
-  state.re&   ctx.chan 5.0 f* 15.0 f+  rand-seed-once
+  state.rl&   ctx.chan 5.0 f* 11.0 f+ params.seed 101.0 f* f+  rand-seed-once
+  state.rr&   ctx.chan 5.0 f* 12.0 f+ params.seed 101.0 f* f+  rand-seed-once
+  state.rgl&  ctx.chan 5.0 f* 13.0 f+ params.seed 101.0 f* f+  rand-seed-once
+  state.rgr&  ctx.chan 5.0 f* 14.0 f+ params.seed 101.0 f* f+  rand-seed-once
+  state.re&   ctx.chan 5.0 f* 15.0 f+ params.seed 101.0 f* f+  rand-seed-once
 ;
 
 ( ctx state params -- )

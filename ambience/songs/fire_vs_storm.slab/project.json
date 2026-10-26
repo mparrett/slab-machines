@@ -259,7 +259,8 @@
      "wind-width": 0.7,
      "wind-atk": 4,
      "wind-rel": 4,
-     "wind-gain": 0.6
+     "wind-gain": 0.6,
+     "wind-seed": 1
     }
    },
    "effects": [],
