@@ -13,6 +13,15 @@ through its own gradient: g = 1 - smoothstep[r0, r1, d].
     suggestive  diffuse, with the deep fire [BED, softer pops] and a deep,
                 wide, quieter storm [RUMBLE, little whistle].
 
+The decision round, all diffuse, two hearth fires by two storms:
+
+    warm        softwood between the fixed fire and BED 0.5: BED 0.2, the
+                pops at full level but half as many [9 a second]
+    warmer      the same with BED 0.35
+    swell       the deep storm made present: deeper, slower swells and
+                gusts, so it reads as a storm rather than background
+    whistle     swell, with the whistle coming in on the gust peaks
+
     SLAB_DIR=path/to/slab python3 ambience/songs/fire_walk.py --way suggestive --render
 """
 import os
@@ -30,9 +39,14 @@ NARROW = (0.3, 0.45)
 # the storm opens from the first step, so it fills in as the fire recedes
 DIFFUSE = {"pops": (0.0, 0.35), "hiss": (0.05, 0.5), "fire": (0.15, 1.0), "storm": (0.0, 0.7)}
 
+# level trims in dB that put each fire at the hearth, and each storm in
+# the cold, where the other ways sit: -26 and about -20.5 LUFS
+TRIM = {"warm": -10.5, "warmer": -14.5, "swell": -22.0, "whistle": -22.0}
 FIRE = {
     "old": (dict(FUELS["softwood"], roar=0.4, hiss=0.4), 0.8),
     "deep": (dict(FUELS["softwood"], roar=0.4, hiss=0.4, bed=0.5, crackle=9, snap=0.22), 0.8 * 10 ** (-17 / 20)),
+    "warm": (dict(FUELS["softwood"], roar=0.4, hiss=0.4, bed=0.2, crackle=9), 0.8 * 10 ** (TRIM["warm"] / 20)),
+    "warmer": (dict(FUELS["softwood"], roar=0.4, hiss=0.4, bed=0.35, crackle=9), 0.8 * 10 ** (TRIM["warmer"] / 20)),
 }
 WIND = dict(speed=0.45, swing=0.5, rate=0.03, gust=1.4, width=0.9, atk=3, rel=4)
 STORM = {
@@ -43,9 +57,18 @@ STORM = {
     # one deep layer, steadier, with a trace of whistle
     "deep": [("STORM", 0.1, dict(WIND, speed=0.35, gust=0.6, air=0.35, whistle=0.12, doors=0.0, leaves=0.1,
                                   width=1.0, rumble=0.6, gain=1.0))],
+    # deeper swells and gusts; the whistle stays low, as W rarely peaks
+    "swell": [("STORM", 10 ** (TRIM["swell"] / 20), dict(WIND, speed=0.3, swing=0.9, rate=0.04, gust=1.3, air=0.4,
+                                                          whistle=0.15, doors=0.0, leaves=0.15, width=1.0,
+                                                          rumble=0.6, gain=1.0))],
+    # the same with the whistle up: W squared gates it, so it sings on peaks
+    "whistle": [("STORM", 10 ** (TRIM["whistle"] / 20), dict(WIND, speed=0.35, swing=0.9, rate=0.04, gust=1.3,
+                                                              air=0.4, whistle=1.0, doors=0.0, leaves=0.15,
+                                                              width=1.0, rumble=0.6, gain=1.0))],
 }
 WAYS = {"now": ("old", "literal", False), "diffuse": ("old", "literal", True),
         "suggestive": ("deep", "deep", True)}
+WAYS.update({f"{f}-{st}": (f, st, True) for f in ("warm", "warmer") for st in ("swell", "whistle")})
 
 
 def smooth(e0, e1, x):
@@ -92,7 +115,7 @@ def build_song(way):
         t.clip(bars=END // 4).note("C4", 0, END - 2, vel=100)
     # sheltered, the storm is 14 dB down and loses its top; it opens as the
     # fire's shelter fades.  The deep storm sits 4 dB under the literal one.
-    top = 1.0 if storm_kind == "literal" else 10 ** (-4 / 20)
+    top = 10 ** (-4 / 20) if storm_kind == "deep" else 1.0
     lane(storm, "volume", r("storm"), lambda g: top * 10 ** (-14 * g / 20))
     lane(storm, "fx0:eq-hs-db", r("storm"), lambda g: -16.0 * g)
     song.master(fx=[fx("limiter2", gain=3, ceil=-1)])
