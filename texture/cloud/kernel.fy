@@ -11,9 +11,11 @@
 
   A grain stores its start, speed, length and pan on launch, so knob moves
   shape new grains without moving sounding ones [kernels/07-effects/
-  buffer.fy, whose reader and grain envelope this reuses].  Grains are
-  placed so they never cross the file's ends.  The overlap is normalised
-  by its square root, as grains of a sustained sound add in power. )
+  buffer.fy, whose reader and grain envelope this reuses].  Grains never
+  cross the file's ends: a grain is shortened to fit a short file, and a
+  start past either end wraps round, as the head does, rather than
+  stacking at the edge.  The overlap is normalised by its square root, as
+  grains of a sustained sound add in power. )
 
 include "kernels/07-effects/buffer.fy"
 
@@ -76,9 +78,14 @@ dsp: cloud-note-off | ctx s:CloudState p |
 dsp: cg-grain | g:CgGrain s:CloudState p:CloudParams slot launch r1 r2 r3 r4 -- l r |
   p.src-len | len |
   s.rate  p.pitch r2 p.jitter f* f+ 12.0 f/ exp2 f*  p.base-rate f* | rate |
-  p.grain-n | gn |
+  p.grain-n  len 8.0 f- rate f/  fmin | gn |
   gn rate f* | span |
-  s.head  r1 p.spray f* len f*  f+  4.0  len span f- 4.0 f- 4.0 fmax  fclamp | start |
+  s.head  r1 p.spray f* len f*  f+ | x |
+  len span f- 4.0 f- 4.0 fmax | hi |
+  hi 4.0 f- 1.0 fmax | room |
+  x 4.0 f- | u |
+  u  u room f/ floor room f*  f-  4.0 f+ | wrapped |
+  x 4.0 f>=  x hi f<=  and  x wrapped select | start |
   r4 p.reverse f< | rev |
   launch s.next slot f= and | fire |
   fire  rev start span f+ start select  g.pos select -> g.pos
