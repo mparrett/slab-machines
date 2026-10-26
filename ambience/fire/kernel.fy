@@ -6,7 +6,11 @@
     crackle  short ticks at random, CRACKLE a second on average: noise
              through a band-pass of Q 1 at a random 1.5..16 kHz, under a
              ramp of 0..TICK ms [30 by default], squared; a short TICK
-             makes sharper, drier pops.  Broad and quiet: a ringing or
+             makes sharper, drier pops.  CLUMP gathers the ticks into
+             bursts [a burst runs about 0.25 s, 15% of the time] at the
+             same average rate: kindling, not hardwood.  SPREAD mixes
+             their sizes: most pops shrink and a few grow up to 5x,
+             longer and lower, as a split in resinous wood.  Broad and quiet: a ringing or
              low pop reads as a stick breaking, not a fire.  SNAP is
              their level.
     hiss     noise above 1 kHz, gated by 1 Hz low-passed noise raised to
@@ -39,6 +43,10 @@ ustruct: FireState
   f64 rgl
   f64 rgr
   f64 re
+  f64 rk         ( noise cell: bursts and pop sizes )
+  f64 act        ( 1 inside a burst )
+  f64 cal        ( each side's pop size )
+  f64 car
   f64 cel        ( crackle ramps and lengths in samples, band coefficients )
   f64 cer
   f64 cnl
@@ -85,6 +93,8 @@ ustruct: FireParams
   f64 gain
   f64 seed       ( 0..99: which noise this instance plays; 0 as before )
   f64 tick       ( longest crackle ramp, ms )
+  f64 clump      ( 0..1: ticks gathered into bursts )
+  f64 spread     ( 0..1: pop sizes from even to a few big ones )
   ( derived - block-prepare )
   f64 ka
   f64 kr
@@ -93,6 +103,8 @@ ustruct: FireParams
   f64 k1k
   f64 ktone
   f64 tick-s
+  f64 kon        ( per-sample chances a burst ends, starts )
+  f64 koff
   f64 g30        ( band-pass coefficients: 30, 1200, 2600, 600 Hz )
   f64 g1200
   f64 g2600
@@ -113,6 +125,9 @@ dsp: fire-block-prepare | ctx:Ctx state params:FireParams |
   1000.0 ctx.sr fire-k -> params.k1k
   params.tone ctx.sr fire-k -> params.ktone
   params.tick 1000.0 f/ -> params.tick-s
+  ( bursts last 0.25 s on average and fill 15% of the time )
+  ctx.inv-sr 0.25 f/ -> params.kon
+  ctx.inv-sr 0.25 f/ 0.15 f* 0.85 f/ -> params.koff
   30.0 ctx.sr svf-g -> params.g30
   1200.0 ctx.sr svf-g -> params.g1200
   2600.0 ctx.sr svf-g -> params.g2600
@@ -127,6 +142,7 @@ dsp: fire-note-on | ctx:Ctx state:FireState params:FireParams |
   state.rgl&  ctx.chan 5.0 f* 13.0 f+ params.seed 101.0 f* f+  rand-seed-once
   state.rgr&  ctx.chan 5.0 f* 14.0 f+ params.seed 101.0 f* f+  rand-seed-once
   state.re&   ctx.chan 5.0 f* 15.0 f+ params.seed 101.0 f* f+  rand-seed-once
+  state.rk&   ctx.chan 5.0 f* 16.0 f+ params.seed 101.0 f* f+  rand-seed-once
 ;
 
 ( ctx state params -- )
@@ -176,7 +192,13 @@ dsp: k-fire-voice | io:Io ctx:Ctx state:FireState params:FireParams -- |
   state.rr& rand-b | nr0 |
   nr0  nl nr0 f- 1.0 params.width f- f*  f+ | nr |
   ( crackle ticks, a side each: a new tick restarts the ramp )
-  params.crackle ctx.inv-sr f* | pchance |
+  ( bursts: a telegraph switching in and out; inside one the chance
+    rises by 1 / 0.15, so the average rate holds.  CLUMP 0 is the plain
+    rate, and the cell is separate so the ticks' draws are unchanged. )
+  state.rk& rand-u | uk |
+  state.act 0.5 f>  uk params.kon f< 0.0 1.0 select  uk params.koff f< 1.0 0.0 select  select -> state.act
+  1.0 params.clump f-  params.clump 6.666666666666667 f* state.act f*  f+ | burst |
+  params.crackle ctx.inv-sr f*  burst f* | pchance |
   state.re& rand-u | ul |
   state.re& rand-u | ur |
   state.re& rand-u | ua |
@@ -186,16 +208,30 @@ dsp: k-fire-voice | io:Io ctx:Ctx state:FireState params:FireParams -- |
   ( a 1.5..16 kHz centre and a 0..TICK ms ramp, as Farnell's random 30 )
   ua 14500.0 f* 1500.0 f+  ctx.sr 0.45 f* fmin | fa |
   ub params.tick-s f* ctx.sr f* 1.0 fmax | la |
-  popl  la  state.cnl  select -> state.cnl
-  popl  la  state.cel 1.0 f- 0.0 fmax  select -> state.cel
-  popl  fa ctx.sr svf-g  state.cgl  select -> state.cgl
-  popr  la  state.cnr  select -> state.cnr
-  popr  la  state.cer 1.0 f- 0.0 fmax  select -> state.cer
-  popr  fa 0.8 f* ctx.sr svf-g  state.cgr  select -> state.cgr
+  ( sizes: 5 u^4 has mean 1, so SPREAD keeps the average pop; the big
+    ones run up to twice as long and 60% lower, all exactly 1 at 0 )
+  state.rk& rand-u | usl |
+  state.rk& rand-u | usr |
+  1.0 params.spread f-  usl usl f* usl f* usl f* 5.0 f* params.spread f*  f+ | al |
+  1.0 params.spread f-  usr usr f* usr f* usr f* 5.0 f* params.spread f*  f+ | ar |
+  al 1.0 f- 0.25 f* 0.0 fmax | bigl |
+  ar 1.0 f- 0.25 f* 0.0 fmax | bigr |
+  la 1.0 bigl f+ f* | lal |
+  la 1.0 bigr f+ f* | lar |
+  fa 1.0 bigl 0.6 f* f- f* | fal |
+  fa 1.0 bigr 0.6 f* f- f* | far |
+  popl  al  state.cal  select -> state.cal
+  popr  ar  state.car  select -> state.car
+  popl  lal  state.cnl  select -> state.cnl
+  popl  lal  state.cel 1.0 f- 0.0 fmax  select -> state.cel
+  popl  fal ctx.sr svf-g  state.cgl  select -> state.cgl
+  popr  lar  state.cnr  select -> state.cnr
+  popr  lar  state.cer 1.0 f- 0.0 fmax  select -> state.cer
+  popr  far 0.8 f* ctx.sr svf-g  state.cgr  select -> state.cgr
   state.cel state.cnl fire-env | el |
   state.cer state.cnr fire-env | er |
-  state.cl1& state.cl2& nl state.cgl 0.5 fire-bp  el f* | cl |
-  state.cr1& state.cr2& nr state.cgr 0.5 fire-bp  er f* | cr |
+  state.cl1& state.cl2& nl state.cgl 0.5 fire-bp  el f* state.cal f* | cl |
+  state.cr1& state.cr2& nr state.cgr 0.5 fire-bp  er f* state.car f* | cr |
   ( hiss: a 1 kHz high-pass, gated by a 1 Hz low-pass of noise to the
     fourth power.  Farnell's x10 and x600 assume Pd's scale; here the gate
     is normalised to unit spread first, sqrt[k / 6] for uniform noise. )
