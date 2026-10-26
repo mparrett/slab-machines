@@ -1,5 +1,5 @@
 """Shimmer bend: the shimmer's BEND knob gliding a tail across intervals.
-The open D chord from the shimmer study [D, A, E, A] holds for four bars
+The open D chord from the shimmer study [D, A, E, A] holds for three bars
 through SHIMMER octave-bloom with AMOUNT up; BEND then rises from +12 to
 +19 over six bars and falls to +5 over the next six, while the chord
 plays again at the turn.
@@ -7,7 +7,7 @@ plays again at the turn.
     0:00   chord, the tail climbing in octaves
     0:10   BEND rising: the tail slides up to an octave and a fifth
     0:25   chord again; BEND falling to a fourth
-    0:40   BEND back at 0, the tail fades
+    0:40   BEND gliding back to 0 by 0:42.5; the tail fades
 
 D, 3/4 at 72 BPM.
 

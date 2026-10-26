@@ -21,8 +21,10 @@
   sum to 1 at every sample.
 
   FREEZE sets every line's gain to 1 and its damping off, mutes the
-  input and the return: the Hadamard is orthonormal, so the tank then
-  holds what it has indefinitely.
+  input and the return, and stops the tank LFO with lines 1 and 6 read at
+  whole samples, since a fractional read loses top end every pass: the
+  Hadamard is orthonormal, so the tank then holds what it has
+  indefinitely.
 
   One packed buffer, sized for SIZE 2.0 at 96 kHz:
     region  offset  cap         region  offset  cap
@@ -129,12 +131,15 @@ dsp: shim-block-prepare
   params.diff 0.6 f* -> params.ap-g
   fz 0.0 1.0 select -> params.in-g
   ( 0.7: at AMOUNT 1 and DECAY 20 s a chord blooms about 3 dB over the
-    plain hall instead of 6, and stays under full scale )
-  fz 0.0 params.amount 0.7 f* select -> params.fb-g
+    plain hall instead of 6, and stays under full scale.  The tank's gain
+    grows about as sqrt(DECAY), so past 20 s the return shrinks to match
+    and the cascade can't run away. )
+  20.0 rt f/ fsqrt 1.0 fmin | fb-cap |
+  fz 0.0 params.amount 0.7 f* fb-cap f* select -> params.fb-g
   params.win-s sr f* 64.0 PS-CAP 4.0 f- fclamp floor | w |
   w -> params.ps-w
   params.semis params.bend f+ 0.083333333333333 f* exp2 1.0 f- w f/ -> params.ps-inc
-  params.mod-rate 6.2831853 f* sr f/ -> params.mod-k
+  fz 0.0 params.mod-rate 6.2831853 f* sr f/ select -> params.mod-k
   params.mod-depth fs f* -> params.mod-spl
 ;
 
@@ -292,8 +297,11 @@ dsp: k-shim-tick | io:Io ctx state:ShimState params:ShimParams -- |
   state.lfo-c params.mod-k ls f* f- | lc |
   ls -> state.lfo-s
   lc -> state.lfo-c
-  ls 1.0 f+ 0.5 f* params.mod-spl f* | ma |
-  lc 1.0 f+ 0.5 f* params.mod-spl f* | mb |
+  ls 1.0 f+ 0.5 f* params.mod-spl f* | ma0 |
+  lc 1.0 f+ 0.5 f* params.mod-spl f* | mb0 |
+  params.freeze 0.5 f> | fz |
+  fz ma0 floor ma0 select | ma |
+  fz mb0 floor mb0 select | mb |
   state params buf ul ur shm-diffuse | il ir |
   state params buf il ir ma mb shm-fdn | wl wr |
   state params buf wl wr shm-shift | pl pr |
