@@ -32,6 +32,9 @@
              noises, one a side, low-passed twice at 150 Hz and high-passed
              at 25, breathing by a 0.2 Hz noise [about 1.5 dB].  It skips
              the body filters.
+    lap      LAP: the clipped lapping, which the body filters reduce to a
+             flutter, let past them in mono and low-passed at 400 Hz: the
+             woof of burning gas, so the low end reads as flame, not air.
     tone     a final low-pass, the distance knob: far fires lose their
              top first.
     fades    ATTACK and RELEASE in seconds: a fire catching, a fire
@@ -91,6 +94,7 @@ ustruct: FireState
   f64 dr1
   f64 dr2
   f64 drh
+  f64 lpm        ( lap low-pass )
   f64 tl         ( tone low-pass, a side )
   f64 tr
 ;
@@ -121,6 +125,8 @@ ustruct: FireParams
   f64 kon        ( per-sample chances a burst ends, starts )
   f64 koff
   f64 bed        ( the low body's level )
+  f64 lap        ( the lapping past the body filters )
+  f64 k400
   f64 patk       ( pop rise, samples )
   f64 k150
   f64 kbr        ( breath low-pass and its normaliser )
@@ -154,6 +160,7 @@ dsp: fire-block-prepare | ctx:Ctx state params:FireParams |
   600.0 ctx.sr svf-g -> params.g600
   0.0007 ctx.sr f* -> params.patk
   150.0 ctx.sr fire-k -> params.k150
+  400.0 ctx.sr fire-k -> params.k400
   0.2 ctx.sr fire-k -> params.kbr
   ( a one-pole passes uniform noise with spread sqrt[k / 6] )
   params.kbr 6.0 f/ fsqrt -> params.nbr
@@ -303,8 +310,9 @@ dsp: k-fire-voice | io:Io ctx:Ctx state:FireState params:FireParams -- |
   state.dr1& nr0 params.k150 fire-lp | dra |
   state.dr2& dra params.k150 fire-lp | drb |
   state.drh& drb params.k25 fire-hp  bg f* | bedr |
-  b1 b2 f+ 0.4 f*  bedl f+ | yl0 |
-  b3 b4 f+ 0.4 f*  bedr f+ | yr0 |
+  state.lpm& lapl lapr f+ 0.5 f* params.k400 fire-lp  params.lap f* 4.0 f* | lapm |
+  b1 b2 f+ 0.4 f*  bedl f+  lapm f+ | yl0 |
+  b3 b4 f+ 0.4 f*  bedr f+  lapm f+ | yr0 |
   state.tl& yl0 params.ktone fire-lp | yl |
   state.tr& yr0 params.ktone fire-lp | yr |
   env params.gain f* | g |

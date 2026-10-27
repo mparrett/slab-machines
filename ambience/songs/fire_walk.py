@@ -30,6 +30,14 @@ as short faint ticks over a thin bed read as scratching in dirt.
     hiss-4      thick with HISS 4 dB down [0.25]
     hiss-8      thick with HISS 8 dB down [0.16]
 
+The flavour round, on hiss-4 over the whistle storm:
+
+    lap         + LAP: the flame's clipped lapping past the body filters,
+                mono, so the low end woofs like burning gas
+    room        + a small room on the fire, which thickens each pop and
+                places it
+    lap-room    both
+
     SLAB_DIR=path/to/slab python3 ambience/songs/fire_walk.py --way suggestive --render
 """
 import os
@@ -49,7 +57,7 @@ DIFFUSE = {"pops": (0.0, 0.35), "hiss": (0.05, 0.5), "fire": (0.15, 1.0), "storm
 
 # level trims in dB that put each fire at the hearth, and each storm in
 # the cold, where the other ways sit: -26 and about -20.5 LUFS
-TRIM = {"warm": -10.5, "warmer": -14.5, "thick": -16.0, "even": -16.0, "hiss-4": -16.0, "hiss-8": -16.0, "swell": -22.0, "whistle": -22.0}
+TRIM = {"warm": -10.5, "warmer": -14.5, "thick": -16.0, "even": -16.0, "hiss-4": -16.0, "hiss-8": -16.0, "lap": -17.3, "room": -14.5, "lap-room": -15.8, "swell": -22.0, "whistle": -22.0}
 FIRE = {
     "old": (dict(FUELS["softwood"], roar=0.4, hiss=0.4), 0.8),
     "deep": (dict(FUELS["softwood"], roar=0.4, hiss=0.4, bed=0.5, crackle=9, snap=0.22), 0.8 * 10 ** (-17 / 20)),
@@ -64,6 +72,13 @@ FIRE = {
     "hiss-8": (dict(FUELS["softwood"], roar=0.4, hiss=0.16, bed=0.45, crackle=9, tick=70, spread=0.4),
                0.8 * 10 ** (TRIM["hiss-8"] / 20)),
 }
+HISS4 = dict(FUELS["softwood"], roar=0.4, hiss=0.25, bed=0.45, crackle=9, tick=70, spread=0.4)
+FIRE.update({
+    "lap": (dict(HISS4, lap=0.35), 0.8 * 10 ** (TRIM["lap"] / 20)),
+    "room": (dict(HISS4), 0.8 * 10 ** (TRIM["room"] / 20)),
+    "lap-room": (dict(HISS4, lap=0.35), 0.8 * 10 ** (TRIM["lap-room"] / 20)),
+})
+ROOM = {"room", "lap-room"}
 WIND = dict(speed=0.45, swing=0.5, rate=0.03, gust=1.4, width=0.9, atk=3, rel=4)
 STORM = {
     # fire_vs_storm's two layers, as the game has them
@@ -85,7 +100,7 @@ STORM = {
 WAYS = {"now": ("old", "literal", False), "diffuse": ("old", "literal", True),
         "suggestive": ("deep", "deep", True)}
 WAYS.update({f"{f}-{st}": (f, st, True) for f in ("warm", "warmer") for st in ("swell", "whistle")})
-WAYS.update({f"{f}-whistle": (f, "whistle", True) for f in ("thick", "even", "hiss-4", "hiss-8")})
+WAYS.update({f"{f}-whistle": (f, "whistle", True) for f in ("thick", "even", "hiss-4", "hiss-8", "lap", "room", "lap-room")})
 
 
 def smooth(e0, e1, x):
@@ -117,7 +132,8 @@ def build_song(way):
 
     params, vol = FIRE[fire_kind]
     fire = song.track("FIRE", "fire", volume=vol, params=dict(
-        flicker=0.5, tone=16000, width=0.6, atk=1.5, rel=2, gain=0.6, **params))
+        flicker=0.5, tone=16000, width=0.6, atk=1.5, rel=2, gain=0.6, **params),
+        fx=[fx("verb2", "small-room", mix=0.2, lowcut=300)] if fire_kind in ROOM else [])
     fire.clip(bars=END // 4).note("C4", 0, END - 2, vel=100)
     snap, hiss = params["snap"], params["hiss"]
     lane(fire, "snap", r("pops"), lambda g: snap * g)
