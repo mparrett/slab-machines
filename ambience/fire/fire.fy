@@ -24,7 +24,7 @@ include "machines/lib/manifest.fy"
 
   "POPS" "CRACKLE" "fire-crackle" FireParams.crackle 0.5 200.0 25.0 curve-exp knob
   "POPS" "SNAP"    "fire-snap"    FireParams.snap    0.0 1.0 0.4 curve-lin knob
-  "POPS" "TICK"    "fire-tick"    FireParams.tick    1.0 30.0 30.0 curve-exp knob
+  "POPS" "TICK"    "fire-tick"    FireParams.tick    1.0 100.0 30.0 curve-exp knob
   "POPS" "CLUMP"   "fire-clump"   FireParams.clump   0.0 1.0 0.0 curve-lin knob
   "POPS" "SPREAD"  "fire-spread"  FireParams.spread  0.0 1.0 0.0 curve-lin knob
 
