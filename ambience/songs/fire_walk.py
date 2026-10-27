@@ -27,6 +27,8 @@ as short faint ticks over a thin bed read as scratching in dirt.
 
     thick       BED 0.45, TICK 70 ms, SPREAD 0.4, 9 pops a second
     even        thick with SPREAD 0.1: hardly any small ticks
+    hiss-4      thick with HISS 4 dB down [0.25]
+    hiss-8      thick with HISS 8 dB down [0.16]
 
     SLAB_DIR=path/to/slab python3 ambience/songs/fire_walk.py --way suggestive --render
 """
@@ -47,7 +49,7 @@ DIFFUSE = {"pops": (0.0, 0.35), "hiss": (0.05, 0.5), "fire": (0.15, 1.0), "storm
 
 # level trims in dB that put each fire at the hearth, and each storm in
 # the cold, where the other ways sit: -26 and about -20.5 LUFS
-TRIM = {"warm": -10.5, "warmer": -14.5, "thick": -16.0, "even": -16.0, "swell": -22.0, "whistle": -22.0}
+TRIM = {"warm": -10.5, "warmer": -14.5, "thick": -16.0, "even": -16.0, "hiss-4": -16.0, "hiss-8": -16.0, "swell": -22.0, "whistle": -22.0}
 FIRE = {
     "old": (dict(FUELS["softwood"], roar=0.4, hiss=0.4), 0.8),
     "deep": (dict(FUELS["softwood"], roar=0.4, hiss=0.4, bed=0.5, crackle=9, snap=0.22), 0.8 * 10 ** (-17 / 20)),
@@ -57,6 +59,10 @@ FIRE = {
               0.8 * 10 ** (TRIM["thick"] / 20)),
     "even": (dict(FUELS["softwood"], roar=0.4, hiss=0.4, bed=0.45, crackle=9, tick=70, spread=0.1),
              0.8 * 10 ** (TRIM["even"] / 20)),
+    "hiss-4": (dict(FUELS["softwood"], roar=0.4, hiss=0.25, bed=0.45, crackle=9, tick=70, spread=0.4),
+               0.8 * 10 ** (TRIM["hiss-4"] / 20)),
+    "hiss-8": (dict(FUELS["softwood"], roar=0.4, hiss=0.16, bed=0.45, crackle=9, tick=70, spread=0.4),
+               0.8 * 10 ** (TRIM["hiss-8"] / 20)),
 }
 WIND = dict(speed=0.45, swing=0.5, rate=0.03, gust=1.4, width=0.9, atk=3, rel=4)
 STORM = {
@@ -79,7 +85,7 @@ STORM = {
 WAYS = {"now": ("old", "literal", False), "diffuse": ("old", "literal", True),
         "suggestive": ("deep", "deep", True)}
 WAYS.update({f"{f}-{st}": (f, st, True) for f in ("warm", "warmer") for st in ("swell", "whistle")})
-WAYS.update({f"{f}-whistle": (f, "whistle", True) for f in ("thick", "even")})
+WAYS.update({f"{f}-whistle": (f, "whistle", True) for f in ("thick", "even", "hiss-4", "hiss-8")})
 
 
 def smooth(e0, e1, x):
