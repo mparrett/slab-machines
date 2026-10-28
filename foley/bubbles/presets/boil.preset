@@ -1,0 +1,1 @@
+{"slab": "preset", "schema": 1, "machine": "bubbles", "note": "A pot at a rolling boil, behind a lid", "params": {"bb-rate": 80, "bb-size": 5.0, "bb-spread": 0.7, "bb-rise": 0.2, "bb-clump": 0.8, "bb-tone": 6000}}

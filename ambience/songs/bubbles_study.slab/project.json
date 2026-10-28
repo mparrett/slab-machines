@@ -1,0 +1,352 @@
+{
+ "slab": "project",
+ "schema": 1,
+ "transport": {
+  "bpm": 60.0,
+  "loop": {
+   "on": false,
+   "start": 0.0,
+   "end": 40.0
+  }
+ },
+ "meter": [
+  {
+   "bar": 0,
+   "num": 4,
+   "den": 4
+  }
+ ],
+ "sections": [
+  {
+   "beat": 0.0,
+   "name": "drip",
+   "color": 4
+  },
+  {
+   "beat": 8.0,
+   "name": "trickle",
+   "color": 5
+  },
+  {
+   "beat": 16.0,
+   "name": "pour",
+   "color": 6
+  },
+  {
+   "beat": 24.0,
+   "name": "boil",
+   "color": 7
+  },
+  {
+   "beat": 32.0,
+   "name": "mud",
+   "color": 8
+  }
+ ],
+ "end": 40.0,
+ "tracks": [
+  {
+   "name": "ROOM",
+   "kind": "bus",
+   "color": [
+    230,
+    90,
+    120
+   ],
+   "volume": 1.0,
+   "pan": 0.0,
+   "mute": false,
+   "solo": false,
+   "instrument": null,
+   "effects": [
+    {
+     "machine": "verb2",
+     "params": {
+      "verb-predelay": 0.045,
+      "verb-decay": 1.0,
+      "verb-damp": 2600,
+      "verb-tone": 6500,
+      "verb-mix": 1.0,
+      "verb-mod": 12,
+      "verb-algo": 2,
+      "verb-size": 1.25,
+      "verb-early": 0.35,
+      "verb-bass": 1.3,
+      "verb-xover": 350
+     },
+     "bypass": false,
+     "preset": "big-hall"
+    }
+   ],
+   "clips": []
+  },
+  {
+   "name": "DRIP",
+   "color": [
+    64,
+    206,
+    174
+   ],
+   "volume": 0.7,
+   "pan": 0.0,
+   "mute": false,
+   "solo": false,
+   "instrument": {
+    "machine": "bubbles",
+    "params": {
+     "bb-rate": 1.5,
+     "bb-size": 4.0,
+     "bb-spread": 0.2,
+     "bb-rise": 0.9,
+     "bb-ring": 1.5,
+     "bb-gain": 1.0
+    },
+    "preset": "drip"
+   },
+   "effects": [],
+   "clips": [
+    {
+     "type": "note",
+     "name": "drip",
+     "start": 0.0,
+     "len": 8.0,
+     "notes": [
+      {
+       "pitch": 60,
+       "start": 0.0,
+       "len": 6.0,
+       "vel": 100
+      }
+     ]
+    }
+   ],
+   "sends": [
+    {
+     "to": 0,
+     "level": 0.15848931924611134,
+     "pre": false
+    }
+   ]
+  },
+  {
+   "name": "TRICKLE",
+   "color": [
+    150,
+    110,
+    230
+   ],
+   "volume": 0.7,
+   "pan": 0.0,
+   "mute": false,
+   "solo": false,
+   "instrument": {
+    "machine": "bubbles",
+    "params": {
+     "bb-rate": 40,
+     "bb-size": 1.5,
+     "bb-spread": 0.6,
+     "bb-rise": 0.4
+    },
+    "preset": "trickle"
+   },
+   "effects": [],
+   "clips": [
+    {
+     "type": "note",
+     "name": "trickle",
+     "start": 8.0,
+     "len": 8.0,
+     "notes": [
+      {
+       "pitch": 60,
+       "start": 0.0,
+       "len": 6.0,
+       "vel": 100
+      }
+     ]
+    }
+   ],
+   "sends": [
+    {
+     "to": 0,
+     "level": 0.15848931924611134,
+     "pre": false
+    }
+   ]
+  },
+  {
+   "name": "POUR",
+   "color": [
+    250,
+    190,
+    80
+   ],
+   "volume": 0.7,
+   "pan": 0.0,
+   "mute": false,
+   "solo": false,
+   "instrument": {
+    "machine": "bubbles",
+    "params": {
+     "bb-rate": 300,
+     "bb-size": 2.0,
+     "bb-spread": 0.8,
+     "bb-rise": 0.3,
+     "bb-clump": 0.2
+    },
+    "preset": "pour"
+   },
+   "effects": [],
+   "clips": [
+    {
+     "type": "note",
+     "name": "pour",
+     "start": 16.0,
+     "len": 8.0,
+     "notes": [
+      {
+       "pitch": 60,
+       "start": 0.0,
+       "len": 6.0,
+       "vel": 100
+      }
+     ],
+     "automation": [
+      {
+       "target": "inst:bb-size",
+       "points": [
+        [
+         1,
+         2.0
+        ],
+        [
+         6,
+         0.8
+        ]
+       ]
+      }
+     ]
+    }
+   ],
+   "sends": [
+    {
+     "to": 0,
+     "level": 0.15848931924611134,
+     "pre": false
+    }
+   ]
+  },
+  {
+   "name": "BOIL",
+   "color": [
+    90,
+    170,
+    250
+   ],
+   "volume": 0.7,
+   "pan": 0.0,
+   "mute": false,
+   "solo": false,
+   "instrument": {
+    "machine": "bubbles",
+    "params": {
+     "bb-rate": 80,
+     "bb-size": 5.0,
+     "bb-spread": 0.7,
+     "bb-rise": 0.2,
+     "bb-clump": 0.8,
+     "bb-tone": 6000
+    },
+    "preset": "boil"
+   },
+   "effects": [],
+   "clips": [
+    {
+     "type": "note",
+     "name": "boil",
+     "start": 24.0,
+     "len": 8.0,
+     "notes": [
+      {
+       "pitch": 60,
+       "start": 0.0,
+       "len": 6.0,
+       "vel": 100
+      }
+     ]
+    }
+   ],
+   "sends": [
+    {
+     "to": 0,
+     "level": 0.15848931924611134,
+     "pre": false
+    }
+   ]
+  },
+  {
+   "name": "MUD",
+   "color": [
+    240,
+    130,
+    70
+   ],
+   "volume": 0.7,
+   "pan": 0.0,
+   "mute": false,
+   "solo": false,
+   "instrument": {
+    "machine": "bubbles",
+    "params": {
+     "bb-rate": 4,
+     "bb-size": 12.0,
+     "bb-spread": 0.5,
+     "bb-rise": 0.1,
+     "bb-ring": 0.5,
+     "bb-tone": 1500,
+     "bb-gain": 1.0
+    },
+    "preset": "mud"
+   },
+   "effects": [],
+   "clips": [
+    {
+     "type": "note",
+     "name": "mud",
+     "start": 32.0,
+     "len": 8.0,
+     "notes": [
+      {
+       "pitch": 60,
+       "start": 0.0,
+       "len": 6.0,
+       "vel": 100
+      }
+     ]
+    }
+   ],
+   "sends": [
+    {
+     "to": 0,
+     "level": 0.15848931924611134,
+     "pre": false
+    }
+   ]
+  }
+ ],
+ "master": {
+  "volume": 1.0,
+  "pan": 0.0,
+  "subsonic": false,
+  "effects": [
+   {
+    "machine": "limiter2",
+    "params": {
+     "lim-gain": 0,
+     "lim-ceil": -1
+    },
+    "bypass": false
+   }
+  ]
+ }
+}
