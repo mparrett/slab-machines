@@ -1,0 +1,716 @@
+{
+ "slab": "project",
+ "schema": 1,
+ "transport": {
+  "bpm": 60.0,
+  "loop": {
+   "on": false,
+   "start": 0.0,
+   "end": 80.0
+  }
+ },
+ "meter": [
+  {
+   "bar": 0,
+   "num": 4,
+   "den": 4
+  }
+ ],
+ "sections": [
+  {
+   "beat": 0.0,
+   "name": "wood-knock",
+   "color": 4
+  },
+  {
+   "beat": 8.0,
+   "name": "stone-tap",
+   "color": 5
+  },
+  {
+   "beat": 16.0,
+   "name": "iron-plate",
+   "color": 6
+  },
+  {
+   "beat": 24.0,
+   "name": "ice-ring",
+   "color": 7
+  },
+  {
+   "beat": 32.0,
+   "name": "hide-drum",
+   "color": 8
+  },
+  {
+   "beat": 40.0,
+   "name": "dropped-pan",
+   "color": 9
+  },
+  {
+   "beat": 48.0,
+   "name": "cart-roll",
+   "color": 10
+  },
+  {
+   "beat": 56.0,
+   "name": "metal-scrape",
+   "color": 11
+  },
+  {
+   "beat": 64.0,
+   "name": "door-creak",
+   "color": 0
+  },
+  {
+   "beat": 72.0,
+   "name": "glass-squeal",
+   "color": 1
+  }
+ ],
+ "end": 80.0,
+ "tracks": [
+  {
+   "name": "ROOM",
+   "kind": "bus",
+   "color": [
+    230,
+    90,
+    120
+   ],
+   "volume": 1.0,
+   "pan": 0.0,
+   "mute": false,
+   "solo": false,
+   "instrument": null,
+   "effects": [
+    {
+     "machine": "verb2",
+     "params": {
+      "verb-predelay": 0.045,
+      "verb-decay": 1.2,
+      "verb-damp": 2600,
+      "verb-tone": 6500,
+      "verb-mix": 1.0,
+      "verb-mod": 12,
+      "verb-algo": 2,
+      "verb-size": 1.25,
+      "verb-early": 0.35,
+      "verb-bass": 1.3,
+      "verb-xover": 350
+     },
+     "bypass": false,
+     "preset": "big-hall"
+    }
+   ],
+   "clips": []
+  },
+  {
+   "name": "WOOD-KNOCK",
+   "color": [
+    64,
+    206,
+    174
+   ],
+   "volume": 0.7,
+   "pan": 0.0,
+   "mute": false,
+   "solo": false,
+   "instrument": {
+    "machine": "modal",
+    "params": {
+     "md-material": 0,
+     "md-size": 1.0,
+     "md-hard": 0.55,
+     "md-pos": 0.22
+    },
+    "preset": "wood-knock"
+   },
+   "effects": [],
+   "clips": [
+    {
+     "type": "note",
+     "name": "wood-knock",
+     "start": 0.0,
+     "len": 8.0,
+     "notes": [
+      {
+       "pitch": 60,
+       "start": 0.0,
+       "len": 0.25,
+       "vel": 50
+      },
+      {
+       "pitch": 60,
+       "start": 1.0,
+       "len": 0.25,
+       "vel": 80
+      },
+      {
+       "pitch": 55,
+       "start": 2.0,
+       "len": 0.25,
+       "vel": 100
+      },
+      {
+       "pitch": 60,
+       "start": 2.5,
+       "len": 0.25,
+       "vel": 70
+      },
+      {
+       "pitch": 55,
+       "start": 4.0,
+       "len": 0.25,
+       "vel": 120
+      }
+     ]
+    }
+   ],
+   "sends": [
+    {
+     "to": 0,
+     "level": 0.19952623149688797,
+     "pre": false
+    }
+   ]
+  },
+  {
+   "name": "STONE-TAP",
+   "color": [
+    150,
+    110,
+    230
+   ],
+   "volume": 0.7,
+   "pan": 0.0,
+   "mute": false,
+   "solo": false,
+   "instrument": {
+    "machine": "modal",
+    "params": {
+     "md-material": 1,
+     "md-size": 1.0,
+     "md-hard": 0.85,
+     "md-pos": 0.3
+    },
+    "preset": "stone-tap"
+   },
+   "effects": [],
+   "clips": [
+    {
+     "type": "note",
+     "name": "stone-tap",
+     "start": 8.0,
+     "len": 8.0,
+     "notes": [
+      {
+       "pitch": 60,
+       "start": 0.0,
+       "len": 0.25,
+       "vel": 50
+      },
+      {
+       "pitch": 60,
+       "start": 1.0,
+       "len": 0.25,
+       "vel": 80
+      },
+      {
+       "pitch": 55,
+       "start": 2.0,
+       "len": 0.25,
+       "vel": 100
+      },
+      {
+       "pitch": 60,
+       "start": 2.5,
+       "len": 0.25,
+       "vel": 70
+      },
+      {
+       "pitch": 55,
+       "start": 4.0,
+       "len": 0.25,
+       "vel": 120
+      }
+     ]
+    }
+   ],
+   "sends": [
+    {
+     "to": 0,
+     "level": 0.19952623149688797,
+     "pre": false
+    }
+   ]
+  },
+  {
+   "name": "IRON-PLATE",
+   "color": [
+    250,
+    190,
+    80
+   ],
+   "volume": 0.7,
+   "pan": 0.0,
+   "mute": false,
+   "solo": false,
+   "instrument": {
+    "machine": "modal",
+    "params": {
+     "md-material": 2,
+     "md-size": 1.0,
+     "md-hard": 0.7,
+     "md-pos": 0.3,
+     "md-decay": 1.5
+    },
+    "preset": "iron-plate"
+   },
+   "effects": [],
+   "clips": [
+    {
+     "type": "note",
+     "name": "iron-plate",
+     "start": 16.0,
+     "len": 8.0,
+     "notes": [
+      {
+       "pitch": 60,
+       "start": 0.0,
+       "len": 0.25,
+       "vel": 50
+      },
+      {
+       "pitch": 60,
+       "start": 1.0,
+       "len": 0.25,
+       "vel": 80
+      },
+      {
+       "pitch": 55,
+       "start": 2.0,
+       "len": 0.25,
+       "vel": 100
+      },
+      {
+       "pitch": 60,
+       "start": 2.5,
+       "len": 0.25,
+       "vel": 70
+      },
+      {
+       "pitch": 55,
+       "start": 4.0,
+       "len": 0.25,
+       "vel": 120
+      }
+     ]
+    }
+   ],
+   "sends": [
+    {
+     "to": 0,
+     "level": 0.19952623149688797,
+     "pre": false
+    }
+   ]
+  },
+  {
+   "name": "ICE-RING",
+   "color": [
+    90,
+    170,
+    250
+   ],
+   "volume": 0.7,
+   "pan": 0.0,
+   "mute": false,
+   "solo": false,
+   "instrument": {
+    "machine": "modal",
+    "params": {
+     "md-material": 3,
+     "md-size": 1.0,
+     "md-hard": 0.9,
+     "md-pos": 0.25,
+     "md-vary": 0.5
+    },
+    "preset": "ice-ring"
+   },
+   "effects": [],
+   "clips": [
+    {
+     "type": "note",
+     "name": "ice-ring",
+     "start": 24.0,
+     "len": 8.0,
+     "notes": [
+      {
+       "pitch": 60,
+       "start": 0.0,
+       "len": 0.25,
+       "vel": 50
+      },
+      {
+       "pitch": 60,
+       "start": 1.0,
+       "len": 0.25,
+       "vel": 80
+      },
+      {
+       "pitch": 55,
+       "start": 2.0,
+       "len": 0.25,
+       "vel": 100
+      },
+      {
+       "pitch": 60,
+       "start": 2.5,
+       "len": 0.25,
+       "vel": 70
+      },
+      {
+       "pitch": 55,
+       "start": 4.0,
+       "len": 0.25,
+       "vel": 120
+      }
+     ]
+    }
+   ],
+   "sends": [
+    {
+     "to": 0,
+     "level": 0.19952623149688797,
+     "pre": false
+    }
+   ]
+  },
+  {
+   "name": "HIDE-DRUM",
+   "color": [
+    240,
+    130,
+    70
+   ],
+   "volume": 0.7,
+   "pan": 0.0,
+   "mute": false,
+   "solo": false,
+   "instrument": {
+    "machine": "modal",
+    "params": {
+     "md-material": 4,
+     "md-size": 1.0,
+     "md-hard": 0.3,
+     "md-pos": 0.15,
+     "md-drop": 0.5
+    },
+    "preset": "hide-drum"
+   },
+   "effects": [],
+   "clips": [
+    {
+     "type": "note",
+     "name": "hide-drum",
+     "start": 32.0,
+     "len": 8.0,
+     "notes": [
+      {
+       "pitch": 60,
+       "start": 0.0,
+       "len": 0.25,
+       "vel": 50
+      },
+      {
+       "pitch": 60,
+       "start": 1.0,
+       "len": 0.25,
+       "vel": 80
+      },
+      {
+       "pitch": 55,
+       "start": 2.0,
+       "len": 0.25,
+       "vel": 100
+      },
+      {
+       "pitch": 60,
+       "start": 2.5,
+       "len": 0.25,
+       "vel": 70
+      },
+      {
+       "pitch": 55,
+       "start": 4.0,
+       "len": 0.25,
+       "vel": 120
+      }
+     ]
+    }
+   ],
+   "sends": [
+    {
+     "to": 0,
+     "level": 0.19952623149688797,
+     "pre": false
+    }
+   ]
+  },
+  {
+   "name": "DROPPED-PAN",
+   "color": [
+    120,
+    200,
+    90
+   ],
+   "volume": 0.7,
+   "pan": 0.0,
+   "mute": false,
+   "solo": false,
+   "instrument": {
+    "machine": "modal",
+    "params": {
+     "md-material": 2,
+     "md-size": 1.5,
+     "md-hard": 0.8,
+     "md-pos": 0.2,
+     "md-bounce": 0.6,
+     "md-drop": 0.3,
+     "md-rattle": 0.3
+    },
+    "preset": "dropped-pan"
+   },
+   "effects": [],
+   "clips": [
+    {
+     "type": "note",
+     "name": "dropped-pan",
+     "start": 40.0,
+     "len": 8.0,
+     "notes": [
+      {
+       "pitch": 60,
+       "start": 0.5,
+       "len": 0.25,
+       "vel": 110
+      }
+     ]
+    }
+   ],
+   "sends": [
+    {
+     "to": 0,
+     "level": 0.19952623149688797,
+     "pre": false
+    }
+   ]
+  },
+  {
+   "name": "CART-ROLL",
+   "color": [
+    210,
+    120,
+    200
+   ],
+   "volume": 0.7,
+   "pan": 0.0,
+   "mute": false,
+   "solo": false,
+   "instrument": {
+    "machine": "modal",
+    "params": {
+     "md-material": 0,
+     "md-size": 0.5,
+     "md-excite": 2,
+     "md-speed": 0.5,
+     "md-rough": 0.6
+    },
+    "preset": "cart-roll"
+   },
+   "effects": [],
+   "clips": [
+    {
+     "type": "note",
+     "name": "cart-roll",
+     "start": 48.0,
+     "len": 8.0,
+     "notes": [
+      {
+       "pitch": 60,
+       "start": 0.5,
+       "len": 5.0,
+       "vel": 100
+      }
+     ]
+    }
+   ],
+   "sends": [
+    {
+     "to": 0,
+     "level": 0.19952623149688797,
+     "pre": false
+    }
+   ]
+  },
+  {
+   "name": "METAL-SCRAPE",
+   "color": [
+    230,
+    90,
+    120
+   ],
+   "volume": 0.7,
+   "pan": 0.0,
+   "mute": false,
+   "solo": false,
+   "instrument": {
+    "machine": "modal",
+    "params": {
+     "md-material": 2,
+     "md-size": 2.0,
+     "md-excite": 1,
+     "md-speed": 0.8,
+     "md-rough": 0.1
+    },
+    "preset": "metal-scrape"
+   },
+   "effects": [],
+   "clips": [
+    {
+     "type": "note",
+     "name": "metal-scrape",
+     "start": 56.0,
+     "len": 8.0,
+     "notes": [
+      {
+       "pitch": 60,
+       "start": 0.5,
+       "len": 5.0,
+       "vel": 100
+      }
+     ]
+    }
+   ],
+   "sends": [
+    {
+     "to": 0,
+     "level": 0.19952623149688797,
+     "pre": false
+    }
+   ]
+  },
+  {
+   "name": "DOOR-CREAK",
+   "color": [
+    64,
+    206,
+    174
+   ],
+   "volume": 0.7,
+   "pan": 0.0,
+   "mute": false,
+   "solo": false,
+   "instrument": {
+    "machine": "modal",
+    "params": {
+     "md-material": 0,
+     "md-size": 0.5,
+     "md-excite": 3,
+     "md-speed": 0.15,
+     "md-rough": 0.6
+    },
+    "preset": "door-creak"
+   },
+   "effects": [],
+   "clips": [
+    {
+     "type": "note",
+     "name": "door-creak",
+     "start": 64.0,
+     "len": 8.0,
+     "notes": [
+      {
+       "pitch": 60,
+       "start": 0.5,
+       "len": 5.0,
+       "vel": 100
+      }
+     ]
+    }
+   ],
+   "sends": [
+    {
+     "to": 0,
+     "level": 0.19952623149688797,
+     "pre": false
+    }
+   ]
+  },
+  {
+   "name": "GLASS-SQUEAL",
+   "color": [
+    150,
+    110,
+    230
+   ],
+   "volume": 0.7,
+   "pan": 0.0,
+   "mute": false,
+   "solo": false,
+   "instrument": {
+    "machine": "modal",
+    "params": {
+     "md-material": 3,
+     "md-size": 1.0,
+     "md-excite": 3,
+     "md-speed": 0.7,
+     "md-rough": 0.15,
+     "md-decay": 2.0,
+     "md-gain": 1.0
+    },
+    "preset": "glass-squeal"
+   },
+   "effects": [],
+   "clips": [
+    {
+     "type": "note",
+     "name": "glass-squeal",
+     "start": 72.0,
+     "len": 8.0,
+     "notes": [
+      {
+       "pitch": 60,
+       "start": 0.5,
+       "len": 5.0,
+       "vel": 100
+      }
+     ]
+    }
+   ],
+   "sends": [
+    {
+     "to": 0,
+     "level": 0.19952623149688797,
+     "pre": false
+    }
+   ]
+  }
+ ],
+ "master": {
+  "volume": 1.0,
+  "pan": 0.0,
+  "subsonic": false,
+  "effects": [
+   {
+    "machine": "limiter2",
+    "params": {
+     "lim-gain": 0,
+     "lim-ceil": -1
+    },
+    "bypass": false
+   }
+  ]
+ }
+}
