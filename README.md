@@ -72,6 +72,22 @@ Texture (`texture/`), an effect and a voice for long ambient beds:
   is a cut of VSCO 2 CE's violin section on A4. 6 voices.
   `ambience/songs/cloud_study.py` plays it against the plain sampler.
 
+Foley (`foley/`), sounds of things, built from what makes them sound:
+
+- **`modal`**: a body of 24 modes, excited four ways. MATERIAL (wood, stone,
+  metal, glass, hide) sets the mode series and how fast the high modes die;
+  SIZE, DECAY, DAMP and POSITION shape the body. EXCITE strikes it (a contact
+  of HARD's length, with BOUNCE for a dropped object), or, while the note is
+  held, scrapes, rolls on or rubs it at SPEED over a surface of ROUGH bumps.
+  DROP bends the pitch down after a hard hit, RATTLE adds a loose part's
+  buzz, and VARY makes each hit a little different. It needs Slab 0.0.15's
+  `kernels/10-physical`. 8 voices; ten presets, from `wood-knock` to
+  `glass-squeal`. `ambience/songs/modal_study.py` plays them all.
+- **`bubbles`**: water as swarms of bubbles, each a decaying sine that rises
+  in pitch (Minnaert, van den Doel): RATE, SIZE, SPREAD, RISE, RING and
+  CLUMP take it from a drip to a pour, a boil or mud. The note sets the
+  bubbles' size. `ambience/songs/bubbles_study.py` plays the five presets.
+
 ## Install
 
 Slab 0.0.12 and later load machines from `~/Music/Slab/Machines/`. Build
