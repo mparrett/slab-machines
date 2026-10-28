@@ -17,7 +17,8 @@
              every T60, and DAMP tilts the loss: more takes the top off
              sooner.  POSITION is where the body is excited, from the end
              or edge [0] to the middle [0.5]; each mode is driven by its
-             shape there, so a centre hit loses the even modes.
+             shape there, so a centre hit loses the even modes, and a
+             centre hit on HIDE drives only its round modes.
     strike   a raised-cosine force of HARD's contact time, from 6 ms
              [felt, dull] to 0.06 ms [steel, bright]; a harder hit is a
              shorter one too [Hertz].  The impulse is the same at any HARD,
@@ -82,6 +83,8 @@ ustruct: ModalState
   f64 rh                            ( rattle high-pass )
   f64 tl  f64 tr                    ( tone low-passes )
   f64 gain
+  f64 trim                          ( the level before GAIN, for the rattle's gate )
+  f64 seedv                         ( the SEED the noise cells were seeded from )
   ( the hit, for the mode stages )
   f64 k-f0  f64 k-s0  f64 k-s1  f64 k-sq  f64 k-tilt
   f64 k-a  f64 k-b  f64 k-jit  f64 k-pos  f64 k-hide  f64 k-fny
@@ -116,6 +119,7 @@ ustruct: ModalParams
   f64 krh                           ( rattle high-pass, 2 kHz )
   f64 ka  f64 kr                    ( held exciters' attack and release )
   f64 kdl                           ( the glide's fall per sample )
+  f64 k30                           ( rub wobble low-pass, 30 Hz )
 ;
 
 ( hz sr -- k : a one-pole's coefficient for a corner )
@@ -156,10 +160,17 @@ dsp: md-block-prepare | ctx:Ctx state params:ModalParams -- |
   1.0  -1.0 0.015 ctx.sr f* f/ exp  f- -> params.ka
   1.0  -1.0 0.06 ctx.sr f* f/ exp  f- -> params.kr
   -1.0 0.04 ctx.sr f* f/ exp -> params.kdl
+  30.0 ctx.sr md-k -> params.k30
 ;
 
 ( ctx state params -- : note-on part 1, the hit's constants )
 dsp: md-key | ctx:Ctx state:ModalState params:ModalParams -- |
+  ( a changed SEED reseeds the noise cells, which seed only from 0 )
+  params.seed state.seedv f= | same |
+  same state.rn 0.0 select -> state.rn
+  same state.rv 0.0 select -> state.rv
+  same state.rr 0.0 select -> state.rr
+  params.seed -> state.seedv
   state.rn&  ctx.chan 5.0 f* 21.0 f+ params.seed 101.0 f* f+  rand-seed-once
   state.rv&  ctx.chan 5.0 f* 22.0 f+ params.seed 101.0 f* f+  rand-seed-once
   state.rr&  ctx.chan 5.0 f* 23.0 f+ params.seed 101.0 f* f+  rand-seed-once
@@ -201,6 +212,7 @@ dsp: md-key | ctx:Ctx state:ModalState params:ModalParams -- |
   p 0.84 0.86 0.78 0.82 0.51 sel5
   params.excite 0.5 f<  1.0
     params.excite 1.5 f<  0.0175  params.excite 2.5 f<  0.0113 0.0134 select  select  select f*
+  dup -> state.trim
   params.gain f* -> state.gain
 ;
 
@@ -222,7 +234,7 @@ dsp: md-mode | state:ModalState params:ModalParams i -- |
   w w f* state.w2& i f!i
   state.k-s0  state.k-s1 fr state.k-sq pow f* f+  h f* fneg exp state.rho& i f!i
   ( the drive: the mode's shape at the excitation point, tilted down the series )
-  state.k-hide 0.5 f>  i state.k-pos 1.8 f* memb-shape-at  n state.k-pos f* sinpi  select
+  state.k-hide 0.5 f>  i 0.95 state.k-pos 1.9 f* f- memb-shape-at  n state.k-pos f* sinpi  select
     r -1.0 state.k-tilt f* pow f*  live f* state.phi& i f!i
   ( two listening points, spread by WIDTH )
   n 0.31 f* sinpi | ml |
@@ -298,7 +310,7 @@ dsp: md-scrape | state:ModalState params:ModalParams -- f |
   at a rate made unsteady by ROUGH )
 dsp: md-rub | state:ModalState params:ModalParams -- f |
   state.rn& rand-b | n |
-  state.n1& n 30.0 params.sr md-k md-lp | wob |
+  state.n1& n params.k30 md-lp | wob |
   params.rate  1.0 params.rough 2.0 f* wob f* f+  f* params.inv-sr f*  0.0 fmax | dp |
   state.ph dp f+ ffrac | ph |
   ph -> state.ph
@@ -339,9 +351,10 @@ dsp: k-modal-voice | io:Io ctx state:ModalState params:ModalParams -- |
     or state.wr& i f@i vn f* f+ ] times | i ol or |
   ol state.gain f* | yl0 |
   or state.gain f* | yr0 |
-  ( the rattle: noise gated by how far the output swings past 0.05 )
-  yl0 yr0 f+ 0.5 f* fabs 0.05 f- 0.0 fmax | over |
-  state.rr& rand-b over f* params.rattle f* 1.5 f* | z |
+  ( the rattle: noise gated by how far the body swings past 0.05 before
+    GAIN, so the fader doesn't change how much it rattles )
+  ol or f+ 0.5 f* state.trim f* fabs 0.05 f- 0.0 fmax | over |
+  state.rr& rand-b over f* params.rattle f* params.gain f* 0.8 f* | z |
   z  state.rh& z params.krh md-lp  f- | buzz |
   state.tl& yl0 buzz f+ params.ktone md-lp | yl |
   state.tr& yr0 buzz f+ params.ktone md-lp | yr |

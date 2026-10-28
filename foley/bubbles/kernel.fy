@@ -42,6 +42,7 @@ ustruct: BubbleState
   f64 rp
   f64 rk
   f64 pitch                         ( the note's size factor )
+  f64 seedv                         ( the SEED the noise cells were seeded from )
   f64 vel
   f64 tl  f64 tr                    ( tone low-passes )
   f64 hl  f64 hr                    ( 60 Hz high-pass: the low-passes it subtracts )
@@ -100,6 +101,13 @@ dsp: bb-note-on | ctx:Ctx state:BubbleState params:BubbleParams |
   ctx.vel 0.0 1.0 fclamp -> state.vel
   ( C4 is SIZE as set; higher notes make smaller, higher bubbles )
   ctx.hz 261.6255653005986 f/ -> state.pitch
+  ( a changed SEED reseeds the noise cells, which seed only from 0 )
+  params.seed state.seedv f= | same |
+  same state.re 0.0 select -> state.re
+  same state.rs 0.0 select -> state.rs
+  same state.rp 0.0 select -> state.rp
+  same state.rk 0.0 select -> state.rk
+  params.seed -> state.seedv
   state.re&  ctx.chan 5.0 f* 31.0 f+ params.seed 101.0 f* f+  rand-seed-once
   state.rs&  ctx.chan 5.0 f* 32.0 f+ params.seed 101.0 f* f+  rand-seed-once
   state.rp&  ctx.chan 5.0 f* 33.0 f+ params.seed 101.0 f* f+  rand-seed-once
