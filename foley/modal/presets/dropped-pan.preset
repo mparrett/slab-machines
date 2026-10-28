@@ -1,0 +1,1 @@
+{"slab": "preset", "schema": 1, "machine": "modal", "note": "A pan dropped on a floor: it bounces, falls in pitch and rattles", "params": {"md-material": 2, "md-size": 1.5, "md-hard": 0.8, "md-pos": 0.2, "md-bounce": 0.6, "md-drop": 0.3, "md-rattle": 0.3}}

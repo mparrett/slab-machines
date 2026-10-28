@@ -1,0 +1,1 @@
+{"slab": "preset", "schema": 1, "machine": "bubbles", "note": "Single drops into still water, each one a rising plip", "params": {"bb-rate": 1.5, "bb-size": 4.0, "bb-spread": 0.2, "bb-rise": 0.9, "bb-ring": 1.5, "bb-gain": 1.0}}
