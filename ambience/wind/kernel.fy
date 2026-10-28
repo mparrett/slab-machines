@@ -100,6 +100,7 @@ ustruct: WindParams
   f64 rel
   f64 gain
   f64 seed       ( 0..99: which noise this instance plays; 0 as before )
+  f64 rumble
   ( derived - block-prepare )
   f64 ka
   f64 kr
@@ -120,7 +121,6 @@ ustruct: WindParams
   f64 g800       ( fixed band-passes: 800, 400, 200 Hz )
   f64 g400
   f64 g200
-  f64 rumble
   f64 kr200      ( rumble one-poles: 200 Hz, 25 Hz )
   f64 kr25
 ;

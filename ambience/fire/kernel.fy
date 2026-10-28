@@ -25,13 +25,14 @@
              1200 Hz Q 0.6 and high-passes 1 kHz, R band-passes 2600 Hz
              Q 0.4 and 600 Hz Q 0.2.  Each side runs its own noise, so
              the field is wide; WIDTH 0 gives R the L noise.
-    pops     each tick rises over 0.7 ms rather than jumping: a tick
-             that starts at full level in one sample is a digital click,
-             heard as the audio breaking.
+    pops     each tick rises over 0.7 ms, or a quarter of a shorter
+             ramp, rather than jumping: a tick that starts at full level
+             in one sample is a digital click, heard as the audio
+             breaking.  The quarter keeps short ticks at full level.
     bed      BED: the fire's low body, which the body filters remove: two
              noises, one a side, low-passed twice at 150 Hz and high-passed
              at 25, breathing by a 0.2 Hz noise [about 1.5 dB].  It skips
-             the body filters.
+             the body filters and ignores WIDTH: its sides stay apart.
     lap      LAP: the clipped lapping, which the body filters reduce to a
              flutter, let past them in mono and low-passed at 400 Hz: the
              woof of burning gas, so the low end reads as flame, not air.
@@ -114,6 +115,8 @@ ustruct: FireParams
   f64 tick       ( longest crackle ramp, ms )
   f64 clump      ( 0..1: ticks gathered into bursts )
   f64 spread     ( 0..1: pop sizes from even to a few big ones )
+  f64 bed        ( the low body's level )
+  f64 lap        ( the lapping past the body filters )
   ( derived - block-prepare )
   f64 ka
   f64 kr
@@ -122,10 +125,8 @@ ustruct: FireParams
   f64 k1k
   f64 ktone
   f64 tick-s
-  f64 kon        ( per-sample chances a burst ends, starts )
-  f64 koff
-  f64 bed        ( the low body's level )
-  f64 lap        ( the lapping past the body filters )
+  f64 kend       ( per-sample chances a burst ends, starts )
+  f64 kstart
   f64 k400
   f64 patk       ( pop rise, samples )
   f64 k150
@@ -152,8 +153,8 @@ dsp: fire-block-prepare | ctx:Ctx state params:FireParams |
   params.tone ctx.sr fire-k -> params.ktone
   params.tick 1000.0 f/ -> params.tick-s
   ( bursts last 0.25 s on average and fill 15% of the time )
-  ctx.inv-sr 0.25 f/ -> params.kon
-  ctx.inv-sr 0.25 f/ 0.15 f* 0.85 f/ -> params.koff
+  ctx.inv-sr 0.25 f/ -> params.kend
+  ctx.inv-sr 0.25 f/ 0.15 f* 0.85 f/ -> params.kstart
   30.0 ctx.sr svf-g -> params.g30
   1200.0 ctx.sr svf-g -> params.g1200
   2600.0 ctx.sr svf-g -> params.g2600
@@ -229,7 +230,7 @@ dsp: k-fire-voice | io:Io ctx:Ctx state:FireState params:FireParams -- |
     rises by 1 / 0.15, so the average rate holds.  CLUMP 0 is the plain
     rate, and the cell is separate so the ticks' draws are unchanged. )
   state.rk& rand-u | uk |
-  state.act 0.5 f>  uk params.kon f< 0.0 1.0 select  uk params.koff f< 1.0 0.0 select  select -> state.act
+  state.act 0.5 f>  uk params.kend f< 0.0 1.0 select  uk params.kstart f< 1.0 0.0 select  select -> state.act
   1.0 params.clump f-  params.clump 6.666666666666667 f* state.act f*  f+ | burst |
   params.crackle ctx.inv-sr f*  burst f* | pchance |
   state.re& rand-u | ul |
@@ -261,8 +262,8 @@ dsp: k-fire-voice | io:Io ctx:Ctx state:FireState params:FireParams -- |
   popr  lar  state.cnr  select -> state.cnr
   popr  lar  state.cer 1.0 f- 0.0 fmax  select -> state.cer
   popr  far 0.8 f* ctx.sr svf-g  state.cgr  select -> state.cgr
-  state.cel state.cnl fire-env  state.cnl state.cel f- params.patk f/ 1.0 fmin f* | el |
-  state.cer state.cnr fire-env  state.cnr state.cer f- params.patk f/ 1.0 fmin f* | er |
+  state.cel state.cnl fire-env  state.cnl state.cel f-  state.cnl 0.25 f* params.patk fmin 1.0 fmax  f/ 1.0 fmin f* | el |
+  state.cer state.cnr fire-env  state.cnr state.cer f-  state.cnr 0.25 f* params.patk fmin 1.0 fmax  f/ 1.0 fmin f* | er |
   state.cl1& state.cl2& nl state.cgl 0.5 fire-bp  el f* state.cal f* | cl |
   state.cr1& state.cr2& nr state.cgr 0.5 fire-bp  er f* state.car f* | cr |
   ( hiss: a 1 kHz high-pass, gated by a 1 Hz low-pass of noise to the
