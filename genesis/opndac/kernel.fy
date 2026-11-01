@@ -100,8 +100,11 @@ dsp: k-dac-voice | io:Io ctx state:DacState params:DacParams -- |
   ( the write: nearest sample, 8 bits, to the 9-bit DAC value )
   state.pos | p |
   p state.end f< | live |
-  ( the read stays inside the zone; past its end the value is discarded )
-  buf p state.end 1.0 f- fmin floor f@i state.gain f* params.level f* 128.0 f* 0.5 f+ floor -128.0 127.0 fclamp 2.0 f* | v |
+  ( the read stays inside the zone; past its end the value is discarded.
+    With no keymap loaded [the bench loads no assets] the zone ends at 0,
+    so the index is held at 0 too: pool[-1] can sit across a page
+    boundary, and reading it crashed. )
+  buf p state.end 1.0 f- fmin 0.0 fmax floor f@i state.gain f* params.level f* 128.0 f* 0.5 f+ floor -128.0 127.0 fclamp 2.0 f* | v |
   wr  live v 0.0 select  state.hold  select | h |
   h -> state.hold
   wr  p state.step f+ state.end fmin  p  select -> state.pos
