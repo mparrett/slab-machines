@@ -62,7 +62,7 @@ dsp: dac-note-on | ctx:Ctx state:DacState params:DacParams |
   zt key ctx.vel 127.0 f* 0.0 0.0 zone-find | k |
   k 0.0 f>= | hit |
   k 0.0 fmax 19.0 f* | c |
-  hit  zt c f@i  4.0  select | start |
+  hit  zt c f@i  SMP-SILENCE  select | start |
   hit  zt c 1.0 f+ f@i  0.0  select | len |
   zt c 2.0 f+ f@i | zsr0 |
   zsr0 0.5 f<  13000.0  zsr0  select | zsr |
@@ -101,9 +101,9 @@ dsp: k-dac-voice | io:Io ctx state:DacState params:DacParams -- |
   state.pos | p |
   p state.end f< | live |
   ( the read stays inside the zone; past its end the value is discarded.
-    With no keymap loaded [the bench loads no assets] the zone ends at 0,
-    so the index is held at 0 too: pool[-1] can sit across a page
-    boundary, and reading it crashed. )
+    A voice rendered before any note-on [the bench does this] still has
+    zeroed state, end 0, so the index is held at 0 too: pool[-1] can sit
+    across a page boundary, and reading it crashed. )
   buf p state.end 1.0 f- fmin 0.0 fmax floor f@i state.gain f* params.level f* 128.0 f* 0.5 f+ floor -128.0 127.0 fclamp 2.0 f* | v |
   wr  live v 0.0 select  state.hold  select | h |
   h -> state.hold
